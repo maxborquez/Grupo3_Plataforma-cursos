@@ -37,6 +37,18 @@ const userSchema = new mongoose.Schema({
       ref: "Curso",
     },
   ],
+  cursos_dictando: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Curso",
+    },
+  ],
+  cursos_dictados: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Curso",
+    },
+  ],
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,

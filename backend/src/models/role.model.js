@@ -2,7 +2,7 @@
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
-const ROLES = ["alumno", "admin"];
+const ROLES = ["alumno", "admin", "profesor"];
 
 // Crea el esquema de la coleccion 'roles'
 const roleSchema = new mongoose.Schema({
