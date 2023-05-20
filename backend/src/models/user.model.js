@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'usuarios'
 const userSchema = new mongoose.Schema({
-  name: {
+  nombre: {
+    type: String,
+    required: true,
+  },
+  apellido: {
     type: String,
     required: true,
   },
@@ -13,6 +17,26 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  rut: {
+    type: String,
+    required: true,
+  },
+  telefono: {
+    type: String,
+    required: true,
+  },
+  cursos_inscritos_act: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Curso",
+    },
+  ],
+  cursos_inscritos_prev: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Curso",
+    },
+  ],
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,
