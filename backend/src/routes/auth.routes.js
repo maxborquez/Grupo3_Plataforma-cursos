@@ -8,7 +8,7 @@ const authController = require("../controllers/auth.controller.js");
 const router = express.Router();
 
 // Define las rutas para la autenticación
-// router.post("/signup", authController.signUp);
+router.post("/signup", authController.signUp);
 router.post("/signin", authController.signIn);
 
 // Exporta el enrutador
