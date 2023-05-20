@@ -17,6 +17,7 @@ async function createRoles() {
     await Promise.all([
       new Role({ name: "alumno" }).save(),
       new Role({ name: "admin" }).save(),
+      new Role({ name: "profesor" }).save(),
     ]);
     console.log("* => Roles creados exitosamente");
   } catch (error) {
@@ -36,6 +37,7 @@ async function createUsers() {
 
     const admin = await Role.findOne({ name: "admin" });
     const alumno = await Role.findOne({ name: "alumno" });
+    const profesor = await Role.findOne({ name: "profesor" });
 
     await Promise.all([
       new User({
@@ -53,6 +55,14 @@ async function createUsers() {
         rut: "00.000.000-0",
         telefono: "569000000",
         roles: admin._id,
+      }).save(),
+      new User({
+        nombre: "profesor",
+        apellido: "base",
+        email: "profesor@email.com",
+        rut: "22.222.222-2",
+        telefono: "56922222222",
+        roles: profesor._id,
       }).save(),
     ]);
     console.log("* => Users creados exitosamente");
