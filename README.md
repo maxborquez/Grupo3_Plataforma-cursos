@@ -3,8 +3,8 @@
   
 # Integrantes
   - Maximiliano Borquez
-  - Emmerson Garcia
+  - Emerson García
   - Magdiel Araneda
-  - Ivan Salas
+  - Iván Salas
 
 ## [Ver el backend](./backend/Backend.md)
