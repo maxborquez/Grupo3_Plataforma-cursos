@@ -10,8 +10,8 @@ const cursoSchema = new mongoose.Schema({
     required: true,
   },
   estado: {
-    type: String,
-    enum: ["disponible", "proximo", "terminado"],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado",
     required: true,
   },
   fecha_inicio: {
@@ -22,25 +22,17 @@ const cursoSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  profesor_id: {
+  profesor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Profesor",
+    ref: "User",
     required: true,
   },
-  estadisticas: {
-    cantidad_inscritos: {
-      type: Number,
-      required: true,
+  alumnos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    promedio_calificaciones: {
-      type: Number,
-      required: true,
-    },
-    asistencia_promedio: {
-      type: Number,
-      required: true,
-    },
-  },
+  ],
 });
 
 const Curso = mongoose.model("Curso", cursoSchema);
