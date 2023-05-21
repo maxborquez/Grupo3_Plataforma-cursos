@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 const Calificacion = require("../models/Calificacion");
 const Curso = require("../models/Curso");
 
