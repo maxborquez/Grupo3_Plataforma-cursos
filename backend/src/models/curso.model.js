@@ -10,8 +10,8 @@ const cursoSchema = new mongoose.Schema({
     required: true,
   },
   estado: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Estado",
+    type: String,
+    enum: ["Disponible", "Proximo", "Cerrado"],
     required: true,
   },
   fecha_inicio: {
@@ -31,6 +31,12 @@ const cursoSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+  ],
+  clases: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Clase",
     },
   ],
 });

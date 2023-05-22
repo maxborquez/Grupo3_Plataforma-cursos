@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  estadoCurso: {
+    type: String,
+    enum: ["cursando", "aprobado", "reprobado"],
+    default: "cursando",
+  },
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,43 +1,67 @@
-const Asistencia = require("../models/asistencia");
+const Asistencia = require("../models/Asistencia");
 
-
-exports.tomarAsistencia = async (req, res) => {
-  const { cursoId, alumnoId, presente } = req.body;
+// Marcar la asistencia de un alumno en una clase
+const marcarAsistencia = async (req, res) => {
+  const { alumnoId, cursoId, claseId } = req.params;
+  const { presente } = req.body;
 
   try {
-    // Crear objeto de asistencia
-    const nuevaAsistencia = new Asistencia({
-      curso: cursoId,
+    // Verificar si la asistencia ya existe
+    let asistencia = await Asistencia.findOne({
       alumno: alumnoId,
-      presente,
+      curso: cursoId,
+      clase: claseId,
     });
 
-    // Guardar la asistencia en la base de datos
-    await nuevaAsistencia.save();
+    if (!asistencia) {
+      // Crear una nueva asistencia si no existe
+      asistencia = new Asistencia({
+        alumno: alumnoId,
+        curso: cursoId,
+        clase: claseId,
+        presente,
+      });
+    } else {
+      // Actualizar la asistencia existente
+      asistencia.presente = presente;
+    }
 
-    res.status(201).json({ mensaje: "Asistencia tomada exitosamente" });
+    await asistencia.save();
+
+    res.status(200).json(asistencia);
   } catch (error) {
-    console.error("Error al tomar la asistencia", error);
-    res.status(500).json({ mensaje: "Error al tomar la asistencia" });
+    res.status(500).json({ error: "Ocurrió un error al marcar la asistencia" });
   }
 };
 
-// Controlador para obtener las asistencias de un curso
-exports.obtenerAsistenciasPorCurso = async (req, res) => {
-  const { cursoId } = req.params;
+// Corregir la asistencia de un alumno en una clase
+const corregirAsistencia = async (req, res) => {
+  const { alumnoId, cursoId, claseId } = req.params;
+  const { presente } = req.body;
 
   try {
-    // Obtener las asistencias del curso
-    const asistencias = await Asistencia.find({ curso: cursoId }).populate("alumno", "nombre").exec();
+    // Verificar si la asistencia existe
+    const asistencia = await Asistencia.findOne({
+      alumno: alumnoId,
+      curso: cursoId,
+      clase: claseId,
+    });
 
-    res.status(200).json({ asistencias });
+    if (!asistencia) {
+      return res.status(404).json({ error: "Asistencia no encontrada" });
+    }
+
+    // Actualizar la asistencia
+    asistencia.presente = presente;
+    await asistencia.save();
+
+    res.status(200).json(asistencia);
   } catch (error) {
-    console.error("Error al obtener las asistencias", error);
-    res.status(500).json({ mensaje: "Error al obtener las asistencias" });
+    res.status(500).json({ error: "Ocurrió un error al corregir la asistencia" });
   }
 };
 
 module.exports = {
-  tomarAsistencia,
-  obtenerAsistenciasPorCurso,
+  marcarAsistencia,
+  corregirAsistencia,
 };
