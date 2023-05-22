@@ -141,6 +141,15 @@ const inscribirAlumno = async (req, res) => {
       return res.status(404).json({ error: "No se encontró el curso" });
     }
 
+    // Verificar si el curso está en estado "disponible"
+    const estadoDisponible = await Estado.findOne({ name: "Disponible" });
+    if (!estadoDisponible) {
+      return res.status(500).json({ error: "No se encontró el estado de curso 'Disponible'" });
+    }
+    if (curso.estado.toString() !== estadoDisponible._id.toString()) {
+      return res.status(400).json({ error: "El curso no está en estado 'Disponible'" });
+    }
+
     // Verificar que el usuario sea un alumno
     const alumnoRole = await Role.findOne({ name: "alumno" });
     if (!alumnoRole) {
