@@ -91,4 +91,5 @@ async function obtenerEstadisticasAsistencia(req, res) {
 module.exports = {
   marcarAsistencia,
   corregirAsistencia,
+  obtenerEstadisticasAsistencia,
 };
