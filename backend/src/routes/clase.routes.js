@@ -5,14 +5,14 @@ const express = require("express");
 // Importa el controlador de clases
 const claseController = require("../controllers/clase.controller.js");
 // Importa el middleware de autorización
-const authMiddleware = require("../middlewares/auth.middleware.js");
+const authMiddleware = require("../middlewares/autho.middleware.js");
 
 // Crea una instancia del enrutador
 const router = express.Router();
 
 // Define las rutas para las clases
-router.get("/", authMiddleware.isAuthenticated, claseController.obtenerClases);
-router.get("/:id", authMiddleware.isAuthenticated, claseController.obtenerClasePorId);
+router.get("/", claseController.obtenerClases);
+router.get("/:id", claseController.obtenerClasePorId);
 router.post("/", authMiddleware.isProfesor, claseController.crearClase);
 router.put("/:id", authMiddleware.isProfesor, claseController.actualizarClase);
 router.delete("/:id", authMiddleware.isProfesor, claseController.eliminarClase);
