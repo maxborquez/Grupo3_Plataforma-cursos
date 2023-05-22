@@ -11,6 +11,7 @@
     "ecmaVersion": "latest"
   },
   "rules": {
+    "linebreak-style": ["error", "windows"],
     "require-jsdoc": [
       "warn",
       {
@@ -53,6 +54,6 @@
         }
       }
     ],
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
   }
 }
