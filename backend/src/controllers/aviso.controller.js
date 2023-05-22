@@ -1,5 +1,5 @@
-const Aviso = require("../models/Aviso");
-const Curso = require("../models/Curso");
+const Aviso = require("../models/aviso.model");
+const Curso = require("../models/curso.model");
 
 // Obtener todos los avisos de un curso
 const obtenerAvisosPorCurso = async (req, res) => {

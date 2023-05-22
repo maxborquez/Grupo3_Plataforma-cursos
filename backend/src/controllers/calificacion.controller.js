@@ -1,4 +1,4 @@
-const Calificacion = require("../models/calificacion");
+const Calificacion = require("../models/calificacion.model");
 
 // Obtener todas las calificaciones
 const getCalificaciones = async (req, res) => {

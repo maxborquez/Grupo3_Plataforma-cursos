@@ -1,4 +1,4 @@
-const Curso = require("../models/curso");
+const Curso = require("../models/curso.model");
 
 // Obtener todos los cursos
 const getCursos = async (req, res) => {
