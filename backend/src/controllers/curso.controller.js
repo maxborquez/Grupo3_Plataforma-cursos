@@ -134,78 +134,72 @@ const getCursosByProfesor = async (req, res) => {
 };
 
 // Inscribir a un alumno en un curso
-const inscribirAlumno = async (req, res) => {
-  const { alumnoId, cursoId } = req.params;
+async function inscribirAlumnoEnCurso(req, res) {
   try {
-    const curso = await Curso.findById(cursoId);
+    const { cursoId } = req.params;
+    const { alumnoId } = req.body;
+
+    // Verificar si el curso existe y está disponible
+    const curso = await Curso.findOne({ _id: cursoId, estado: "Disponible" });
     if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-
-    // Verificar si el curso está en estado "disponible"
-    if (curso.estado !== "Disponible") {
-      return res.status(400).json({ error: "El curso no está disponible para inscripción" });
-    }
-
-    // Verificar que el usuario sea un alumno
-    const alumnoRole = await Role.findOne({ name: "alumno" });
-    if (!alumnoRole) {
-      return res.status(500).json({ error: "No se encontró el rol de alumno" });
-    }
-    const usuario = await User.findById(alumnoId);
-    if (!usuario) {
-      return res.status(404).json({ error: "No se encontró el usuario" });
-    }
-    if (!usuario.roles.includes(alumnoRole._id)) {
-      return res.status(403).json({ error: "El usuario no tiene el rol de alumno" });
+      return res.status(404).json({ message: "El curso no está disponible." });
     }
 
     // Verificar si el alumno ya está inscrito en el curso
-    if (curso.alumnos.includes(alumnoId)) {
-      return res.status(400).json({ error: "El alumno ya está inscrito en el curso" });
+    const alumnoInscrito = curso.alumnos.find((alumno) => alumno.alumno.toString() === alumnoId);
+    if (alumnoInscrito) {
+      return res.status(400).json({ message: "El alumno ya está inscrito en este curso." });
     }
 
-    // Inscribir al alumno en el curso
-    curso.alumnos.push(alumnoId);
+    // Crear el objeto de inscripción con estado "Cursando"
+    const inscripcion = {
+      alumno: alumnoId,
+      estado: "Cursando"
+    };
+
+    // Agregar la inscripción al curso
+    curso.alumnos.push(inscripcion);
+
+    // Guardar los cambios en el curso
     await curso.save();
 
-    res.status(200).json(curso);
+    res.status(200).json({ message: "El alumno ha sido inscrito en el curso exitosamente." });
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al inscribir al alumno en el curso" });
+    res.status(500).json({ message: "Error al inscribir al alumno en el curso.", error });
   }
-};
+}
 
-// Cambiar el estado de un alumno en un curso (aprobado, reprobado, cursando)
-const changeEstadoAlumno = async (req, res) => {
-  const { cursoId, alumnoId } = req.params;
-  const { estado } = req.body;
-
+// Cambiar el estado de un alumno inscrito en un curso
+async function cambiarEstadoAlumno(req, res) {
   try {
-    // Verificar si el curso y el alumno existen
-    const curso = await Curso.findById(cursoId);
-    const alumno = await User.findById(alumnoId);
+    const { cursoId, alumnoId, estado } = req.body;
 
-    if (!curso || !alumno) {
-      return res.status(404).json({ error: "Curso o alumno no encontrado" });
+    // Verificar si el usuario profesor está asociado con el curso
+    const participaCurso = await Curso.exists({ _id: cursoId, profesor: req.user.id });
+    if (!participaCurso) {
+      return res.status(403).json({ message: "No tienes permiso para cambiar el estado del alumno en este curso." });
     }
 
-    // Verificar si el usuario que realiza la solicitud es el profesor del curso
-    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
+    // Buscar el curso y el alumno específicos
+    const curso = await Curso.findById(cursoId);
+    const alumno = curso.alumnos.find((alumno) => alumno.alumno.toString() === alumnoId);
 
-    // Actualizar el estado del alumno en el curso
-    curso.alumnos.forEach((alumnoCurso) => {
-      if (alumnoCurso.alumno.toString() === alumnoId) {
-        alumnoCurso.estado = estado;
-      }
-    });
+    // Verificar si se encontró el alumno en el curso
+    if (!alumno) {
+      return res.status(404).json({ message: "El alumno no está inscrito en este curso." });
+    }
 
+    // Cambiar el estado del alumno
+    alumno.estado = estado;
+
+    // Guardar los cambios en el curso
     await curso.save();
 
-    res.status(200).json({ mensaje: "Estado del alumno actualizado correctamente" });
+    res.status(200).json({ message: "Estado del alumno actualizado correctamente." });
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al cambiar el estado del alumno" });
+    res.status(500).json({ message: "Error al cambiar el estado del alumno.", error });
   }
-};
+}
 
 // Eliminar un alumno de un curso
 const eliminarAlumno = async (req, res) => {
@@ -245,8 +239,7 @@ module.exports = {
   changeEstadoCurso,
   changeProfesor,
   getCursosByProfesor,
-  inscribirAlumno,
-  changeEstadoAlumno,
+  inscribirAlumnoEnCurso,
   eliminarAlumno,
-  asignarCalificacionAlumno,
+  cambiarEstadoAlumno,
 };

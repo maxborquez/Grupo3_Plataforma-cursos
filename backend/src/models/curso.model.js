@@ -29,8 +29,15 @@ const cursoSchema = new mongoose.Schema({
   },
   alumnos: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      alumno: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      estado: {
+        type: String,
+        enum: ["Cursando", "Aprobado", "Reprobado"],
+        default: "Cursando",
+      },
     },
   ],
   clases: [
