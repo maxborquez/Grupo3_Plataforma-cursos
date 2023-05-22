@@ -1,5 +1,5 @@
-const Asistencia = require("../models/Asistencia");
-const Clase = require("../models/Clase");
+const Asistencia = require("../models/asistencia.model");
+const Clase = require("../models/clase.model");
 
 // Marcar la asistencia de un alumno en una clase
 const marcarAsistencia = async (req, res) => {

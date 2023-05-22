@@ -1,4 +1,4 @@
-const Clase = require("../models/Clase");
+const Clase = require("../models/clase.model");
 
 // Obtener todas las clases
 const obtenerClases = async (req, res) => {
