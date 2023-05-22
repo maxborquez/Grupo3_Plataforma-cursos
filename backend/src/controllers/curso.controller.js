@@ -175,37 +175,38 @@ const inscribirAlumno = async (req, res) => {
   }
 };
 
-// Cambiar el estado de un alumno en un curso (aprobado, reprobado, cursando)
-const changeEstadoAlumno = async (req, res) => {
-  const { cursoId, alumnoId } = req.params;
-  const { estado } = req.body;
-
+// Cambiar el estado de un alumno inscrito en un curso
+async function cambiarEstadoAlumno(req, res) {
   try {
-    // Verificar si el curso y el alumno existen
-    const curso = await Curso.findById(cursoId);
-    const alumno = await User.findById(alumnoId);
+    const { cursoId, alumnoId, estado } = req.body;
 
-    if (!curso || !alumno) {
-      return res.status(404).json({ error: "Curso o alumno no encontrado" });
+    // Verificar si el usuario profesor está asociado con el curso
+    const participaCurso = await Curso.exists({ _id: cursoId, profesor: req.user.id });
+    if (!participaCurso) {
+      return res.status(403).json({ message: "No tienes permiso para cambiar el estado del alumno en este curso." });
     }
 
-    // Verificar si el usuario que realiza la solicitud es el profesor del curso
-    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
+    // Buscar el curso y el alumno específicos
+    const curso = await Curso.findById(cursoId);
+    const alumno = curso.alumnos.find((alumno) => alumno.alumno.toString() === alumnoId);
 
-    // Actualizar el estado del alumno en el curso
-    curso.alumnos.forEach((alumnoCurso) => {
-      if (alumnoCurso.alumno.toString() === alumnoId) {
-        alumnoCurso.estado = estado;
-      }
-    });
+    // Verificar si se encontró el alumno en el curso
+    if (!alumno) {
+      return res.status(404).json({ message: "El alumno no está inscrito en este curso." });
+    }
 
+    // Cambiar el estado del alumno
+    alumno.estado = estado;
+    
+    // Guardar los cambios en el curso
     await curso.save();
 
-    res.status(200).json({ mensaje: "Estado del alumno actualizado correctamente" });
+    res.status(200).json({ message: "Estado del alumno actualizado correctamente." });
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al cambiar el estado del alumno" });
+    res.status(500).json({ message: "Error al cambiar el estado del alumno.", error });
   }
-};
+}
+
 
 // Eliminar un alumno de un curso
 const eliminarAlumno = async (req, res) => {
@@ -246,7 +247,6 @@ module.exports = {
   changeProfesor,
   getCursosByProfesor,
   inscribirAlumno,
-  changeEstadoAlumno,
   eliminarAlumno,
-  asignarCalificacionAlumno,
+  cambiarEstadoAlumno,
 };
