@@ -178,6 +178,67 @@ const inscribirAlumno = async (req, res) => {
   }
 };
 
+// Cambiar el estado de un alumno en un curso (aprobado, reprobado, cursando)
+const cambiarEstadoAlumno = async (req, res) => {
+  const { cursoId, alumnoId } = req.params;
+  const { estado } = req.body;
+
+  try {
+    // Verificar si el curso y el alumno existen
+    const curso = await Curso.findById(cursoId);
+    const alumno = await User.findById(alumnoId);
+
+    if (!curso || !alumno) {
+      return res.status(404).json({ error: "Curso o alumno no encontrado" });
+    }
+
+    // Verificar si el usuario que realiza la solicitud es el profesor del curso
+    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
+
+    // Actualizar el estado del alumno en el curso
+    curso.alumnos.forEach((alumnoCurso) => {
+      if (alumnoCurso.alumno.toString() === alumnoId) {
+        alumnoCurso.estado = estado;
+      }
+    });
+
+    await curso.save();
+
+    res.status(200).json({ mensaje: "Estado del alumno actualizado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al cambiar el estado del alumno" });
+  }
+};
+
+// Eliminar un alumno de un curso
+const eliminarAlumno = async (req, res) => {
+  const { cursoId, alumnoId } = req.params;
+
+  try {
+    // Verificar si el curso y el alumno existen
+    const curso = await Curso.findById(cursoId);
+    const alumno = await User.findById(alumnoId);
+
+    if (!curso || !alumno) {
+      return res.status(404).json({ error: "Curso o alumno no encontrado" });
+    }
+
+    // Verificar si el usuario que realiza la solicitud es el profesor del curso
+    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
+
+    // Eliminar al alumno del curso
+    curso.alumnos = curso.alumnos.filter((alumnoCurso) => {
+      return alumnoCurso.alumno.toString() !== alumnoId;
+    });
+
+    await curso.save();
+
+    res.status(200).json({ mensaje: "Alumno eliminado del curso correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al eliminar al alumno del curso" });
+  }
+};
+
 
 module.exports = {
   getCursos,
@@ -189,4 +250,6 @@ module.exports = {
   changeProfesor,
   getCursosByProfesor,
   inscribirAlumno,
+  cambiarEstadoAlumno,
+  eliminarAlumno,
 };

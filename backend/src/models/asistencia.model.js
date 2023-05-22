@@ -11,9 +11,10 @@ const asistenciaSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  fecha: {
-    type: Date,
-    default: Date.now,
+  clase: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Clase",
+    required: true,
   },
   presente: {
     type: Boolean,
