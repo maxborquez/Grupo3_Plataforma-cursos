@@ -84,42 +84,43 @@ const deleteCurso = async (req, res) => {
 };
 
 // Cambiar el estado de un curso
-const changeEstado = async (req, res) => {
-    const { id } = req.params;
-    const { estado } = req.body;
-    try {
-      const curso = await Curso.findByIdAndUpdate(
-        id,
-        { estado },
-        { new: true }
-      );
-      if (!curso) {
-        return res.status(404).json({ error: "No se encontró el curso" });
-      }
-      res.status(200).json(curso);
-    } catch (error) {
-      res.status(500).json({ error: "Ocurrió un error al cambiar el estado del curso" });
+const changeEstadoCurso = async (req, res) => {
+  const { id } = req.params;
+  const { estado } = req.body;
+  try {
+    const curso = await Curso.findByIdAndUpdate(
+      id,
+      { estado },
+      { new: true },
+    );
+    if (!curso) {
+      return res.status(404).json({ error: "No se encontró el curso" });
     }
-  };
+    res.status(200).json(curso);
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al cambiar el estado del curso" });
+  }
+};
 
 // Cambiar el profesor de un curso
 const changeProfesor = async (req, res) => {
-    const { id } = req.params;
-    const { nuevoProfesor } = req.body;
-    try {
-      const curso = await Curso.findByIdAndUpdate(
-        id,
-        { profesor: nuevoProfesor },
-        { new: true }
-      );
-      if (!curso) {
-        return res.status(404).json({ error: "No se encontró el curso" });
-      }
-      res.status(200).json(curso);
-    } catch (error) {
-      res.status(500).json({ error: "Ocurrió un error al cambiar el profesor del curso" });
+  const { id } = req.params;
+  const { nuevoProfesor } = req.body;
+  try {
+    const curso = await Curso.findByIdAndUpdate(
+      id,
+      { profesor: nuevoProfesor },
+      { new: true }
+    );
+    if (!curso) {
+      return res.status(404).json({ error: "No se encontró el curso" });
     }
-  };
+    res.status(200).json(curso);
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al cambiar el profesor del curso" });
+  }
+};
+
 
 // Obtener todos los cursos de un profesor
 const getCursosByProfesor = async (req, res) => {
@@ -142,12 +143,8 @@ const inscribirAlumno = async (req, res) => {
     }
 
     // Verificar si el curso está en estado "disponible"
-    const estadoDisponible = await Estado.findOne({ name: "Disponible" });
-    if (!estadoDisponible) {
-      return res.status(500).json({ error: "No se encontró el estado de curso 'Disponible'" });
-    }
-    if (curso.estado.toString() !== estadoDisponible._id.toString()) {
-      return res.status(400).json({ error: "El curso no está en estado 'Disponible'" });
+    if (curso.estado !== "Disponible") {
+      return res.status(400).json({ error: "El curso no está disponible para inscripción" });
     }
 
     // Verificar que el usuario sea un alumno
@@ -178,8 +175,9 @@ const inscribirAlumno = async (req, res) => {
   }
 };
 
+
 // Cambiar el estado de un alumno en un curso (aprobado, reprobado, cursando)
-const cambiarEstadoAlumno = async (req, res) => {
+const changeEstadoAlumno = async (req, res) => {
   const { cursoId, alumnoId } = req.params;
   const { estado } = req.body;
 
@@ -228,7 +226,7 @@ const eliminarAlumno = async (req, res) => {
 
     // Eliminar al alumno del curso
     curso.alumnos = curso.alumnos.filter((alumnoCurso) => {
-      return alumnoCurso.alumno.toString() !== alumnoId;
+      return alumnoCurso.toString() !== alumnoId;
     });
 
     await curso.save();
@@ -239,6 +237,39 @@ const eliminarAlumno = async (req, res) => {
   }
 };
 
+const asignarCalificacionAlumno = async (req, res) => {
+  const { cursoId, alumnoId, calificacion } = req.body;
+
+  try {
+    // Verificar si el curso y el alumno existen
+    const curso = await Curso.findById(cursoId);
+    const alumno = await User.findById(alumnoId);
+
+    if (!curso || !alumno) {
+      return res.status(404).json({ error: "Curso o alumno no encontrado" });
+    }
+
+    // Verificar si el usuario que realiza la solicitud es el profesor del curso
+    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
+
+    // Crear una nueva instancia de Calificacion
+    const nuevaCalificacion = new Calificacion({
+      curso: cursoId,
+      alumno: alumnoId,
+      profesor: req.user.id, // Asignar el ID del profesor que realiza la solicitud
+      calificacion: calificacion,
+    });
+
+    // Guardar la calificación en la base de datos
+    const calificacionGuardada = await nuevaCalificacion.save();
+
+    res.status(200).json(calificacionGuardada);
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al asignar la calificación" });
+  }
+};
+
+
 
 module.exports = {
   getCursos,
@@ -246,10 +277,11 @@ module.exports = {
   createCurso,
   updateCurso,
   deleteCurso,
-  changeEstado,
+  changeEstadoCurso,
   changeProfesor,
   getCursosByProfesor,
   inscribirAlumno,
-  cambiarEstadoAlumno,
+  changeEstadoAlumno,
   eliminarAlumno,
+  asignarCalificacionAlumno,
 };
