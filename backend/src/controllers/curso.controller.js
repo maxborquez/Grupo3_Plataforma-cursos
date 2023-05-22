@@ -175,7 +175,6 @@ const inscribirAlumno = async (req, res) => {
   }
 };
 
-
 // Cambiar el estado de un alumno en un curso (aprobado, reprobado, cursando)
 const changeEstadoAlumno = async (req, res) => {
   const { cursoId, alumnoId } = req.params;
@@ -236,40 +235,6 @@ const eliminarAlumno = async (req, res) => {
     res.status(500).json({ error: "Ocurrió un error al eliminar al alumno del curso" });
   }
 };
-
-const asignarCalificacionAlumno = async (req, res) => {
-  const { cursoId, alumnoId, calificacion } = req.body;
-
-  try {
-    // Verificar si el curso y el alumno existen
-    const curso = await Curso.findById(cursoId);
-    const alumno = await User.findById(alumnoId);
-
-    if (!curso || !alumno) {
-      return res.status(404).json({ error: "Curso o alumno no encontrado" });
-    }
-
-    // Verificar si el usuario que realiza la solicitud es el profesor del curso
-    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
-
-    // Crear una nueva instancia de Calificacion
-    const nuevaCalificacion = new Calificacion({
-      curso: cursoId,
-      alumno: alumnoId,
-      profesor: req.user.id, // Asignar el ID del profesor que realiza la solicitud
-      calificacion: calificacion,
-    });
-
-    // Guardar la calificación en la base de datos
-    const calificacionGuardada = await nuevaCalificacion.save();
-
-    res.status(200).json(calificacionGuardada);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al asignar la calificación" });
-  }
-};
-
-
 
 module.exports = {
   getCursos,

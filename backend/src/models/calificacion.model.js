@@ -17,7 +17,7 @@ const calificacionSchema = new mongoose.Schema({
     required: true,
   },
   calificacion: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
