@@ -105,11 +105,11 @@ const changeEstadoCurso = async (req, res) => {
 // Cambiar el profesor de un curso
 const changeProfesor = async (req, res) => {
   const { id } = req.params;
-  const { nuevoProfesor } = req.body;
+  const { profesor } = req.body;
   try {
     const curso = await Curso.findByIdAndUpdate(
       id,
-      { profesor: nuevoProfesor },
+      { profesor: profesor },
       { new: true }
     );
     if (!curso) {
