@@ -35,4 +35,9 @@ exports.obtenerAsistenciasPorCurso = async (req, res) => {
     console.error("Error al obtener las asistencias", error);
     res.status(500).json({ mensaje: "Error al obtener las asistencias" });
   }
-}; 
+};
+
+module.exports = {
+  tomarAsistencia,
+  obtenerAsistenciasPorCurso,
+};
