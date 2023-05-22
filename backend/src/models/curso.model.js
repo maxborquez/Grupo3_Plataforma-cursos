@@ -45,6 +45,12 @@ const cursoSchema = new mongoose.Schema({
       ref: "Aviso",
     },
   ],
+  calificaciones: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Calificacion",
+    },
+  ],
 });
 
 const Curso = mongoose.model("Curso", cursoSchema);
