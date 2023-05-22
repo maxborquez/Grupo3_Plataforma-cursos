@@ -15,25 +15,26 @@ const obtenerAvisosPorCurso = async (req, res) => {
 // Crear un nuevo aviso en un curso
 const crearAvisoEnCurso = async (req, res) => {
   try {
-    const { titulo, contenido, cursoId, profesorId } = req.body;
-    const curso = await Curso.findById(cursoId);
-    if (!curso) {
+    const { titulo, contenido, curso, profesor } = req.body;
+    const cursoEncontrado = await Curso.findById(curso);
+    if (!cursoEncontrado) {
       return res.status(404).json({ error: "Curso no encontrado" });
     }
     const nuevoAviso = new Aviso({
       titulo,
       contenido,
-      curso: curso._id,
-      profesor: profesorId,
+      curso,
+      profesor,
     });
     const avisoGuardado = await nuevoAviso.save();
-    curso.avisos.push(avisoGuardado._id);
-    await curso.save();
+    cursoEncontrado.avisos.push(avisoGuardado._id);
+    await cursoEncontrado.save();
     res.status(201).json(avisoGuardado);
   } catch (error) {
     res.status(500).json({ error: "Error al guardar el aviso" });
   }
 };
+
 
 // Actualizar un aviso
 const actualizarAviso = async (req, res) => {
