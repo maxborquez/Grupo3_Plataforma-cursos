@@ -12,9 +12,9 @@ const router = express.Router();
 
 // Define las rutas para los avisos
 router.get("/:cursoId", avisoController.obtenerAvisosPorCurso);
-router.post("/", authMiddleware.isProfesor, avisoController.crearAvisoEnCurso);
-router.put("/:avisoId", authMiddleware.isProfesor, avisoController.actualizarAviso);
-router.delete("/:avisoId", authMiddleware.isProfesor, avisoController.eliminarAviso);
+router.post("/", authMiddleware.isAdminOrProfesor, avisoController.crearAvisoEnCurso);
+router.put("/:avisoId", authMiddleware.isAdminOrProfesor, avisoController.actualizarAviso);
+router.delete("/:avisoId", authMiddleware.isAdminOrProfesor, avisoController.eliminarAviso);
 
 // Exporta el enrutador
 module.exports = router;
