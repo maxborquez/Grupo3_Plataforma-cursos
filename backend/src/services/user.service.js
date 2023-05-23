@@ -32,22 +32,35 @@ async function getUsers() {
  * @returns {Promise<User|null>}
  */
 async function createUser(user) {
-  // Esta funcion es similar al singup
   try {
     const { error } = userBodySchema.validate(user);
-    if (error) return null;
-    const { name, email, roles } = user;
+    if (error) {
+      throw new Error("Error en la validación de datos");
+    }
 
-    const userFound = await User.findOne({ email: user.email });
-    if (userFound) return null;
+    const { nombre, apellido, email, rut, telefono, roles } = user;
+
+    const userFound = await User.findOne({ email });
+    if (userFound) {
+      throw new Error("El usuario ya existe");
+    }
 
     const rolesFound = await Role.find({ name: { $in: roles } });
-    const myRole = rolesFound.map((role) => role._id);
+    const myRoles = rolesFound.map((role) => role._id);
 
-    const newUser = new User({ name, email, roles: myRole });
+    const newUser = new User({
+      nombre,
+      apellido,
+      email,
+      rut,
+      telefono,
+      roles: myRoles,
+    });
+
     return await newUser.save();
   } catch (error) {
     handleError(error, "user.service -> createUser");
+    throw new Error("No se pudo crear el usuario");
   }
 }
 
