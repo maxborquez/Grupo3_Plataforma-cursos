@@ -63,7 +63,7 @@ const corregirAsistencia = async (req, res) => {
   }
 };
 
-// Función para obtener las estadísticas de asistencia del alumno en un curso
+// Obtener las estadísticas de asistencia del alumno en un curso
 async function obtenerEstadisticasAsistencia(req, res) {
   try {
     const { cursoId, alumnoId } = req.params;

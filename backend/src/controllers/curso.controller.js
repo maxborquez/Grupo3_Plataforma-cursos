@@ -165,7 +165,7 @@ async function cambiarEstadoAlumno(req, res) {
   try {
     const { cursoId, alumnoId, estado } = req.body;
 
-    // Verificar si el usuario profesor está asociado con el curso
+    // Verifica si el usuario profesor está asociado con el curso
     const participaCurso = await Curso.exists({ _id: cursoId, profesor: req.user.id });
     if (!participaCurso) {
       return res.status(403).json({ message: "No tienes permiso para cambiar el estado del alumno en este curso." });
@@ -205,10 +205,6 @@ const eliminarAlumno = async (req, res) => {
       return res.status(404).json({ error: "Curso o alumno no encontrado" });
     }
 
-    // Verificar si el usuario que realiza la solicitud es el profesor del curso
-    // Aquí debes agregar la lógica para verificar si el usuario actual tiene los permisos adecuados
-
-    // Eliminar al alumno del curso
     curso.alumnos = curso.alumnos.filter((alumnoCurso) => {
       return alumnoCurso.alumno.toString() !== alumnoId;
     });
