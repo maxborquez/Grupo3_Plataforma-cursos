@@ -11,9 +11,9 @@ const authoMiddleware = require("../middlewares/autho.middleware.js");
 const router = express.Router();
 
 // Define las rutas para los usuarios
-router.get("/", authoMiddleware.isAdmin, usuarioController.getUsers);
+router.get("/", usuarioController.getUsers);
 router.post("/", authoMiddleware.isAdmin, usuarioController.createUser);
-router.get("/:id", authoMiddleware.isAdmin, usuarioController.getUserById);
+router.get("/:id", usuarioController.getUserById);
 router.put("/:id", authoMiddleware.isAdmin, usuarioController.updateUser);
 router.delete("/:id", authoMiddleware.isAdmin, usuarioController.deleteUser);
 
