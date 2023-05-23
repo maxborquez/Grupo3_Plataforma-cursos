@@ -5,21 +5,7 @@ const User = require("../models/user");
 const { handleError } = require("../utils/errorHandler");
 const { avisoBodySchema } = require("../schema/aviso.schema");
 
-/**
- * @typedef Aviso
- * @property {string} _id
- * @property {String} titulo
- * @property {String} contenido
- * @property {Date} fecha
- * @property {String} curso
- * @property {String} profesor
- */
 
-/**
- * @name getAvisos
- * @description Obtiene todos los avisos
- * @returns {Promise<Aviso[]|[]>}
- */
 async function getAvisos() {
   try {
     return await Aviso.find();
@@ -28,12 +14,6 @@ async function getAvisos() {
   }
 }
 
-/**
- * @name getAvisoById
- * @description Obtiene un aviso por su ID
- * @param id {string} - ID del aviso
- * @returns {Promise<Aviso|null>}
- */
 async function getAvisoById(id) {
   try {
     return await Aviso.findById(id);
@@ -42,12 +22,6 @@ async function getAvisoById(id) {
   }
 }
 
-/**
- * @name createAviso
- * @description Crea un nuevo aviso
- * @param aviso {Aviso} - Objeto con los datos del aviso
- * @returns {Promise<Aviso|null>}
- */
 async function createAviso(aviso) {
   try {
     const { error } = avisoBodySchema.validate(aviso);
@@ -77,13 +51,7 @@ async function createAviso(aviso) {
   }
 }
 
-/**
- * @name updateAviso
- * @description Actualiza un aviso
- * @param id {string} - ID del aviso
- * @param aviso {Aviso} - Objeto con los datos actualizados del aviso
- * @returns {Promise<Aviso|null>}
- */
+
 async function updateAviso(id, aviso) {
   try {
     const { error } = avisoBodySchema.validate(aviso);
@@ -95,12 +63,6 @@ async function updateAviso(id, aviso) {
   }
 }
 
-/**
- * @name deleteAviso
- * @description Elimina un aviso por su ID
- * @param id {string} - ID del aviso
- * @returns {Promise<Aviso|null>}
- */
 async function deleteAviso(id) {
   try {
     return await Aviso.findByIdAndDelete(id);

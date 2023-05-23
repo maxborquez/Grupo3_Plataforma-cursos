@@ -4,20 +4,7 @@ const Curso = require("../models/curso");
 const { handleError } = require("../utils/errorHandler");
 const { calificacionBodySchema } = require("../schema/calificacion.schema");
 
-/**
- * @typedef Calificacion
- * @property {string} _id
- * @property {String} curso
- * @property {String} alumno
- * @property {String} profesor
- * @property {String} calificacion
- */
 
-/**
- * @name getCalificaciones
- * @description Obtiene todas las calificaciones
- * @returns {Promise<Calificacion[]|[]>}
- */
 async function getCalificaciones() {
   try {
     return await Calificacion.find();
@@ -40,12 +27,7 @@ async function getCalificacionById(id) {
   }
 }
 
-/**
- * @name createCalificacion
- * @description Crea una nueva calificación
- * @param calificacion {Calificacion} - Objeto con los datos de la calificación
- * @returns {Promise<Calificacion|null>}
- */
+
 async function createCalificacion(calificacion) {
   try {
     const { error } = calificacionBodySchema.validate(calificacion);
@@ -65,13 +47,7 @@ async function createCalificacion(calificacion) {
   }
 }
 
-/**
- * @name updateCalificacion
- * @description Actualiza una calificación específica de un alumno
- * @param id {string} - ID de la calificación
- * @param nuevaCalificacion {string} - Nueva calificación
- * @returns {Promise<Calificacion|null>}
- */
+
 async function updateCalificacion(id, nuevaCalificacion) {
   try {
     const { error } = calificacionBodySchema.validate({ calificacion: nuevaCalificacion });
@@ -89,12 +65,6 @@ async function updateCalificacion(id, nuevaCalificacion) {
   }
 }
 
-/**
- * @name deleteCalificacion
- * @description Elimina una calificación por su ID
- * @param id {string} - ID de la calificación
- * @returns {Promise<Calificacion|null>}
- */
 async function deleteCalificacion(id) {
   try {
     return await Calificacion.findByIdAndDelete(id);

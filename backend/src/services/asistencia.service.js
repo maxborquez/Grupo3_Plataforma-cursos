@@ -4,15 +4,6 @@ const Clase = require("../models/Clase");
 const { handleError } = require("../utils/errorHandler");
 const { asistenciaBodySchema } = require("../schema/asistencia.schema");
 
-/**
- * @name marcarAsistencia
- * @description Marca la asistencia de un alumno en una clase
- * @param alumnoId {string} - ID del alumno
- * @param cursoId {string} - ID del curso
- * @param claseId {string} - ID de la clase
- * @param presente {boolean} - Indica si el alumno está presente o no
- * @returns {Promise<Asistencia|null>}
- */
 async function marcarAsistencia(alumnoId, cursoId, claseId, presente) {
   try {
     const { error } = asistenciaBodySchema.validate({ presente });
@@ -43,15 +34,6 @@ async function marcarAsistencia(alumnoId, cursoId, claseId, presente) {
   }
 }
 
-/**
- * @name corregirAsistencia
- * @description Corrige la asistencia de un alumno en una clase
- * @param alumnoId {string} - ID del alumno
- * @param cursoId {string} - ID del curso
- * @param claseId {string} - ID de la clase
- * @param presente {boolean} - Indica si el alumno está presente o no
- * @returns {Promise<Asistencia|null>}
- */
 async function corregirAsistencia(alumnoId, cursoId, claseId, presente) {
   try {
     const { error } = asistenciaBodySchema.validate({ presente });
@@ -76,13 +58,6 @@ async function corregirAsistencia(alumnoId, cursoId, claseId, presente) {
   }
 }
 
-/**
- * @name obtenerEstadisticasAsistencia
- * @description Obtiene las estadísticas de asistencia de un alumno en un curso
- * @param cursoId {string} - ID del curso
- * @param alumnoId {string} - ID del alumno
- * @returns {Promise<Object|null>}
- */
 async function obtenerEstadisticasAsistencia(cursoId, alumnoId) {
   try {
     const clases = await Clase.find({ curso: cursoId });
