@@ -1,4 +1,5 @@
 const Clase = require("../models/clase.model");
+const Curso = require("../models/curso.model");
 
 // Obtener todas las clases
 const obtenerClases = async (req, res) => {
@@ -33,6 +34,15 @@ const crearClase = async (req, res) => {
 
   try {
     const nuevaClase = await Clase.create({ nombre, fecha });
+
+    // Obtener el ID del curso al que se debe agregar la clase
+    const { cursoId } = req.params;
+
+    // Encontrar el curso y actualizar el array de clases
+    const curso = await Curso.findById(cursoId);
+    curso.clases.push(nuevaClase._id);
+    await curso.save();
+
     res.status(201).json(nuevaClase);
   } catch (error) {
     res.status(500).json({ error: "Ocurrió un error al crear la clase" });
@@ -71,6 +81,14 @@ const eliminarClase = async (req, res) => {
     if (!claseEliminada) {
       return res.status(404).json({ error: "Clase no encontrada" });
     }
+
+    // Obtener el ID del curso al que pertenece la clase eliminada
+    const { cursoId } = req.params;
+
+    // Encontrar el curso y eliminar la clase del array de clases
+    const curso = await Curso.findById(cursoId);
+    curso.clases = curso.clases.filter((clase) => clase.toString() !== id);
+    await curso.save();
 
     res.status(200).json({ mensaje: "Clase eliminada correctamente" });
   } catch (error) {

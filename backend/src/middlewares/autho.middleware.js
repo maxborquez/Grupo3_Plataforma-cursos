@@ -52,8 +52,66 @@ async function isProfesor(req, res, next) {
   }
 }
 
+const isAdminOrProfesor = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    const isAdmin = roles.some(role => role.name === 'admin');
+    const isProfesor = roles.some(role => role.name === 'profesor');
+
+    if (isAdmin || isProfesor) {
+      next();
+    } else {
+      return respondError(req, res, 401, 'Require Admin or Profesor Role!');
+    }
+  } catch (error) {
+    handleError(error, 'autho.middleware -> isAdminOrProfesor');
+  }
+};
+
+const isProfesorOrAlumno = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    const isProfesor = roles.some(role => role.name === 'profesor');
+    const isAlumno = roles.some(role => role.name === 'alumno');
+
+    if (isProfesor || isAlumno) {
+      next();
+    } else {
+      return respondError(req, res, 401, 'Require Profesor or Alumno Role!');
+    }
+  } catch (error) {
+    handleError(error, 'autho.middleware -> isProfesorOrAlumno');
+  }
+};
+
+const isAdminOrAlumno = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const roles = await Role.find({ _id: { $in: user.roles } });
+
+    const isAdmin = roles.some(role => role.name === 'admin');
+    const isAlumno = roles.some(role => role.name === 'alumno');
+
+    if (isAdmin || isAlumno) {
+      next();
+    } else {
+      return respondError(req, res, 401, 'Require Admin or Alumno Role!');
+    }
+  } catch (error) {
+    handleError(error, 'autho.middleware -> isAdminOrAlumno');
+  }
+};
+
+
 module.exports = {
   isAdmin,
   isAlumno,
   isProfesor,
+  isAdminOrProfesor,
+  isProfesorOrAlumno,
+  isAdminOrAlumno
 };

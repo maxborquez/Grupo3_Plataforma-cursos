@@ -1,4 +1,5 @@
 const Curso = require("../models/curso.model");
+const User = require("../models/user.model");
 
 // Obtener todos los cursos
 const getCursos = async (req, res) => {
@@ -137,30 +138,19 @@ const getCursosByProfesor = async (req, res) => {
 async function inscribirAlumnoEnCurso(req, res) {
   try {
     const { cursoId } = req.params;
-    const { alumnoId } = req.body;
+    const { alumno } = req.body;
 
-    // Verificar si el curso existe y está disponible
     const curso = await Curso.findOne({ _id: cursoId, estado: "Disponible" });
     if (!curso) {
       return res.status(404).json({ message: "El curso no está disponible." });
     }
 
-    // Verificar si el alumno ya está inscrito en el curso
-    const alumnoInscrito = curso.alumnos.find((alumno) => alumno.alumno.toString() === alumnoId);
+    const alumnoInscrito = curso.alumnos.find((alumnoInscrito) => alumnoInscrito.alumno.toString() === alumno);
     if (alumnoInscrito) {
       return res.status(400).json({ message: "El alumno ya está inscrito en este curso." });
     }
 
-    // Crear el objeto de inscripción con estado "Cursando"
-    const inscripcion = {
-      alumno: alumnoId,
-      estado: "Cursando"
-    };
-
-    // Agregar la inscripción al curso
-    curso.alumnos.push(inscripcion);
-
-    // Guardar los cambios en el curso
+    curso.alumnos.push({ alumno: alumno.toString(), estado: "Cursando" });
     await curso.save();
 
     res.status(200).json({ message: "El alumno ha sido inscrito en el curso exitosamente." });
@@ -168,6 +158,7 @@ async function inscribirAlumnoEnCurso(req, res) {
     res.status(500).json({ message: "Error al inscribir al alumno en el curso.", error });
   }
 }
+
 
 // Cambiar el estado de un alumno inscrito en un curso
 async function cambiarEstadoAlumno(req, res) {
@@ -219,7 +210,7 @@ const eliminarAlumno = async (req, res) => {
 
     // Eliminar al alumno del curso
     curso.alumnos = curso.alumnos.filter((alumnoCurso) => {
-      return alumnoCurso.toString() !== alumnoId;
+      return alumnoCurso.alumno.toString() !== alumnoId;
     });
 
     await curso.save();
@@ -229,6 +220,7 @@ const eliminarAlumno = async (req, res) => {
     res.status(500).json({ error: "Ocurrió un error al eliminar al alumno del curso" });
   }
 };
+
 
 module.exports = {
   getCursos,
