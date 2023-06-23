@@ -13,8 +13,8 @@ const router = express.Router();
 // Define las rutas para las calificaciones
 router.get("/", calificacionController.getCalificaciones);
 router.get("/:id", calificacionController.getCalificacionById);
-router.post("/", authMiddleware.isAdminOrProfesor, calificacionController.createCalificacion);
-router.put("/", authMiddleware.isAdminOrProfesor, calificacionController.updateCalificacion);
+router.post("/curso/:cursoId/alumno/:alumnoId/profesor/:profesorId", authMiddleware.isAdminOrProfesor, calificacionController.createCalificacion);
+router.put("/:calificacionId", authMiddleware.isAdminOrProfesor, calificacionController.updateCalificacion);
 router.delete("/:id", authMiddleware.isAdminOrProfesor, calificacionController.deleteCalificacion);
 
 // Exporta el enrutador
