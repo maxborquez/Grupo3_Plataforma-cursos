@@ -1,5 +1,4 @@
 const Asistencia = require("../models/asistencia.model");
-const Clase = require("../models/clase.model");
 const Curso = require("../models/curso.model");
 
 // Marcar la asistencia de un alumno en una clase
@@ -8,7 +7,6 @@ const marcarAsistencia = async (req, res) => {
   const { presente } = req.body;
 
   try {
-    // Verificar si la asistencia ya existe
     let asistencia = await Asistencia.findOne({
       alumno: alumnoId,
       curso: cursoId,
@@ -16,7 +14,6 @@ const marcarAsistencia = async (req, res) => {
     });
 
     if (!asistencia) {
-      // Crear una nueva asistencia si no existe
       asistencia = new Asistencia({
         alumno: alumnoId,
         curso: cursoId,
@@ -24,8 +21,7 @@ const marcarAsistencia = async (req, res) => {
         presente,
       });
     } else {
-      // Actualizar la asistencia existente
-      asistencia.presente = presente;
+      return res.status(400).json({ error: "La asistencia ya ha sido marcada" });
     }
 
     await asistencia.save();
@@ -36,10 +32,10 @@ const marcarAsistencia = async (req, res) => {
   }
 };
 
+
 // Corregir la asistencia de un alumno en una clase
 const corregirAsistencia = async (req, res) => {
   const { alumnoId, cursoId, claseId } = req.params;
-  const { presente } = req.body;
 
   try {
     // Verificar si la asistencia existe
@@ -53,8 +49,8 @@ const corregirAsistencia = async (req, res) => {
       return res.status(404).json({ error: "Asistencia no encontrada" });
     }
 
-    // Actualizar la asistencia
-    asistencia.presente = presente;
+    // Cambiar el valor de presente al valor contrario
+    asistencia.presente = !asistencia.presente;
     await asistencia.save();
 
     res.status(200).json(asistencia);
@@ -131,6 +127,7 @@ async function obtenerEstadisticasAsistenciaCurso(req, res) {
     }
 
     const totalClases = curso.clases.length;
+    const totalAlumnos = curso.alumnos.length;
 
     const estadisticasClases = [];
 
@@ -138,12 +135,12 @@ async function obtenerEstadisticasAsistenciaCurso(req, res) {
     for (const claseId of curso.clases) {
       const asistencias = await Asistencia.find({ curso: cursoId, clase: claseId, presente: true });
       const asistenciasClase = asistencias.length;
-
-      const porcentajeAsistenciasClase = (asistenciasClase / curso.alumnos.length) * 100;
+      const porcentajeAsistenciasClase = (asistenciasClase / totalAlumnos) * 100;
 
       estadisticasClases.push({
         claseId,
         asistenciasClase,
+        totalAlumnos,
         porcentajeAsistenciasClase,
       });
     }

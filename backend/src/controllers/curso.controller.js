@@ -1,222 +1,147 @@
-const Curso = require("../models/curso.model");
-const User = require("../models/user.model");
+const CursoService = require("../services/curso.service");
+const { respondSuccess, respondError } = require("../utils/resHandler");
 
 // Obtener todos los cursos
-const getCursos = async (req, res) => {
+async function getCursos(req, res) {
   try {
-    const cursos = await Curso.find();
-    res.status(200).json(cursos);
+    const cursos = await CursoService.getCursos();
+    respondSuccess(req, res, 200, cursos);
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al obtener los cursos" });
-  }
-};
-
-// Obtener un curso por su ID
-const getCursoById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const curso = await Curso.findById(id);
-    if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-    res.status(200).json(curso);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al obtener el curso" });
-  }
-};
-
-// Crear un nuevo curso
-const createCurso = async (req, res) => {
-  const { nombre, descripcion, estado, fecha_inicio, fecha_fin, profesor } = req.body;
-  try {
-    const curso = new Curso({
-      nombre,
-      descripcion,
-      estado,
-      fecha_inicio,
-      fecha_fin,
-      profesor,
-    });
-    const nuevoCurso = await curso.save();
-    res.status(201).json(nuevoCurso);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al crear el curso" });
-  }
-};
-
-// Actualizar un curso
-const updateCurso = async (req, res) => {
-  const { id } = req.params;
-  const { nombre, descripcion, estado, fecha_inicio, fecha_fin, profesor } = req.body;
-  try {
-    const curso = await Curso.findByIdAndUpdate(
-      id,
-      {
-        nombre,
-        descripcion,
-        estado,
-        fecha_inicio,
-        fecha_fin,
-        profesor,
-      },
-      { new: true }
-    );
-    if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-    res.status(200).json(curso);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al actualizar el curso" });
-  }
-};
-
-// Eliminar un curso
-const deleteCurso = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const curso = await Curso.findByIdAndDelete(id);
-    if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-    res.status(200).json({ message: "Curso eliminado exitosamente" });
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al eliminar el curso" });
-  }
-};
-
-// Cambiar el estado de un curso
-const changeEstadoCurso = async (req, res) => {
-  const { id } = req.params;
-  const { estado } = req.body;
-  try {
-    const curso = await Curso.findByIdAndUpdate(
-      id,
-      { estado },
-      { new: true },
-    );
-    if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-    res.status(200).json(curso);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al cambiar el estado del curso" });
-  }
-};
-
-// Cambiar el profesor de un curso
-const changeProfesor = async (req, res) => {
-  const { id } = req.params;
-  const { profesor } = req.body;
-  try {
-    const curso = await Curso.findByIdAndUpdate(
-      id,
-      { profesor: profesor },
-      { new: true }
-    );
-    if (!curso) {
-      return res.status(404).json({ error: "No se encontró el curso" });
-    }
-    res.status(200).json(curso);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al cambiar el profesor del curso" });
-  }
-};
-
-
-// Obtener todos los cursos de un profesor
-const getCursosByProfesor = async (req, res) => {
-  const { profesorId } = req.params;
-  try {
-    const cursos = await Curso.find({ profesor: profesorId });
-    res.status(200).json(cursos);
-  } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al obtener los cursos del profesor" });
-  }
-};
-
-// Inscribir a un alumno en un curso
-async function inscribirAlumnoEnCurso(req, res) {
-  try {
-    const { cursoId } = req.params;
-    const { alumno } = req.body;
-
-    const curso = await Curso.findOne({ _id: cursoId, estado: "Disponible" });
-    if (!curso) {
-      return res.status(404).json({ message: "El curso no está disponible." });
-    }
-
-    const alumnoInscrito = curso.alumnos.find((alumnoInscrito) => alumnoInscrito.alumno.toString() === alumno);
-    if (alumnoInscrito) {
-      return res.status(400).json({ message: "El alumno ya está inscrito en este curso." });
-    }
-
-    curso.alumnos.push({ alumno: alumno.toString(), estado: "Cursando" });
-    await curso.save();
-
-    res.status(200).json({ message: "El alumno ha sido inscrito en el curso exitosamente." });
-  } catch (error) {
-    res.status(500).json({ message: "Error al inscribir al alumno en el curso.", error });
+    respondError(req, res, 500, "Ocurrió un error al obtener los cursos");
   }
 }
 
-
-// Cambiar el estado de un alumno inscrito en un curso
-async function cambiarEstadoAlumno(req, res) {
+// Obtener un curso por su ID
+async function getCursoById(req, res) {
   try {
-    const { cursoId, alumnoId, estado } = req.body;
-
-    // Verifica si el usuario profesor está asociado con el curso
-    const participaCurso = await Curso.exists({ _id: cursoId, profesor: req.user.id });
-    if (!participaCurso) {
-      return res.status(403).json({ message: "No tienes permiso para cambiar el estado del alumno en este curso." });
-    }
-
-    // Buscar el curso y el alumno específicos
-    const curso = await Curso.findById(cursoId);
-    const alumno = curso.alumnos.find((alumno) => alumno.alumno.toString() === alumnoId);
-
-    // Verificar si se encontró el alumno en el curso
-    if (!alumno) {
-      return res.status(404).json({ message: "El alumno no está inscrito en este curso." });
-    }
-
-    // Cambiar el estado del alumno
-    alumno.estado = estado;
-
-    // Guardar los cambios en el curso
-    await curso.save();
-
-    res.status(200).json({ message: "Estado del alumno actualizado correctamente." });
+    const { id } = req.params;
+    const curso = await CursoService.getCursoById(id);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
   } catch (error) {
-    res.status(500).json({ message: "Error al cambiar el estado del alumno.", error });
+    respondError(req, res, 500, "Ocurrió un error al obtener el curso");
+  }
+}
+
+// Crear un nuevo curso
+async function createCurso(req, res) {
+  try {
+    const { profesorId, ...rest } = req.body;
+    const curso = await CursoService.createCurso(profesorId, rest);
+    respondSuccess(req, res, 201, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al crear el curso");
+  }
+}
+
+// Actualizar un curso por su ID
+async function updateCurso(req, res) {
+  try {
+    const { id } = req.params;
+    const { profesorId, ...rest } = req.body;
+    const curso = await CursoService.updateCurso(id, profesorId, rest);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al actualizar el curso");
+  }
+}
+
+// Eliminar un curso por su ID
+async function deleteCurso(req, res) {
+  try {
+    const { id } = req.params;
+    const curso = await CursoService.deleteCurso(id);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al eliminar el curso");
+  }
+}
+
+// Cambiar el estado de un curso
+async function changeEstadoCurso(req, res) {
+  try {
+    const { id } = req.params;
+    const { estado } = req.body;
+    const curso = await CursoService.changeEstadoCurso(id, estado);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al cambiar el estado del curso");
+  }
+}
+
+// Cambiar el profesor de un curso
+async function changeProfesor(req, res) {
+  try {
+    const { id } = req.params;
+    const { profesorId } = req.body;
+    const curso = await CursoService.changeProfesor(id, profesorId);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al cambiar el profesor del curso");
+  }
+}
+
+// Obtener cursos de un profesor
+async function getCursosByProfesor(req, res) {
+  try {
+    const { profesorId } = req.params;
+    const cursos = await CursoService.getCursosByProfesor(profesorId);
+    respondSuccess(req, res, 200, cursos);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al obtener los cursos del profesor");
+  }
+}
+
+// Inscribir un alumno en un curso
+async function inscribirAlumnoEnCurso(req, res) {
+  try {
+    const { id } = req.params;
+    const { alumnoId } = req.body;
+    const curso = await CursoService.inscribirAlumnoEnCurso(id, alumnoId);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al inscribir al alumno en el curso");
   }
 }
 
 // Eliminar un alumno de un curso
-const eliminarAlumno = async (req, res) => {
-  const { cursoId, alumnoId } = req.params;
-
+async function eliminarAlumno(req, res) {
   try {
-    // Verificar si el curso y el alumno existen
-    const curso = await Curso.findById(cursoId);
-    const alumno = await User.findById(alumnoId);
-
-    if (!curso || !alumno) {
-      return res.status(404).json({ error: "Curso o alumno no encontrado" });
-    }
-
-    curso.alumnos = curso.alumnos.filter((alumnoCurso) => {
-      return alumnoCurso.alumno.toString() !== alumnoId;
-    });
-
-    await curso.save();
-
-    res.status(200).json({ mensaje: "Alumno eliminado del curso correctamente" });
+    const { id } = req.params;
+    const { alumnoId } = req.body;
+    const curso = await CursoService.eliminarAlumno(id, alumnoId);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al eliminar al alumno del curso" });
+    respondError(req, res, 500, "Ocurrió un error al eliminar al alumno del curso");
   }
-};
+}
 
+// Cambiar el estado de un alumno en un curso
+async function cambiarEstadoAlumno(req, res) {
+  try {
+    const { id } = req.params;
+    const { alumnoId, estado } = req.body;
+    const curso = await CursoService.cambiarEstadoAlumno(id, alumnoId, estado);
+    curso === null
+      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
+      : respondSuccess(req, res, 200, curso);
+  } catch (error) {
+    respondError(req, res, 500, "Ocurrió un error al cambiar el estado del alumno en el curso");
+  }
+}
 
 module.exports = {
   getCursos,

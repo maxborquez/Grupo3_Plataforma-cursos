@@ -22,17 +22,20 @@ const verifyToken = async (req, res, next) => {
     const token = req.headers["token"];
 
     if (!token) return respondError(req, res, 403, "No hay token");
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
 
-    const decoded = jwt.verify(token, JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return respondError(req, res, 404, "Hay token pero no hay usuario");
+      }
 
-    const user = await User.findById(decoded.id);
-    if (!user) {
-      return respondError(req, res, 404, "Hay token pero no hay usuario");
+      // Guardamos el id del usuario en la request para usarlo en los controladores
+      req.userId = decoded.id;
+      next();
+    } catch (error) {
+      return respondError(req, res, 401, "Token inválido o expirado");
     }
-
-    // Guardamos el id del usuario en la request para usarlo en los controladores
-    req.userId = decoded.id;
-    next();
   } catch (error) {
     handleError(error, "authe.middleware -> verifyToken");
   }

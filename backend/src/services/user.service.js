@@ -7,7 +7,8 @@ const { userBodySchema } = require("../schema/user.schema");
 
 async function getUsers() {
   try {
-    return await User.find();
+    return await User.find()
+    .populate('roles', 'name')
   } catch (error) {
     handleError(error, "user.service -> getUsers");
   }

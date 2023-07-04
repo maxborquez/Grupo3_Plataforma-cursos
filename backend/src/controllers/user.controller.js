@@ -1,5 +1,5 @@
 "use strict";
-
+const User = require("../models/user.model");
 const { respondSuccess, respondError } = require("../utils/resHandler");
 const UserService = require("../services/user.service");
 const { handleError } = require("../utils/errorHandler");
@@ -99,6 +99,35 @@ async function updateUser(req, res) {
   }
 }
 
+async function actualizarUsuario(req, res) {
+  const { id } = req.params; // Obtener el ID del usuario desde los parámetros de la solicitud
+  const { nombre, apellido, email, rut, telefono, roles } = req.body; // Obtener los datos actualizados del usuario desde el cuerpo de la solicitud
+
+  try {
+    // Buscar y actualizar el usuario por su ID
+    const usuarioActualizado = await User.findByIdAndUpdate(
+      id,
+      {
+        nombre,
+        apellido,
+        email,
+        rut,
+        telefono,
+        roles,
+      },
+      { new: true } // Devuelve el documento actualizado en lugar del documento original
+    );
+
+    if (!usuarioActualizado) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    res.json(usuarioActualizado);
+  } catch (error) {
+    res.status(500).json({ mensaje: "Error al actualizar el usuario" });
+  }
+}
+
 /**
  * @name deleteUser
  * @description Elimina un usuario por su id
@@ -131,4 +160,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  actualizarUsuario,
 };

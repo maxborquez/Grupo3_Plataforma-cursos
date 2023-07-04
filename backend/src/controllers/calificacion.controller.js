@@ -1,4 +1,5 @@
 const Calificacion = require("../models/calificacion.model");
+const Curso = require("../models/curso.model");
 
 // Obtener todas las calificaciones
 const getCalificaciones = async (req, res) => {
@@ -27,15 +28,14 @@ const getCalificacionById = async (req, res) => {
 // Función para crear una nueva calificación
 async function createCalificacion(req, res) {
   try {
-    const { cursoId, alumnoId, profesorId, calificacion } = req.body;
+    const { cursoId, alumnoId, profesorId } = req.params;
+    const { calificacion } = req.body;
 
-    // Verificar si el profesor está participando en el curso
     const participaCurso = await Curso.exists({ _id: cursoId, profesor: profesorId });
     if (!participaCurso) {
       return res.status(403).json({ message: "No tienes permiso para asignar calificaciones en este curso." });
     }
 
-    // Crear la nueva calificación
     const nuevaCalificacion = new Calificacion({
       curso: cursoId,
       alumno: alumnoId,
@@ -43,10 +43,9 @@ async function createCalificacion(req, res) {
       calificacion,
     });
 
-    // Guardar la calificación en la base de datos
-    const calificacionGuardada = await nuevaCalificacion.save();
+    await nuevaCalificacion.save();
 
-    res.status(201).json(calificacionGuardada);
+    res.status(201).json({ message: "La calificación fue asignada con exito" });
   } catch (error) {
     res.status(500).json({ message: "Error al asignar la calificación.", error });
   }
@@ -56,19 +55,17 @@ async function createCalificacion(req, res) {
 // Función para cambiar una calificación específica de un alumno
 async function updateCalificacion(req, res) {
   try {
-    const { calificacionId, nuevaCalificacion } = req.body;
-
-    // Verificar si el profesor tiene permisos para modificar la calificación
-    const calificacionExistente = await Calificacion.findOne({ _id: calificacionId, profesor: req.user.profesor });
-    if (!calificacionExistente) {
-      return res.status(404).json({ message: "La calificación no existe o no tienes permiso para modificarla." });
-    }
+    const { calificacionId } = req.params;
+    const { nuevaCalificacion } = req.body;
 
     // Actualizar la calificación
-    calificacionExistente.calificacion = nuevaCalificacion;
-    const calificacionActualizada = await calificacionExistente.save();
+    const calificacionActualizada = await Calificacion.findByIdAndUpdate(calificacionId, { calificacion: nuevaCalificacion });
 
-    res.status(200).json(calificacionActualizada);
+    if (!calificacionActualizada) {
+      return res.status(404).json({ message: "La calificación no existe." });
+    }
+
+    res.status(200).json({ message: "Calificación actualizada con éxito"});
   } catch (error) {
     res.status(500).json({ message: "Error al modificar la calificación.", error });
   }

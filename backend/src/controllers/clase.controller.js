@@ -28,6 +28,31 @@ const obtenerClasePorId = async (req, res) => {
   }
 };
 
+
+// Obtener todas las clases de un curso por su Id
+const getClasesPorCurso = async (req, res) => {
+  const { cursoId } = req.params;
+
+  try {
+    const curso = await Curso.findById(cursoId).populate('clases');
+
+    if (!curso) {
+      return res.status(404).json({ error: "Curso no encontrado" });
+    }
+
+    const clases = curso.clases;
+
+    if (!clases || clases.length === 0) {
+      return res.status(404).json({ error: "No se encontraron clases para el curso especificado" });
+    }
+
+    res.status(200).json(clases);
+  } catch (error) {
+    res.status(500).json({ error: "Ocurrió un error al obtener las clases" });
+  }
+};
+
+
 // Crear una nueva clase
 const crearClase = async (req, res) => {
   const { nombre, fecha } = req.body;
@@ -73,21 +98,17 @@ const actualizarClase = async (req, res) => {
 
 // Eliminar una clase existente
 const eliminarClase = async (req, res) => {
-  const { id } = req.params;
+  const { claseId, cursoId } = req.params;
 
   try {
-    const claseEliminada = await Clase.findByIdAndRemove(id);
+    const claseEliminada = await Clase.findByIdAndRemove(claseId);
 
     if (!claseEliminada) {
       return res.status(404).json({ error: "Clase no encontrada" });
     }
 
-    // Obtener el ID del curso al que pertenece la clase eliminada
-    const { cursoId } = req.params;
-
-    // Encontrar el curso y eliminar la clase del array de clases
     const curso = await Curso.findById(cursoId);
-    curso.clases = curso.clases.filter((clase) => clase.toString() !== id);
+    curso.clases = curso.clases.filter((clase) => clase.toString() !== claseId);
     await curso.save();
 
     res.status(200).json({ mensaje: "Clase eliminada correctamente" });
@@ -99,6 +120,7 @@ const eliminarClase = async (req, res) => {
 module.exports = {
   obtenerClases,
   obtenerClasePorId,
+  getClasesPorCurso,
   crearClase,
   actualizarClase,
   eliminarClase,

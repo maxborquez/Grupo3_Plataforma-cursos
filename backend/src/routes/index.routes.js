@@ -13,6 +13,7 @@ const avisoRoutes = require("./aviso.routes.js");
 const calificacionRoutes = require("./calificacion.routes.js");
 const claseRoutes = require("./clase.routes.js");
 const cursoRoutes = require("./curso.routes.js");
+const estadisticaRoutes = require("./estadistica.routes.js");
 
 // Crea una instancia del enrutador
 const router = express.Router();
@@ -26,6 +27,7 @@ router.use("/avisos", authMiddleware.verifyToken, avisoRoutes);
 router.use("/calificaciones", authMiddleware.verifyToken, calificacionRoutes);
 router.use("/clases", authMiddleware.verifyToken, claseRoutes);
 router.use("/cursos", authMiddleware.verifyToken, cursoRoutes);
+router.use("/estadisticas", authMiddleware.verifyToken, estadisticaRoutes);
 
 
 // Exporta el enrutador
