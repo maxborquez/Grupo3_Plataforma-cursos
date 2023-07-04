@@ -3,7 +3,6 @@ const Curso = require("../models/curso.model");
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
 
-
 // Crear una nueva estadistica
 async function createEstadistica(req, res) {
   try {
@@ -22,23 +21,25 @@ async function createEstadistica(req, res) {
     // Contar la cantidad total de cursos
     const totalCursos = await Curso.countDocuments();
 
-    // Obtener la cantidad de alumnos por cada curso
+    // Obtener la cantidad de alumnos por cada curso con su nombre
     const cursos = await Curso.find();
     const alumnosPorCurso = [];
     for (const curso of cursos) {
       const cantidadAlumnos = curso.alumnos.length;
-      alumnosPorCurso.push({ curso: curso._id, cantidad: cantidadAlumnos });
+      const cursoData = await Curso.findOne({ _id: curso._id }, { _id: 1, nombre: 1 });
+      alumnosPorCurso.push({ curso: cursoData, cantidad: cantidadAlumnos });
     }
 
-    // Obtener la lista de cursos agrupados por estado
+    // Obtener la lista de cursos agrupados por estado con su nombre
     const cursosDisponibles = await Curso.find({ estado: 'Disponible' }, { _id: 1, nombre: 1 });
     const cursosProximos = await Curso.find({ estado: 'Proximo' }, { _id: 1, nombre: 1 });
     const cursosCerrados = await Curso.find({ estado: 'Cerrado' }, { _id: 1, nombre: 1 });
 
-    // Calcular el porcentaje de aprobación promedio de cada curso
+    // Calcular el porcentaje de aprobación promedio de cada curso con su nombre
     const cursosConPorcentajeAprobacion = [];
     for (const curso of cursos) {
       const cantidadAlumnos = curso.alumnos.length;
+      const cursoData = await Curso.findOne({ _id: curso._id }, { _id: 1, nombre: 1 });
       let cantidadAprobados = 0;
 
       for (const alumno of curso.alumnos) {
@@ -50,12 +51,12 @@ async function createEstadistica(req, res) {
       const porcentajeAprobacion = cantidadAlumnos > 0 ? (cantidadAprobados / cantidadAlumnos) * 100 : 0;
 
       cursosConPorcentajeAprobacion.push({
-        curso: curso._id,
+        curso: cursoData,
         porcentaje: porcentajeAprobacion,
       });
     }
 
-    // Crear objetos de estado y cursos con ID y nombre
+    // Crear objetos de estado y cursos con ID, nombre y cantidad de alumnos
     const cursosPorEstado = [
       { estado: 'Disponible', cursos: cursosDisponibles },
       { estado: 'Proximo', cursos: cursosProximos },
@@ -83,7 +84,6 @@ async function createEstadistica(req, res) {
     res.status(500).json({ error: 'Error al crear la estadística' });
   }
 }
-
 
 // Obtener todas las estadísticas
 async function getEstadisticas(req, res) {
@@ -126,7 +126,6 @@ async function deleteAllEstadisticas(req, res) {
     res.status(500).json({ error: 'Error al eliminar todas las estadísticas' });
   }
 }
-
 
 module.exports = {
   createEstadistica,
