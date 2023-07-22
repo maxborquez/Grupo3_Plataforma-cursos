@@ -51,11 +51,11 @@ const LoginPage = () => {
       
       // Redirige al usuario a la página correspondiente según el rol
       if (userRoles.includes('admin')) {
-        router.push('/pages/admin/admin.js');
+        router.push('/admin');
       } else if (userRoles.includes('profesor')) {
-        router.push('/pages/profesor/profesor.js');
+        router.push('/profesor');
       } else if (userRoles.includes('alumno')) {
-        router.push('/pages/alumno/alumno.js');
+        router.push('/alumno');
       } else {
         // En caso de que el rol no sea reconocido, puedes redirigir a una página por defecto o mostrar un mensaje de error.
         router.push('/error');
