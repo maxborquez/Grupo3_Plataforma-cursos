@@ -51,14 +51,21 @@ async function signUp(user) {
  */
 async function signIn(user) {
   try {
-    const userFound = await User.findOne({ email: user.email }).populate(
-      "roles",
-    );
+    const userFound = await User.findOne({ email: user.email }).populate("roles");
     if (!userFound) return null;
 
-    return jwt.sign({ id: userFound._id }, JWT_SECRET, {
-      expiresIn: 86400, // 24 horas
-    });
+    const roles = userFound.roles.map((role) => role.name); // Obtener los nombres de los roles del usuario
+
+    return jwt.sign(
+      {
+        id: userFound._id,
+        roles: roles, // Agregar el array de nombres de roles al token
+      },
+      JWT_SECRET,
+      {
+        expiresIn: 86400, // 24 horas
+      }
+    );
   } catch (error) {
     handleError(error, "auth.service -> signIn");
   }

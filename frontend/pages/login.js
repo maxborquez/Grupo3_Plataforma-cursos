@@ -1,49 +1,46 @@
-// pages/login.js
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Box, Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { Heading, Box, Input, Button } from '@chakra-ui/react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
   const handleLogin = async () => {
     try {
-      // Crear el objeto de la solicitud con el campo "email".
-      const requestBody = {
-        email,
-      };
+      const response = await axios.post(`${apiUrl}auth/signin`, {
+        email: email,
+      });
 
-      // Realizar la llamada al backend para hacer el inicio de sesión y obtener el token.
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const response = await axios.post(`${apiUrl}auth/signin`, requestBody);
+      const token = response.data.data.token;
 
-      if (response.status === 200) {
-        const { accessToken } = response.data;
-        localStorage.setItem('accessToken', accessToken); // Almacenar el token en el localStorage.
-        router.push('/dashboard'); // Redirigir a la página del dashboard.
-      } else {
-        // Manejar errores de inicio de sesión si el backend responde con un error.
-        console.error('Error en inicio de sesión.');
-      }
+      // Guarda el token en una cookie llamada "jwtToken"
+      Cookies.set('jwtToken', token);
+
+      // Redirige al usuario a una página de inicio de sesión exitosa, por ejemplo:
+      router.push('/admin');
     } catch (error) {
-      console.error('Error en inicio de sesión:', error);
+      console.error('Error al iniciar sesión:', error);
+      // Aquí puedes manejar los errores que puedan ocurrir durante la solicitud de inicio de sesión.
     }
   };
 
   return (
-    <Box p={4}>
-      <VStack spacing={4} align="center">
-        <FormControl id="email">
-          <FormLabel>Correo electrónico</FormLabel>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </FormControl>
-
-        <Button colorScheme="teal" onClick={handleLogin}>
-          Iniciar sesión
-        </Button>
-      </VStack>
+    <Box maxW="400px" mx="auto" mt={8} p={4}>
+      <Heading mb={4}>Iniciar sesión</Heading>
+      <Input
+        type="email"
+        placeholder="Correo electrónico"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        mb={4}
+      />
+      <Button colorScheme="teal" onClick={handleLogin}>
+        Login
+      </Button>
     </Box>
   );
 };
