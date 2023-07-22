@@ -59,6 +59,7 @@ async function signIn(user) {
     return jwt.sign(
       {
         id: userFound._id,
+        email: userFound.email, // Agregar el correo electrónico al token
         roles: roles, // Agregar el array de nombres de roles al token
       },
       JWT_SECRET,
