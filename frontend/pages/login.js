@@ -27,11 +27,11 @@ const LoginPage = () => {
 
       // Redirige al usuario a la página correspondiente según el rol
       if (userRoles.includes('admin')) {
-        router.push('/admin');
+        router.push('/adminPages/admin');
       } else if (userRoles.includes('profesor')) {
-        router.push('/profesor');
+        router.push('/profesorPages/profesor');
       } else if (userRoles.includes('alumno')) {
-        router.push('/alumno');
+        router.push('/alumnoPages/alumno');
       } else {
         // En caso de que el rol no sea reconocido, puedes redirigir a una página por defecto o mostrar un mensaje de error.
         router.push('/error');
@@ -51,11 +51,11 @@ const LoginPage = () => {
       
       // Redirige al usuario a la página correspondiente según el rol
       if (userRoles.includes('admin')) {
-        router.push('/admin');
+        router.push('/adminPages/admin');
       } else if (userRoles.includes('profesor')) {
-        router.push('/profesor');
+        router.push('/profesorPages/profesor');
       } else if (userRoles.includes('alumno')) {
-        router.push('/alumno');
+        router.push('/alumnoPages/alumno');
       } else {
         // En caso de que el rol no sea reconocido, puedes redirigir a una página por defecto o mostrar un mensaje de error.
         router.push('/error');
