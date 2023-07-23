@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { Heading, Box, Input, Button, HStack } from '@chakra-ui/react';
+import { login } from '../data/auth'; // Verifica si estás importando correctamente la función login desde auth.js
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +13,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${apiUrl}auth/signin`, {
-        email: email,
-      });
-
-      const token = response.data.data.token;
+      const token = await login(email);
 
       // Guarda el token en una cookie llamada "jwtToken"
       Cookies.set('jwtToken', token);

@@ -6,48 +6,100 @@ const ProfesorPage = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Elimina la cookie que contiene el token JWT
     Cookies.remove('jwtToken');
-    // Redirige al usuario a la página de inicio de sesión después de cerrar sesión
     router.push('/login');
   };
 
   return (
-    <Box display="flex">
+    <Box display="flex" minHeight="100vh">
       {/* Barra lateral */}
       <Box
         bg="black"
         color="white"
-        w="202px"
-        h="853.145px"
+        w="180px"
         flexShrink={0}
-        mb={4}
-        mt={4}
-        ml={18} // Ajusta el valor para el margen izquierdo deseado (18px)
         p={4}
-        borderRadius="10px" // Ajusta el valor para obtener esquinas más o menos redondeadas
-        fontFamily="Baloo Bhai, sans-serif" // Agregar la fuente Baloo Bhai a la barra lateral
+        borderRadius="10px"
+        fontFamily="Baloo Bhai, sans-serif"
+        mt={4}
+        mb={4}
+        ml={18}
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        alignItems="center"
       >
+        {/* Contenido de la barra lateral */}
         <Stack spacing={4}>
-          {/* Aquí coloca cualquier contenido adicional para la barra lateral */}
           <Button onClick={() => router.push('/profesor')} variant="ghost" color="white" colorScheme="whiteAlpha">
             Página principal
           </Button>
           <Button onClick={() => router.push('/profesor/cursos')} variant="ghost" color="white" colorScheme="whiteAlpha">
             Cursos
           </Button>
+        </Stack>
+
+        {/* Botón de Logout en la parte inferior */}
+        <Box mt="auto">
           <Button onClick={handleLogout} variant="ghost" color="white" colorScheme="whiteAlpha">
             Logout
           </Button>
-        </Stack>
+        </Box>
       </Box>
 
-      {/* Contenido principal */}
-      <Box p={4} mt={4} fontFamily="Baloo Bhai, sans-serif"> {/* Agregar la fuente Baloo Bhai al contenido principal */}
-        <Heading as="h1" size="xl">
-          Hola Mundo - Página de Profesor
-        </Heading>
-        {/* Aquí coloca el contenido de tu página de administrador */}
+      {/* Contenido principal dividido en dos partes */}
+      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
+        {/* Primera parte, dividida horizontalmente */}
+        <Box flex="2" display="flex" flexDirection="column">
+          {/* Parte superior más pequeña */}
+          <Box
+            flex="1"
+            p={4}
+            borderRadius="20px" // Bordes redondeados para esta parte
+            bg="gray.100" // Color de fondo para destacar la diferencia
+            textAlign="center" // Centrar el contenido horizontalmente
+            display="flex"
+            alignItems="center" // Centrar el contenido verticalmente
+            mb={18} // Margen inferior de 18px para separar de la parte inferior
+          >
+            <Heading as="h1" size="xl">
+              Parte 1 (arriba)
+            </Heading>
+          </Box>
+
+          {/* Parte inferior más grande */}
+          <Box
+            flex="2" // Ajustar el valor para que sea más grande que la parte de la derecha
+            p={4}
+            borderRadius="20px" // Bordes redondeados para esta parte
+            bg="gray.200" // Color de fondo para destacar la diferencia
+            textAlign="center" // Centrar el contenido horizontalmente
+            display="flex"
+            alignItems="center" // Centrar el contenido verticalmente
+          >
+            <Heading as="h1" size="xl">
+              Parte 1 (abajo)
+            </Heading>
+          </Box>
+        </Box>
+
+        {/* Espacio de 18px para separar las partes del centro y la parte de la derecha */}
+        <Box mx={18} />
+
+        {/* Segunda parte en el lado derecho */}
+        <Box
+          flex="1"
+          p={4}
+          borderRadius="10px" // Bordes redondeados para esta parte
+          bg="gray.300" // Color de fondo para destacar la diferencia
+          textAlign="center" // Centrar el contenido horizontalmente
+          display="flex"
+          alignItems="center" // Centrar el contenido verticalmente
+        >
+          <Heading as="h1" size="xl">
+            Parte 2
+          </Heading>
+        </Box>
       </Box>
     </Box>
   );
