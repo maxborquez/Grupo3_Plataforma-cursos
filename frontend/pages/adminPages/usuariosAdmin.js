@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
 
-const AdminPage = () => {
+const usuariosAdminPage = () => {
   return (
     <Box display="flex" minHeight="100vh">
       {/* Barra lateral */}
@@ -58,7 +58,7 @@ const AdminPage = () => {
           alignItems="center" // Centrar el contenido verticalmente
         >
           <Heading as="h1" size="xl">
-            Parte 2
+            Parte 2 para CursosAdminPage
           </Heading>
         </Box>
       </Box>
@@ -66,4 +66,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default usuariosAdminPage;
