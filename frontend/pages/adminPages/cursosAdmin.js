@@ -1,67 +1,67 @@
-// CursosAdminPage.js (renombrada de CursosAdminPage.js)
-
-import { Box, Heading } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
+// adminPages/CursosAdminPage.js
+import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
+import Sidebar from '../../components/Sidebar';
+import { useEffect, useState } from 'react';
+import { getCursos } from '../../data/cursosData'; // Importa la función para obtener los cursos
 import withAuth from '../../data/withAuth'; // Importa el componente withAuth
+import CursoItem from '../../components/CursoItem'; // Importa el componente CursoItem
 
 const CursosAdminPage = () => {
+  const [cursos, setCursos] = useState([]);
+
+  // Función para cargar los cursos al cargar la página
+  useEffect(() => {
+    loadCursos();
+  }, []);
+
+  // Función para cargar los cursos desde la base de datos
+  const loadCursos = async () => {
+    try {
+      const cursosData = await getCursos();
+      setCursos(cursosData.data);
+    } catch (error) {
+      console.error('Error al cargar los cursos:', error);
+    }
+  };
+
   return (
     <Box display="flex" minHeight="100vh">
       {/* Barra lateral */}
       <Sidebar />
 
-      {/* Contenido principal dividido en dos partes */}
-      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
-        {/* Primera parte, dividida horizontalmente */}
-        <Box flex="2" display="flex" flexDirection="column">
-          {/* Parte superior más pequeña */}
-          <Box
-            flex="1"
-            p={4}
-            borderRadius="20px" // Bordes redondeados para esta parte
-            bg="gray.100" // Color de fondo para destacar la diferencia
-            textAlign="center" // Centrar el contenido horizontalmente
-            display="flex"
-            alignItems="center" // Centrar el contenido verticalmente
-            mb={18} // Margen inferior de 18px para separar de la parte inferior
-          >
-            <Heading as="h1" size="xl">
-              Parte 1 (arriba)
-            </Heading>
-          </Box>
-
-          {/* Parte inferior más grande */}
-          <Box
-            flex="2" // Ajustar el valor para que sea más grande que la parte de la derecha
-            p={4}
-            borderRadius="20px" // Bordes redondeados para esta parte
-            bg="gray.200" // Color de fondo para destacar la diferencia
-            textAlign="center" // Centrar el contenido horizontalmente
-            display="flex"
-            alignItems="center" // Centrar el contenido verticalmente
-          >
-            <Heading as="h1" size="xl">
-              Parte 1 (abajo)
-            </Heading>
-          </Box>
+      {/* Contenido principal */}
+      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
+        <Box bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4} mb={4}>
+          <Heading as="h1" size="xl">
+            Visualización de todos los cursos
+          </Heading>
         </Box>
 
-        {/* Espacio de 18px para separar las partes del centro y la parte de la derecha */}
-        <Box mx={18} />
-
-        {/* Segunda parte en el lado derecho */}
-        <Box
-          flex="1"
-          p={4}
-          borderRadius="10px" // Bordes redondeados para esta parte
-          bg="gray.300" // Color de fondo para destacar la diferencia
-          textAlign="center" // Centrar el contenido horizontalmente
-          display="flex"
-          alignItems="center" // Centrar el contenido verticalmente
-        >
-          <Heading as="h1" size="xl">
-            Parte 2 para CursosAdminPage
-          </Heading>
+        <Box flex="2" bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4}>
+          <Flex alignItems="center" justifyContent="space-between" mb={4}>
+            <Heading as="h1" size="xl">
+              Lista de cursos en sistema
+            </Heading>
+            <Button colorScheme="green" onClick={() => console.log('Agregar nuevo curso')}>
+              +
+            </Button>
+          </Flex>
+          <Box overflowY="auto" maxHeight="calc(100vh - 230px)">
+            {cursos.map((curso) => (
+              <CursoItem
+                key={curso._id}
+                curso={curso}
+                onDetalleClick={(id) => {
+                  // Lógica para mostrar el detalle del curso
+                  console.log('Detalle del curso:', id);
+                }}
+                onBorrarClick={(id) => {
+                  // Lógica para borrar el curso
+                  console.log('Borrar el curso:', id);
+                }}
+              />
+            ))}
+          </Box>
         </Box>
       </Box>
     </Box>
