@@ -1,6 +1,7 @@
 import { Box, Heading, Button, Stack } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import SidebarProfe from '../../components/sideBarProfe'; // Importa el componente Sidebar
 
 const ProfesorPage = () => {
   const router = useRouter();
@@ -12,41 +13,8 @@ const ProfesorPage = () => {
 
   return (
     <Box display="flex" minHeight="100vh">
-      {/* Barra lateral */}
-      <Box
-        bg="black"
-        color="white"
-        w="180px"
-        flexShrink={0}
-        p={4}
-        borderRadius="10px"
-        fontFamily="Baloo Bhai, sans-serif"
-        mt={4}
-        mb={4}
-        ml={18}
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        {/* Contenido de la barra lateral */}
-        <Stack spacing={4}>
-          <Button onClick={() => router.push('/profesor')} variant="ghost" color="white" colorScheme="whiteAlpha">
-            Página principal
-          </Button>
-          <Button onClick={() => router.push('/profesor/cursos')} variant="ghost" color="white" colorScheme="whiteAlpha">
-            Cursos
-          </Button>
-        </Stack>
-
-        {/* Botón de Logout en la parte inferior */}
-        <Box mt="auto">
-          <Button onClick={handleLogout} variant="ghost" color="white" colorScheme="whiteAlpha">
-            Logout
-          </Button>
-        </Box>
-      </Box>
-
+       {/* Barra lateral */}
+      <SidebarProfe /> 
       {/* Contenido principal dividido en dos partes */}
       <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
         {/* Primera parte, dividida horizontalmente */}
