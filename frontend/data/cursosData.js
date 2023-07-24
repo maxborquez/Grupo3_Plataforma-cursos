@@ -11,7 +11,7 @@ const getToken = () => {
 const getCursos = async () => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/api/cursos`, {
+    const response = await axios.get(`${apiUrl}/cursos`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -26,7 +26,7 @@ const getCursos = async () => {
 const getCursoById = async (id) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/api/cursos/${id}`, {
+    const response = await axios.get(`${apiUrl}/cursos/${id}`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -41,7 +41,7 @@ const getCursoById = async (id) => {
 const createCurso = async (cursoData) => {
   try {
     const token = getToken();
-    const response = await axios.post(`${apiUrl}/api/cursos`, cursoData, {
+    const response = await axios.post(`${apiUrl}/cursos`, cursoData, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -56,7 +56,7 @@ const createCurso = async (cursoData) => {
 const updateCurso = async (id, cursoData) => {
   try {
     const token = getToken();
-    const response = await axios.put(`${apiUrl}/api/cursos/${id}`, cursoData, {
+    const response = await axios.put(`${apiUrl}/cursos/${id}`, cursoData, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -71,7 +71,7 @@ const updateCurso = async (id, cursoData) => {
 const deleteCurso = async (id) => {
   try {
     const token = getToken();
-    const response = await axios.delete(`${apiUrl}/api/cursos/${id}`, {
+    const response = await axios.delete(`${apiUrl}/cursos/${id}`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -86,7 +86,7 @@ const deleteCurso = async (id) => {
 const changeEstadoCurso = async (id, estadoData) => {
   try {
     const token = getToken();
-    const response = await axios.put(`${apiUrl}/api/cursos/${id}/estado`, estadoData, {
+    const response = await axios.put(`${apiUrl}/cursos/${id}/estado`, estadoData, {
       headers: {
         token: token,
       },
@@ -101,7 +101,7 @@ const changeEstadoCurso = async (id, estadoData) => {
 const changeProfesor = async (id, profesorData) => {
   try {
     const token = getToken();
-    const response = await axios.put(`${apiUrl}/api/cursos/${id}/profesor`, profesorData, {
+    const response = await axios.put(`${apiUrl}/cursos/${id}/profesor`, profesorData, {
       headers: {
         token: token,
       },
@@ -116,7 +116,7 @@ const changeProfesor = async (id, profesorData) => {
 const getCursoByProfesor = async (profesorId) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/api/cursos/profesor/${profesorId}`, {
+    const response = await axios.get(`${apiUrl}/cursos/profesor/${profesorId}`, {
       headers: {
         token: token,
       },
@@ -131,7 +131,7 @@ const getCursoByProfesor = async (profesorId) => {
 const inscribirAlumnoEnCurso = async (cursoId, alumnoId) => {
   try {
     const token = getToken();
-    const response = await axios.post(`${apiUrl}/api/cursos/${cursoId}/alumno/${alumnoId}`, null, {
+    const response = await axios.post(`${apiUrl}/cursos/${cursoId}/alumno/${alumnoId}`, null, {
       headers: {
         token: token,
       },
@@ -146,7 +146,7 @@ const inscribirAlumnoEnCurso = async (cursoId, alumnoId) => {
 const eliminarAlumno = async (cursoId, alumnoId) => {
   try {
     const token = getToken();
-    const response = await axios.delete(`${apiUrl}/api/cursos/${cursoId}/alumno/${alumnoId}`, {
+    const response = await axios.delete(`${apiUrl}/cursos/${cursoId}/alumno/${alumnoId}`, {
       headers: {
         token: token,
       },
