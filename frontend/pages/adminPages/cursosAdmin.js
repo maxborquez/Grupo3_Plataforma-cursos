@@ -1,6 +1,8 @@
-import React from 'react';
+// CursosAdminPage.js (renombrada de CursosAdminPage.js)
+
 import { Box, Heading } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
+import withAuth from '../../data/withAuth'; // Importa el componente withAuth
 
 const CursosAdminPage = () => {
   return (
@@ -66,4 +68,5 @@ const CursosAdminPage = () => {
   );
 };
 
-export default CursosAdminPage;
+// Envuelve el componente CursosAdminPage con withAuth para protegerlo
+export default withAuth(CursosAdminPage, 'admin');

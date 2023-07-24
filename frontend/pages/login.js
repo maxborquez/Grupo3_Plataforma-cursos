@@ -1,14 +1,13 @@
+// Login.js
+
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
 import { useRouter } from 'next/router';
 import { Heading, Box, Input, Button, HStack } from '@chakra-ui/react';
-import { login } from '../data/auth'; // Verifica si estás importando correctamente la función login desde auth.js
+import { login, getUserRole } from '../data/auth'; // Verifica si estás importando correctamente la función login y getUserRole desde auth.js
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -18,9 +17,8 @@ const LoginPage = () => {
       // Guarda el token en una cookie llamada "jwtToken"
       Cookies.set('jwtToken', token);
 
-      // Decodifica el token para acceder a los datos adicionales
-      const decodedToken = jwt_decode(token);
-      const userRoles = decodedToken.roles;
+      // Obtén los roles del usuario desde el token decodificado
+      const userRoles = getUserRole(token);
 
       // Redirige al usuario a la página correspondiente según el rol
       if (userRoles.includes('admin')) {
@@ -43,8 +41,7 @@ const LoginPage = () => {
   useEffect(() => {
     const jwtToken = Cookies.get('jwtToken');
     if (jwtToken) {
-      const decodedToken = jwt_decode(jwtToken);
-      const userRoles = decodedToken.roles;
+      const userRoles = getUserRole(jwtToken);
       
       // Redirige al usuario a la página correspondiente según el rol
       if (userRoles.includes('admin')) {
