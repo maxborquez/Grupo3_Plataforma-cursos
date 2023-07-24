@@ -1,8 +1,10 @@
-import React from 'react';
+// usuariosAdminPage.js
+
 import { Box, Heading } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
+import withAuth from '../../data/withAuth'; // Importa el componente withAuth
 
-const usuariosAdminPage = () => {
+const UsuariosAdminPage = () => {
   return (
     <Box display="flex" minHeight="100vh">
       {/* Barra lateral */}
@@ -58,7 +60,7 @@ const usuariosAdminPage = () => {
           alignItems="center" // Centrar el contenido verticalmente
         >
           <Heading as="h1" size="xl">
-            Parte 2 para CursosAdminPage
+            Parte 2 para UsuariosAdminPage
           </Heading>
         </Box>
       </Box>
@@ -66,4 +68,5 @@ const usuariosAdminPage = () => {
   );
 };
 
-export default usuariosAdminPage;
+// Envuelve el componente UsuariosAdminPage con withAuth para protegerlo
+export default withAuth(UsuariosAdminPage, 'admin');

@@ -11,7 +11,7 @@ const getToken = () => {
 const getCursos = async () => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/cursos`, {
+    const response = await axios.get(`${apiUrl}/api/cursos`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -26,7 +26,7 @@ const getCursos = async () => {
 const getCursoById = async (id) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/cursos/${id}`, {
+    const response = await axios.get(`${apiUrl}/api/cursos/${id}`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -38,10 +38,10 @@ const getCursoById = async (id) => {
   }
 };
 
-const createCurso = async (profesorId, cursoData) => {
+const createCurso = async (cursoData) => {
   try {
     const token = getToken();
-    const response = await axios.post(`${apiUrl}/cursos/${profesorId}`, cursoData, {
+    const response = await axios.post(`${apiUrl}/api/cursos`, cursoData, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -53,10 +53,10 @@ const createCurso = async (profesorId, cursoData) => {
   }
 };
 
-const updateCurso = async (id, profesorId, cursoData) => {
+const updateCurso = async (id, cursoData) => {
   try {
     const token = getToken();
-    const response = await axios.put(`${apiUrl}/cursos/${id}/${profesorId}`, cursoData, {
+    const response = await axios.put(`${apiUrl}/api/cursos/${id}`, cursoData, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -71,7 +71,7 @@ const updateCurso = async (id, profesorId, cursoData) => {
 const deleteCurso = async (id) => {
   try {
     const token = getToken();
-    const response = await axios.delete(`${apiUrl}/cursos/${id}`, {
+    const response = await axios.delete(`${apiUrl}/api/cursos/${id}`, {
       headers: {
         token: token, // Utiliza el nombre correcto del header para enviar el token
       },
@@ -83,4 +83,90 @@ const deleteCurso = async (id) => {
   }
 };
 
-export { getCursos, getCursoById, createCurso, updateCurso, deleteCurso };
+const changeEstadoCurso = async (id, estadoData) => {
+  try {
+    const token = getToken();
+    const response = await axios.put(`${apiUrl}/api/cursos/${id}/estado`, estadoData, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al cambiar el estado del curso:', error);
+    throw error;
+  }
+};
+
+const changeProfesor = async (id, profesorData) => {
+  try {
+    const token = getToken();
+    const response = await axios.put(`${apiUrl}/api/cursos/${id}/profesor`, profesorData, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al cambiar el profesor del curso:', error);
+    throw error;
+  }
+};
+
+const getCursoByProfesor = async (profesorId) => {
+  try {
+    const token = getToken();
+    const response = await axios.get(`${apiUrl}/api/cursos/profesor/${profesorId}`, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener el curso por ID del profesor:', error);
+    throw error;
+  }
+};
+
+const inscribirAlumnoEnCurso = async (cursoId, alumnoId) => {
+  try {
+    const token = getToken();
+    const response = await axios.post(`${apiUrl}/api/cursos/${cursoId}/alumno/${alumnoId}`, null, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al inscribir al alumno en el curso:', error);
+    throw error;
+  }
+};
+
+const eliminarAlumno = async (cursoId, alumnoId) => {
+  try {
+    const token = getToken();
+    const response = await axios.delete(`${apiUrl}/api/cursos/${cursoId}/alumno/${alumnoId}`, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar al alumno del curso:', error);
+    throw error;
+  }
+};
+
+export {
+  getCursos,
+  getCursoById,
+  createCurso,
+  updateCurso,
+  deleteCurso,
+  changeEstadoCurso,
+  changeProfesor,
+  getCursoByProfesor,
+  inscribirAlumnoEnCurso,
+  eliminarAlumno,
+};

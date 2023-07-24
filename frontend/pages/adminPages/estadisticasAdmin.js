@@ -1,6 +1,8 @@
-import React from 'react';
+// EstadisticasAdminPage.js
+
 import { Box, Heading } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
+import withAuth from '../../data/withAuth'; // Importa el componente withAuth
 
 const EstadisticasAdminPage = () => {
   return (
@@ -58,7 +60,7 @@ const EstadisticasAdminPage = () => {
           alignItems="center" // Centrar el contenido verticalmente
         >
           <Heading as="h1" size="xl">
-            Parte 2 para CursosAdminPage
+            Parte 2 para EstadisticasAdminPage
           </Heading>
         </Box>
       </Box>
@@ -66,4 +68,5 @@ const EstadisticasAdminPage = () => {
   );
 };
 
-export default EstadisticasAdminPage;
+// Envuelve el componente EstadisticasAdminPage con withAuth para protegerlo
+export default withAuth(EstadisticasAdminPage, 'admin');
