@@ -4,13 +4,13 @@ const User = require("../models/user.model");
 class CursoService {
   // Obtener todos los cursos
   static async getCursos() {
-    const cursos = await Curso.find().populate("profesor", "nombre");
+    const cursos = await Curso.find().populate("profesor", "nombre apellido");
     return cursos;
   }
 
   // Obtener un curso por su ID
   static async getCursoById(id) {
-    const curso = await Curso.findById(id).populate("profesor", "nombre");
+    const curso = await Curso.findById(id).populate("profesor", "nombre apellido");
     return curso;
   }
 

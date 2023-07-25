@@ -75,10 +75,33 @@ async function deleteUser(id) {
   }
 }
 
+async function getProfesores() {
+  try {
+    const profesores = await User.find()
+      .populate({
+        path: "roles",
+        match: { name: "profesor" }, // Filtrar solo los roles con el nombre "profesor"
+        select: "name", // Seleccionar solo el campo "name" del modelo Role
+      })
+      .exec();
+
+    // Filtrar los usuarios que tienen el rol "profesor" en la propiedad "roles"
+    const profesoresFiltrados = profesores.filter(
+      (usuario) => usuario.roles.length > 0
+    );
+
+    return profesoresFiltrados;
+  } catch (error) {
+    handleError(error, "user.service -> getProfesores");
+  }
+}
+
+
 module.exports = {
   getUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
+  getProfesores,
 };

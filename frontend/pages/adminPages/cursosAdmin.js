@@ -1,4 +1,3 @@
-// adminPages/CursosAdminPage.js
 import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
 import { useEffect, useState } from 'react';
@@ -29,6 +28,10 @@ const CursosAdminPage = () => {
     router.push(`/adminPages/cursoDetalle/${id}`);
   };
 
+  const navigateToCursoCreate = () => {
+    router.push('/adminPages/cursoCreate');
+  };
+
   return (
     <Box display="flex" minHeight="100vh">
       <Sidebar />
@@ -45,7 +48,7 @@ const CursosAdminPage = () => {
             <Heading as="h1" size="xl">
               Lista de cursos en sistema
             </Heading>
-            <Button colorScheme="green" onClick={() => console.log('Agregar nuevo curso')}>
+            <Button colorScheme="green" onClick={navigateToCursoCreate}>
               +
             </Button>
           </Flex>

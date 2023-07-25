@@ -13,8 +13,8 @@ const router = express.Router();
 // Define las rutas para los usuarios
 router.get("/", usuarioController.getUsers);
 router.post("/", authoMiddleware.isAdmin, usuarioController.createUser);
+router.get("/profesores", usuarioController.getProfesores); // Nueva ruta para obtener los profesores
 router.get("/:id", usuarioController.getUserById);
-//router.put("/:id", authoMiddleware.isAdmin, usuarioController.updateUser);
 router.put("/:id", authoMiddleware.isAdmin, usuarioController.actualizarUsuario);
 router.delete("/:id", authoMiddleware.isAdmin, usuarioController.deleteUser);
 
