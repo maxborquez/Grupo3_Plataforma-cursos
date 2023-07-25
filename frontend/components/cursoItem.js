@@ -3,7 +3,7 @@ import { Box, Heading, Text, Button, HStack } from '@chakra-ui/react';
 
 const CursoItem = ({ curso, onDetalleClick, onBorrarClick }) => {
   return (
-    <Box p={4} bg="gray.200" borderRadius="8px" mb={2}>
+    <Box p={4} bg="white" borderRadius="8px" mb={2}>
       <Heading as="h3" size="md"> {/* Ajusta el tamaño del encabezado aquí */}
         {curso.nombre}
       </Heading>
