@@ -1,5 +1,3 @@
-// cursosProfe.js
-
 import React from 'react';
 import { Box, Heading, Button, List, ListItem } from '@chakra-ui/react';
 import Cookies from 'js-cookie';

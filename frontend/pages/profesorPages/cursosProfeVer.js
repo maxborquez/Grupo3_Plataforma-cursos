@@ -1,65 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { getCursoById } from '../../data/cursosData'; // Importa la función para obtener el curso por ID
+// pages/profesorPages/cursosProfeVer.js
 
-const cursosProfeVer = () => {
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { Box, Heading, Text, Button, HStack, Badge, VStack, Divider, List, ListItem, UnorderedList } from '@chakra-ui/react';
+import { getCursoById } from '../../data/cursosData';
+
+const CursosProfeVer = () => {
   const router = useRouter();
-  const { id } = router.query; // Obtiene el ID del curso desde el parámetro de la ruta
+  const { cursoId } = router.query;
   const [curso, setCurso] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    obtenerCurso();
-  }, [id]); // Vuelve a obtener el curso cuando el ID cambie
+    const loadCursoDetalle = async () => {
+      try {
+        const response = await getCursoById(cursoId);
+        if (response.state === 'Success') {
+          setCurso(response.data);
+        } else {
+          console.error('Error al obtener los detalles del curso:', response);
+        }
+      } catch (error) {
+        console.error('Error al cargar los detalles del curso:', error);
+      }
+    };
 
-  const obtenerCurso = async () => {
-    try {
-      const cursoObtenido = await getCursoById(id);
-      setCurso(cursoObtenido);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error al obtener el curso:', error);
-      setError('Error al obtener el curso. Por favor, intenta nuevamente más tarde.');
-      setLoading(false);
+    if (cursoId) {
+      loadCursoDetalle();
     }
-  };
+  }, [cursoId]);
 
-  if (loading) {
+  if (!curso) {
     return <div>Cargando...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!curso) {
-    return <div>No se encontró el curso.</div>;
-  }
+  const handleVolverClick = () => {
+    router.back();
+  };
 
   return (
-    <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
-      <Heading as="h1" size="xl" mb={4}>
+    <Box p={4} bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" mt={4} mx={4}>
+      <Heading as="h1" size="xl">
         {curso.nombre}
       </Heading>
-      <Box bg="gray.200" p={4} borderRadius="md">
-        <Text>
-          <strong>Descripción:</strong> {curso.descripcion}
-        </Text>
-        <Text>
-          <strong>Estado:</strong> {curso.estado}
-        </Text>
-        <Text>
-          <strong>Fecha de inicio:</strong> {new Date(curso.fecha_inicio).toLocaleDateString()}
-        </Text>
-        <Text>
-          <strong>Fecha de fin:</strong> {new Date(curso.fecha_fin).toLocaleDateString()}
-        </Text>
-        {/* Agrega más detalles del curso según sea necesario */}
+      <Text fontSize="lg" color="gray.600" mt={2}>
+        {curso.descripcion}
+      </Text>
+      <Box mt={4}>
+        <Heading as="h3" size="lg">
+          Información del curso
+        </Heading>
+        <VStack align="flex-start" mt={2} spacing={4}>
+          {/* Resto de la información del curso */}
+        </VStack>
       </Box>
+      <HStack mt={4} justifyContent="flex-end">
+        <Button colorScheme="gray" size="sm" onClick={handleVolverClick}>
+          Volver
+        </Button>
+      </HStack>
     </Box>
   );
 };
 
-export default cursosProfeVer;
+export default CursosProfeVer;
