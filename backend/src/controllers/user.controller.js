@@ -154,6 +154,24 @@ async function deleteUser(req, res) {
   }
 }
 
+/**
+ * @name getProfesores
+ * @description Obtiene todos los usuarios con el rol de "profesor"
+ * @param req {Request}
+ * @param res {Response}
+ */
+async function getProfesores(req, res) {
+  try {
+    const profesores = await UserService.getProfesores();
+    profesores.length === 0
+      ? respondSuccess(req, res, 204)
+      : respondSuccess(req, res, 200, profesores);
+  } catch (error) {
+    respondError(req, res, 400, error.message);
+  }
+}
+
+
 module.exports = {
   getUsers,
   createUser,
@@ -161,4 +179,5 @@ module.exports = {
   updateUser,
   deleteUser,
   actualizarUsuario,
+  getProfesores,
 };
