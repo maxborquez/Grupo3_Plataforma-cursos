@@ -1,5 +1,5 @@
 // adminPages/CursosAdminPage.js
-import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
+import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
