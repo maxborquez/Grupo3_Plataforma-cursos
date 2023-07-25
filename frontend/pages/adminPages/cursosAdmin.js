@@ -1,20 +1,21 @@
 // adminPages/CursosAdminPage.js
-import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
+import { Box, Heading, Button, Flex } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
 import { useEffect, useState } from 'react';
-import { getCursos } from '../../data/cursosData'; // Importa la función para obtener los cursos
-import withAuth from '../../data/withAuth'; // Importa el componente withAuth
-import CursoItem from '../../components/CursoItem'; // Importa el componente CursoItem
+import Swal from 'sweetalert2';
+import { getCursos, deleteCurso } from '../../data/cursosData';
+import withAuth from '../../data/withAuth';
+import CursoItem from '../../components/CursoItem';
+import { useRouter } from 'next/router';
 
 const CursosAdminPage = () => {
+  const router = useRouter();
   const [cursos, setCursos] = useState([]);
 
-  // Función para cargar los cursos al cargar la página
   useEffect(() => {
     loadCursos();
   }, []);
 
-  // Función para cargar los cursos desde la base de datos
   const loadCursos = async () => {
     try {
       const cursosData = await getCursos();
@@ -24,12 +25,14 @@ const CursosAdminPage = () => {
     }
   };
 
+  const verDetalleCurso = (id) => {
+    router.push(`/adminPages/cursoDetalle/${id}`);
+  };
+
   return (
     <Box display="flex" minHeight="100vh">
-      {/* Barra lateral */}
       <Sidebar />
 
-      {/* Contenido principal */}
       <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
         <Box bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4} mb={4}>
           <Heading as="h1" size="xl">
@@ -51,13 +54,30 @@ const CursosAdminPage = () => {
               <CursoItem
                 key={curso._id}
                 curso={curso}
-                onDetalleClick={(id) => {
-                  // Lógica para mostrar el detalle del curso
-                  console.log('Detalle del curso:', id);
-                }}
+                onDetalleClick={() => verDetalleCurso(curso._id)}
                 onBorrarClick={(id) => {
-                  // Lógica para borrar el curso
-                  console.log('Borrar el curso:', id);
+                  Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción eliminará el curso de forma permanente.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, borrar',
+                    cancelButtonText: 'No, cancelar',
+                    reverseButtons: true,
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      try {
+                        await deleteCurso(id);
+                        loadCursos();
+                        Swal.fire('¡Borrado!', 'El curso ha sido eliminado correctamente.', 'success');
+                      } catch (error) {
+                        Swal.fire('Error', 'Hubo un problema al eliminar el curso.', 'error');
+                        console.error('Error al borrar el curso:', error);
+                      }
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                      Swal.fire('Cancelado', 'El curso no ha sido eliminado.', 'info');
+                    }
+                  });
                 }}
               />
             ))}
@@ -68,5 +88,4 @@ const CursosAdminPage = () => {
   );
 };
 
-// Envuelve el componente CursosAdminPage con withAuth para protegerlo
 export default withAuth(CursosAdminPage, 'admin');
