@@ -13,8 +13,9 @@ import {
   UnorderedList,
   Badge,
 } from "@chakra-ui/react";
-import { getCursoById } from "../../data/cursosData";
-import Sidebar from "../../components/Sidebar"; // Importa el componente Sidebar
+import { getCursoById, deleteCurso } from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
+import Sidebar from "../../components/Sidebar";
+import Swal from "sweetalert2"; // Importa SweetAlert 2
 
 const CursoDetalle = () => {
   const router = useRouter();
@@ -46,6 +47,38 @@ const CursoDetalle = () => {
 
   const handleVolverClick = () => {
     router.back();
+  };
+
+  // Función para manejar el clic en el botón de borrar curso
+  const handleBorrarClick = (id) => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el curso de forma permanente.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, borrar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteCurso(id);
+          Swal.fire({
+            title: "Curso eliminado exitosamente",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            // Redireccionar a la página anterior al hacer clic en "OK"
+            router.back();
+          });
+        } catch (error) {
+          Swal.fire("Error", "Hubo un problema al eliminar el curso.", "error");
+          console.error("Error al borrar el curso:", error);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelado", "El curso no ha sido eliminado.", "info");
+      }
+    });
   };
 
   return (
@@ -97,7 +130,10 @@ const CursoDetalle = () => {
               {curso.clases.length > 0 ? (
                 <UnorderedList ml={4}>
                   {curso.clases.map((clase) => (
-                    <ListItem key={clase}>{clase}</ListItem>
+                    <ListItem key={clase._id}>
+                      Nombre: {clase.nombre} - Fecha:{" "}
+                      {new Date(clase.fecha).toLocaleDateString()}
+                    </ListItem>
                   ))}
                 </UnorderedList>
               ) : (
@@ -112,7 +148,7 @@ const CursoDetalle = () => {
               {curso.avisos.length > 0 ? (
                 <UnorderedList ml={4}>
                   {curso.avisos.map((aviso) => (
-                    <ListItem key={aviso}>{aviso}</ListItem>
+                    <ListItem key={aviso._id}>{aviso.titulo}</ListItem>
                   ))}
                 </UnorderedList>
               ) : (
@@ -143,7 +179,8 @@ const CursoDetalle = () => {
                 <UnorderedList ml={4}>
                   {curso.alumnos.map((alumno) => (
                     <ListItem key={alumno._id}>
-                      {alumno.alumno} - Estado: {alumno.estado}
+                      {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
+                      {alumno.estado}
                     </ListItem>
                   ))}
                 </UnorderedList>
@@ -166,7 +203,8 @@ const CursoDetalle = () => {
           <Button
             colorScheme="red"
             size="sm"
-            onClick={() => console.log("Lógica para borrar el curso")}
+            // Llama a la función handleBorrarClick con el id del curso
+            onClick={() => handleBorrarClick(curso._id)}
           >
             Borrar
           </Button>
