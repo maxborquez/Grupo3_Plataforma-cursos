@@ -9,11 +9,24 @@ class CursoService {
   }
 
   // Obtener un curso por su ID
-  static async getCursoById(id) {
-    const curso = await Curso.findById(id).populate("profesor", "nombre apellido");
-    return curso;
-  }
+static async getCursoById(id) {
+  try {
+    const curso = await Curso.findById(id)
+      .populate("profesor")
+      .populate({
+        path: "alumnos.alumno",
+        model: "User",
+      })
+      .populate("clases")
+      .populate("avisos")
+      .populate("calificaciones")
+      .exec();
 
+    return curso;
+  } catch (error) {
+    throw new Error("Error al obtener el curso por ID");
+  }
+}
   // Crear un nuevo curso
   static async createCurso(profesorId, cursoData) {
     const profesor = await User.findById(profesorId);
