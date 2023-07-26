@@ -49,6 +49,11 @@ const CursoDetalle = () => {
     router.back();
   };
 
+  const handleEditarClick = () => {
+    // Redireccionar a la página de edición de curso
+    router.push(`/adminPages/cursoEditar/${cursoId}`);
+  };
+
   // Función para manejar el clic en el botón de borrar curso
   const handleBorrarClick = (id) => {
     Swal.fire({
@@ -196,7 +201,7 @@ const CursoDetalle = () => {
           <Button
             colorScheme="blue"
             size="sm"
-            onClick={() => console.log("Lógica para editar el curso")}
+            onClick={handleEditarClick} // Agrega el manejador de clic para editar
           >
             Editar
           </Button>

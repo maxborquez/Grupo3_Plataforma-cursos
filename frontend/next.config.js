@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -11,6 +10,10 @@ const nextConfig = {
       {
         source: '/profesorPages/cursosProfeVer/:cursoId',
         destination: '/profesorPages/cursosProfeVer', // Ruta del componente cursosProfeVer.js
+      },
+      {
+        source: '/adminPages/cursoEditar/:cursoId', // Ruta con parámetro cursoId
+        destination: '/adminPages/cursoEditar', // Ruta del componente cursoEditar.js
       },
     ];
   },
