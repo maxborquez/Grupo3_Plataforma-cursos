@@ -49,6 +49,11 @@ const CursoDetalle = () => {
     router.back();
   };
 
+  const handleEditarClick = () => {
+    // Redireccionar a la página de edición de curso
+    router.push(`/adminPages/cursoEditar/${cursoId}`);
+  };
+
   // Función para manejar el clic en el botón de borrar curso
   const handleBorrarClick = (id) => {
     Swal.fire({
@@ -121,8 +126,8 @@ const CursoDetalle = () => {
               {new Date(curso.fecha_fin).toLocaleDateString()}
             </Text>
             <Text>
-              <strong>Profesor:</strong> {curso.profesor.nombre}{" "}
-              {curso.profesor.apellido}
+              <strong>Profesor:</strong> {curso.profesor?.nombre}{" "}
+              {curso.profesor?.apellido}
             </Text>
             <Divider />
             <Text>
@@ -177,12 +182,14 @@ const CursoDetalle = () => {
               <strong>Alumnos:</strong>
               {curso.alumnos.length > 0 ? (
                 <UnorderedList ml={4}>
-                  {curso.alumnos.map((alumno) => (
-                    <ListItem key={alumno._id}>
-                      {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
-                      {alumno.estado}
-                    </ListItem>
-                  ))}
+                  {curso.alumnos
+                    .filter((alumno) => alumno.alumno) // Filtrar para eliminar elementos nulos o sin alumno
+                    .map((alumno) => (
+                      <ListItem key={alumno._id}>
+                        {alumno.alumno.nombre} {alumno.alumno.apellido} -
+                        Estado: {alumno.estado}
+                      </ListItem>
+                    ))}
                 </UnorderedList>
               ) : (
                 <Text ml={4} fontStyle="italic">
@@ -196,7 +203,7 @@ const CursoDetalle = () => {
           <Button
             colorScheme="blue"
             size="sm"
-            onClick={() => console.log("Lógica para editar el curso")}
+            onClick={handleEditarClick} // Agrega el manejador de clic para editar
           >
             Editar
           </Button>

@@ -1,72 +1,102 @@
-// usuariosAdminPage.js
-
-import { Box, Heading } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar'; // Importa el componente Sidebar
-import withAuth from '../../data/withAuth'; // Importa el componente withAuth
+import { useState, useEffect } from 'react';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Flex, Button, Link } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import Sidebar from '../../components/Sidebar';
+import withAuth from '../../data/withAuth';
+import UserItem from '../../components/userItem';
+import { getUsers, deleteUser } from '../../data/usersData';
 
 const UsuariosAdminPage = () => {
+  const [tabIndex, setTabIndex] = useState(0);
+  const [allUsers, setAllUsers] = useState([]);
+
+  const handleTabChange = (index) => {
+    setTabIndex(index);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allUsersResponse = await getUsers();
+        setAllUsers(allUsersResponse.data);
+      } catch (error) {
+        console.error('Error al obtener los usuarios:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDeleteUser = async (id) => {
+    try {
+      await deleteUser(id);
+      const updatedAllUsersResponse = await getUsers();
+      setAllUsers(updatedAllUsersResponse.data);
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };
+
+  const tabs = ['Todos', 'Administradores', 'Profesores', 'Alumnos'];
+
+  const filteredUsers = tabIndex === 0
+    ? allUsers
+    : tabIndex === 1
+    ? allUsers.filter((user) => user.roles.some((role) => role.name === 'admin'))
+    : tabIndex === 2
+    ? allUsers.filter((user) => user.roles.some((role) => role.name === 'profesor'))
+    : allUsers.filter((user) => user.roles.some((role) => role.name === 'alumno'));
+
+  const router = useRouter();
+
   return (
     <Box display="flex" minHeight="100vh">
-      {/* Barra lateral */}
       <Sidebar />
 
-      {/* Contenido principal dividido en dos partes */}
-      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
-        {/* Primera parte, dividida horizontalmente */}
-        <Box flex="2" display="flex" flexDirection="column">
-          {/* Parte superior más pequeña */}
-          <Box
-            flex="1"
-            p={4}
-            borderRadius="20px" // Bordes redondeados para esta parte
-            bg="gray.100" // Color de fondo para destacar la diferencia
-            textAlign="center" // Centrar el contenido horizontalmente
-            display="flex"
-            alignItems="center" // Centrar el contenido verticalmente
-            mb={18} // Margen inferior de 18px para separar de la parte inferior
-          >
-            <Heading as="h1" size="xl">
-              Parte 1 (arriba)
-            </Heading>
+      <Box p={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
+        <Box flex="1" p={4} borderRadius="10px" bg="gray.300" textAlign="center" display="flex">
+          <Box w="100%" height="100vh" overflowY="auto">
+            <Tabs index={tabIndex} onChange={handleTabChange}>
+              <TabList>
+                {tabs.map((tab) => (
+                  <Tab key={tab}>{tab}</Tab>
+                ))}
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  {filteredUsers.map((user) => (
+                    <UserItem key={user._id} user={user} onDeleteClick={handleDeleteUser} />
+                  ))}
+                </TabPanel>
+                <TabPanel>
+                  {filteredUsers.map((user) => (
+                    <UserItem key={user._id} user={user} onDeleteClick={handleDeleteUser} />
+                  ))}
+                </TabPanel>
+                <TabPanel>
+                  {filteredUsers.map((user) => (
+                    <UserItem key={user._id} user={user} onDeleteClick={handleDeleteUser} />
+                  ))}
+                </TabPanel>
+                <TabPanel>
+                  {filteredUsers.map((user) => (
+                    <UserItem key={user._id} user={user} onDeleteClick={handleDeleteUser} />
+                  ))}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Box>
-
-          {/* Parte inferior más grande */}
-          <Box
-            flex="2" // Ajustar el valor para que sea más grande que la parte de la derecha
-            p={4}
-            borderRadius="20px" // Bordes redondeados para esta parte
-            bg="gray.200" // Color de fondo para destacar la diferencia
-            textAlign="center" // Centrar el contenido horizontalmente
-            display="flex"
-            alignItems="center" // Centrar el contenido verticalmente
-          >
-            <Heading as="h1" size="xl">
-              Parte 1 (abajo)
-            </Heading>
-          </Box>
-        </Box>
-
-        {/* Espacio de 18px para separar las partes del centro y la parte de la derecha */}
-        <Box mx={18} />
-
-        {/* Segunda parte en el lado derecho */}
-        <Box
-          flex="1"
-          p={4}
-          borderRadius="10px" // Bordes redondeados para esta parte
-          bg="gray.300" // Color de fondo para destacar la diferencia
-          textAlign="center" // Centrar el contenido horizontalmente
-          display="flex"
-          alignItems="center" // Centrar el contenido verticalmente
-        >
-          <Heading as="h1" size="xl">
-            Parte 2 para UsuariosAdminPage
-          </Heading>
+          <Flex justify="flex-end" p={2}>
+            <Link href="/adminPages/usuarioCreate">
+              <Button colorScheme="green" size="lg">
+                +
+              </Button>
+            </Link>
+          </Flex>
         </Box>
       </Box>
     </Box>
   );
 };
 
-// Envuelve el componente UsuariosAdminPage con withAuth para protegerlo
 export default withAuth(UsuariosAdminPage, 'admin');
