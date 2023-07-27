@@ -15,8 +15,18 @@ const nextConfig = {
         source: '/adminPages/cursoEditar/:cursoId', // Ruta con parámetro cursoId
         destination: '/adminPages/cursoEditar', // Ruta del componente cursoEditar.js
       },
+      // Ruta dinámica para la página de detalle del usuario
+      {
+        source: '/adminPages/usuarioDetalle/:userId',
+        destination: '/adminPages/usuarioDetalle', // Ruta del componente usuarioDetalle.js
+      },
+      // Ruta dinámica para la página de edición del usuario
+      {
+        source: '/adminPages/usuarioEditar/:userId',
+        destination: '/adminPages/usuarioEditar', // Ruta del componente usuarioEditar.js
+      },
     ];
   },
-}
+};
 
 module.exports = nextConfig;

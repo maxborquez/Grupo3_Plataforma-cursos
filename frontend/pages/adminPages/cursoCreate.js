@@ -50,6 +50,10 @@ const CursoCreate = () => {
     }
   };
 
+  const handleVolverClick = () => {
+    router.back();
+  };
+
   return (
     <Box display="flex" minHeight="100vh">
       <Sidebar />
@@ -119,6 +123,9 @@ const CursoCreate = () => {
             </Select>
             <Button colorScheme="green" onClick={handleSubmit}>
               Crear Curso
+            </Button>
+            <Button colorScheme="gray" onClick={handleVolverClick}>
+              Volver
             </Button>
           </Flex>
         </Box>

@@ -126,8 +126,8 @@ const CursoDetalle = () => {
               {new Date(curso.fecha_fin).toLocaleDateString()}
             </Text>
             <Text>
-              <strong>Profesor:</strong> {curso.profesor.nombre}{" "}
-              {curso.profesor.apellido}
+              <strong>Profesor:</strong> {curso.profesor?.nombre}{" "}
+              {curso.profesor?.apellido}
             </Text>
             <Divider />
             <Text>
@@ -182,12 +182,14 @@ const CursoDetalle = () => {
               <strong>Alumnos:</strong>
               {curso.alumnos.length > 0 ? (
                 <UnorderedList ml={4}>
-                  {curso.alumnos.map((alumno) => (
-                    <ListItem key={alumno._id}>
-                      {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
-                      {alumno.estado}
-                    </ListItem>
-                  ))}
+                  {curso.alumnos
+                    .filter((alumno) => alumno.alumno) // Filtrar para eliminar elementos nulos o sin alumno
+                    .map((alumno) => (
+                      <ListItem key={alumno._id}>
+                        {alumno.alumno.nombre} {alumno.alumno.apellido} -
+                        Estado: {alumno.estado}
+                      </ListItem>
+                    ))}
                 </UnorderedList>
               ) : (
                 <Text ml={4} fontStyle="italic">

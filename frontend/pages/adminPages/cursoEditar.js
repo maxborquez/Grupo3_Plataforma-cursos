@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import {
   Box,
   Heading,
-  Text,
   Button,
   HStack,
   VStack,
