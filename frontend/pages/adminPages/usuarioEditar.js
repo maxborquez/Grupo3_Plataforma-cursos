@@ -160,11 +160,11 @@ const UsuarioEditar = () => {
               onChange={handleInputChange}
             />
           </FormControl>
-          <Button colorScheme="gray" onClick={handleVolverClick}>
+          <Button colorScheme="gray" mr={4} size="sm" onClick={handleVolverClick}>
               Volver
           </Button>
           <Button colorScheme="blue" size="sm" onClick={handleGuardarClick}>
-            Guardar Cambios
+            Guardar cambios
           </Button>
         </Box>
       </Box>

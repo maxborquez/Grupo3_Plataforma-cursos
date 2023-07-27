@@ -105,13 +105,13 @@ const UsuarioDetalle = () => {
         </Box>
         <Box mt={4} display="flex" justifyContent="flex-end">
           {/* Agregar los botones de Editar y Borrar aquí */}
-          <Button colorScheme="blue" size="sm" onClick={handleEditarClick}>
+          <Button colorScheme="blue" ml={4} size="sm" onClick={handleEditarClick}>
             Editar
           </Button>
-          <Button colorScheme="red" size="sm" onClick={handleBorrarClick}>
+          <Button colorScheme="red" ml={4} size="sm" onClick={handleBorrarClick}>
             Borrar
           </Button>
-          <Button colorScheme="gray" size="sm" onClick={handleVolverClick}>
+          <Button colorScheme="gray" ml={4} size="sm" onClick={handleVolverClick}>
               Volver
           </Button>
         </Box>

@@ -1,11 +1,10 @@
-// usuariosAdminPage.js
-
 import { useState, useEffect } from 'react';
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Flex, Button, Link } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import Sidebar from '../../components/Sidebar';
 import withAuth from '../../data/withAuth';
-import UserItem from '../../components/userItem'; // Importar el componente UserItem
-import { getUsers, deleteUser } from '../../data/usersData'; // Importar las funciones para obtener y eliminar usuarios
+import UserItem from '../../components/userItem';
+import { getUsers, deleteUser } from '../../data/usersData';
 
 const UsuariosAdminPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -28,11 +27,9 @@ const UsuariosAdminPage = () => {
     fetchData();
   }, []);
 
-  // Nueva función para manejar el borrado de usuarios
   const handleDeleteUser = async (id) => {
     try {
       await deleteUser(id);
-      // Actualizar la lista de usuarios después de borrar uno
       const updatedAllUsersResponse = await getUsers();
       setAllUsers(updatedAllUsersResponse.data);
     } catch (error) {
@@ -42,7 +39,6 @@ const UsuariosAdminPage = () => {
 
   const tabs = ['Todos', 'Administradores', 'Profesores', 'Alumnos'];
 
-  // Filtrar los usuarios según la pestaña actual seleccionada
   const filteredUsers = tabIndex === 0
     ? allUsers
     : tabIndex === 1
@@ -50,6 +46,8 @@ const UsuariosAdminPage = () => {
     : tabIndex === 2
     ? allUsers.filter((user) => user.roles.some((role) => role.name === 'profesor'))
     : allUsers.filter((user) => user.roles.some((role) => role.name === 'alumno'));
+
+  const router = useRouter();
 
   return (
     <Box display="flex" minHeight="100vh">
@@ -88,6 +86,13 @@ const UsuariosAdminPage = () => {
               </TabPanels>
             </Tabs>
           </Box>
+          <Flex justify="flex-end" p={2}>
+            <Link href="/adminPages/usuarioCreate">
+              <Button colorScheme="green" size="lg">
+                +
+              </Button>
+            </Link>
+          </Flex>
         </Box>
       </Box>
     </Box>
