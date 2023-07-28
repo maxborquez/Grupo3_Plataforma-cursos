@@ -104,9 +104,8 @@ async function getCursosByProfesor(req, res) {
 // Inscribir un alumno en un curso
 async function inscribirAlumnoEnCurso(req, res) {
   try {
-    const { id } = req.params;
-    const { alumnoId } = req.body;
-    const curso = await CursoService.inscribirAlumnoEnCurso(id, alumnoId);
+    const { cursoId, alumnoId } = req.params; // Obtiene los IDs desde los parámetros de ruta
+    const curso = await CursoService.inscribirAlumnoEnCurso(cursoId, alumnoId);
     curso === null
       ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
       : respondSuccess(req, res, 200, curso);
