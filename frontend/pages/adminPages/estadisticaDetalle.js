@@ -11,8 +11,7 @@ const EstadisticaDetalle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener la estadística por su ID
-        const estadisticaId = "64c3492d150bbc0ccdc84da3"; // Cambia esto por el ID de la estadística que desees mostrar
+        const estadisticaId = "64c3492d150bbc0ccdc84da3";
         const estadisticaResponse = await getEstadisticaById(estadisticaId);
         setEstadistica(estadisticaResponse);
       } catch (error) {

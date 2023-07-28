@@ -8,13 +8,13 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-import { getUserById, updateUser } from "../../data/usersData"; // Importar la función getUserById y updateUser
+import { getUserById, updateUser } from "../../data/usersData";
 import Sidebar from "../../components/Sidebar";
-import Swal from "sweetalert2"; // Importa SweetAlert 2
+import Swal from "sweetalert2";
 
 const UsuarioEditar = () => {
   const router = useRouter();
-  const { userId } = router.query; // Obtener el parámetro "userId" de la URL
+  const { userId } = router.query;
 
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
@@ -28,9 +28,8 @@ const UsuarioEditar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userResponse = await getUserById(userId); // Obtener el usuario por su ID
-        setUser(userResponse.data); // Establecer el usuario en el estado
-        // Establecer los valores iniciales del formulario con los datos del usuario
+        const userResponse = await getUserById(userId);
+        setUser(userResponse.data);
         setFormData({
           nombre: userResponse.data.nombre,
           apellido: userResponse.data.apellido,
@@ -49,7 +48,6 @@ const UsuarioEditar = () => {
   }, [userId]);
 
   const handleInputChange = (e) => {
-    // Actualizar el estado del formulario con los nuevos valores al cambiar los inputs
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -61,7 +59,6 @@ const UsuarioEditar = () => {
   };
 
   const handleGuardarClick = () => {
-    // Mostrar el SweetAlert2 para confirmar si se desean guardar los cambios
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción actualizará el perfil del usuario.",
@@ -72,9 +69,7 @@ const UsuarioEditar = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // Actualizar el usuario utilizando la función updateUser con los datos del formulario
           await updateUser(userId, formData);
-          // Mostrar SweetAlert2 de éxito después de guardar los cambios
           Swal.fire({
             title: "Perfil actualizado",
             text: "Los cambios han sido guardados exitosamente.",

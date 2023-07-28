@@ -31,9 +31,8 @@ const Sidebar = () => {
       display="flex"
       flexDirection="column"
     >
-      {/* Contenido de la barra lateral */}
       <Stack spacing={4}>
-        <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} /> {/* Ruta de la imagen actualizada */}
+        <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} />
         <Button onClick={() => router.push('/adminPages/admin')} variant="ghost" color="white" colorScheme="whiteAlpha">
           Página principal
         </Button>
@@ -48,10 +47,8 @@ const Sidebar = () => {
         </Button>
       </Stack>
 
-      {/* Espacio de 18px para separar los botones del botón de logout */}
       <Box mt="auto" />
 
-      {/* Botón de Logout en la parte inferior */}
       <Button onClick={handleLogout} variant="ghost" color="white" colorScheme="whiteAlpha">
         Logout
       </Button>

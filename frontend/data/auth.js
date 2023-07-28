@@ -1,5 +1,3 @@
-// auth.js
-
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
@@ -13,7 +11,6 @@ const login = async (email) => {
 
     const token = response.data.data.token;
 
-    // Almacenar el token en la cookie
     Cookies.set('jwtToken', token);
 
     return token;
@@ -24,9 +21,7 @@ const login = async (email) => {
 };
 
 const logout = () => {
-  // Elimina la cookie que contiene el token JWT
   Cookies.remove('jwtToken');
-  // Opcionalmente, puedes realizar otras acciones necesarias después del logout.
 };
 
 const getUserRole = () => {
@@ -35,10 +30,10 @@ const getUserRole = () => {
   if (token) {
     const decodedToken = jwt_decode(token);
     const userRoles = decodedToken.roles;
-    return userRoles || []; // Si no se encuentra el rol en el token, devolver un array vacío
+    return userRoles || [];
   }
 
-  return []; // Si no hay token, devolver un array vacío
+  return [];
 };
 
 const getUserId = () => {
@@ -54,6 +49,6 @@ const getUserId = () => {
     }
   }
 
-  return null; // Si no hay token o hay un error en la decodificación, devolver null
+  return null;
 };
 export { login, logout, getUserRole, getUserId };

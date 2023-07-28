@@ -5,41 +5,40 @@ const nextConfig = {
     return [
       {
         source: '/adminPages/cursoDetalle/:cursoId',
-        destination: '/adminPages/cursoDetalle', // Ruta del componente cursoDetalle.js
+        destination: '/adminPages/cursoDetalle',
       },
       {
         source: '/profesorPages/cursosProfeVer/:cursoId',
-        destination: '/profesorPages/cursosProfeVer', // Ruta del componente cursosProfeVer.js
+        destination: '/profesorPages/cursosProfeVer',
       },
       {
         source: '/profesorPages/cursosProfe/:profesorId',
-        destination: '/profesorPages/cursosProfe', // Ruta del componente CursosProfe.js
+        destination: '/profesorPages/cursosProfe',
       },
       {
         source: '/profesorPages/crearAviso/:cursoId',
-        destination: '/profesorPages/crearAviso', // Ruta del componente CrearAviso.js
+        destination: '/profesorPages/crearAviso',
       },
       {
-        source: '/adminPages/cursoEditar/:cursoId', // Ruta con parámetro cursoId
-        destination: '/adminPages/cursoEditar', // Ruta del componente cursoEditar.js
+        source: '/adminPages/cursoEditar/:cursoId',
+        destination: '/adminPages/cursoEditar',
       },
-      // Ruta dinámica para la página de detalle del usuario
       {
         source: '/adminPages/usuarioDetalle/:userId',
-        destination: '/adminPages/usuarioDetalle', // Ruta del componente usuarioDetalle.js
+        destination: '/adminPages/usuarioDetalle',
       },
-      // Ruta dinámica para la página de edición del usuario
+
       {
         source: '/adminPages/usuarioEditar/:userId',
-        destination: '/adminPages/usuarioEditar', // Ruta del componente usuarioEditar.js
+        destination: '/adminPages/usuarioEditar',
       },
       {
         source: '/adminPages/estadisticaDetalle/:estadisticaId',
-        destination: '/adminPages/estadisticaDetalle', // Ruta del componente estadisticaDetalle.js
+        destination: '/adminPages/estadisticaDetalle',
       },
       {
-        source: '/alumnoPages/alumnoCursoVer/:cursoId', // Ruta con parámetro cursoId
-        destination: '/alumnoPages/alumnoCursoVer', // Ruta del componente alumnoCursoVer.js
+        source: '/alumnoPages/alumnoCursoVer/:cursoId',
+        destination: '/alumnoPages/alumnoCursoVer',
       },
     ];
   },

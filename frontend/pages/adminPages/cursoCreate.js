@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Heading, Input, Button, Flex, Select } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
 import { createCurso } from '../../data/cursosData';
-import { getProfesores } from '../../data/usersData'; // Importa la función getProfesores
+import { getProfesores } from '../../data/usersData';
 import { useRouter } from 'next/router';
 
 const CursoCreate = () => {
@@ -16,17 +16,16 @@ const CursoCreate = () => {
     profesor: '',
   });
 
-  const [profesores, setProfesores] = useState([]); // Estado para almacenar la lista de profesores
+  const [profesores, setProfesores] = useState([]);
 
   useEffect(() => {
-    // Cargar la lista de profesores cuando el componente se monte
     loadProfesores();
   }, []);
 
   const loadProfesores = async () => {
     try {
       const response = await getProfesores();
-      const profesoresData = response.data; // Extraer el array de profesores de la respuesta
+      const profesoresData = response.data;
       setProfesores(profesoresData);
     } catch (error) {
       console.error('Error al cargar los profesores:', error);
@@ -108,7 +107,7 @@ const CursoCreate = () => {
               onChange={handleChange}
               mb={4}
             />
-            <Select // Utiliza un Select para mostrar la lista de profesores
+            <Select
               name="profesor"
               placeholder="Selecciona un profesor"
               value={cursoData.profesor}
