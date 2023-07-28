@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Heading, Input, Select, Button } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
-import { createUser } from '../../data/usersData'; // Importar la función createUser
+import { createUser } from '../../data/usersData';
 import { useRouter } from 'next/router';
 
 const UsuarioCreate = () => {
@@ -13,13 +13,14 @@ const UsuarioCreate = () => {
     email: '',
     rut: '',
     telefono: '',
-    roles: ['alumno'], // El rol por defecto es 'alumno'
+    roles: ['alumno'],
   });
 
   const handleInputChange = (e) => {
+    const value = e.target.name === 'roles' ? [e.target.value] : e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
@@ -29,9 +30,9 @@ const UsuarioCreate = () => {
 
   const handleGuardarUsuario = async () => {
     try {
-      console.log(formData); // Muestra los datos que se enviarán al crear el usuario
-      await createUser(formData); // Llama a la función createUser para crear el usuario
-      router.push('/adminPages/usuariosAdmin'); // Redirecciona a la página de administración de usuarios después de guardar
+      console.log(formData);
+      await createUser(formData);
+      router.push('/adminPages/usuariosAdmin');
     } catch (error) {
       console.error('Error al crear el usuario:', error);
     }
@@ -93,7 +94,7 @@ const UsuarioCreate = () => {
             Guardar Usuario
           </Button>
           <Button colorScheme="gray" mt={4} onClick={handleVolverClick}>
-              Volver
+            Volver
           </Button>
         </Box>
       </Box>
