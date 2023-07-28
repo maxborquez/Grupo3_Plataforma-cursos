@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { crearAviso } from '../../data/avisosData';
 import { getUserId } from '../../data/auth';
+import { Box, Heading, Text, Button, VStack, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 
 const CrearAvisoPage = () => {
   const router = useRouter();
@@ -28,17 +29,32 @@ const CrearAvisoPage = () => {
     }
   };
 
+  const handleVolverClick = () => {
+    router.back();
+  };
+
   return (
-    <div>
-      <h1>Crear Aviso</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Contenido:</label>
-          <textarea value={contenido} onChange={(e) => setContenido(e.target.value)} />
-        </div>
-        <button type="submit">Crear Aviso</button>
-      </form>
-    </div>
+    <Box bg="black" minHeight="100vh" p={4}>
+      <Box bg="white" p={4} borderRadius="8px">
+        <Heading as="h1" size="xl" textAlign="center" mb={4}>
+          Crear Aviso
+        </Heading>
+        <form onSubmit={handleSubmit}>
+          <VStack align="flex-start">
+            <FormControl>
+              <FormLabel>Contenido:</FormLabel>
+              <Textarea value={contenido} onChange={(e) => setContenido(e.target.value)} />
+            </FormControl>
+            <Button colorScheme="blue" type="submit">
+              Crear Aviso
+            </Button>
+            <Button colorScheme="gray" onClick={handleVolverClick}>
+              Volver
+            </Button>
+          </VStack>
+        </form>
+      </Box>
+    </Box>
   );
 };
 

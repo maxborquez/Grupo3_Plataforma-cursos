@@ -34,7 +34,7 @@ const CursoProfeVer = () => {
       console.error("Error al cargar los detalles del curso:", error);
     }
   };
-  
+
   useEffect(() => {
     if (cursoId) {
       loadCursoDetalle();
@@ -150,8 +150,10 @@ const CursoProfeVer = () => {
             mr={3}
             mb={4}
             flexGrow={1}
+           
+            
           >
-            <Box bg="white" p={4} borderRadius="8px" textAlign="center">
+            <Box bg="white" p={4} borderRadius="8px" textAlign="center" >
               <Heading as="h1" size="xl">
                 Clases
                 <Button
@@ -164,8 +166,20 @@ const CursoProfeVer = () => {
               </Button>
               </Heading>
             </Box>
-            <Divider />
-            <VStack mt={4} spacing={4} bg="white" color="black" p={4} borderRadius="8px">
+
+            <Box   p={2}
+            bg="#E2E8F0"
+            border="1px solid #CBD5E0"
+            borderRadius="8px"
+            mt={1}
+            ml={1}
+            mr={1}
+            mb={1}
+            flexGrow={1}
+            maxHeight="200px" // Establecer una altura máxima para mostrar la barra de desplazamiento si el contenido excede esta altura
+            overflowY="auto">
+          
+            <VStack mt={2} spacing={4} bg="white" color="black" p={4} borderRadius="8px" >
               {curso.clases.length > 0 ? (
                 <UnorderedList>
                   {curso.clases.map((clase) => (
@@ -178,6 +192,7 @@ const CursoProfeVer = () => {
                 <Text fontStyle="italic">Aún no hay clases disponibles.</Text>
               )}
             </VStack>
+            </Box>
           </Box>
       
       </Box>
