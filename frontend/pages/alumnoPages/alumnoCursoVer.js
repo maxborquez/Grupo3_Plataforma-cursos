@@ -13,11 +13,10 @@ import {
   UnorderedList,
   Badge,
 } from "@chakra-ui/react";
-import { getCursoById, deleteCurso } from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
-import Sidebar from "../../components/Sidebar";
-import Swal from "sweetalert2"; // Importa SweetAlert 2
+import { getCursoById} from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
+import Sidebar from "../../components/sideBarAlumno";
 
-const CursoDetalle = () => {
+const AlumnoCursoVer = () => {
   const router = useRouter();
   const { cursoId } = router.query;
   const [curso, setCurso] = useState(null);
@@ -49,42 +48,6 @@ const CursoDetalle = () => {
     router.back();
   };
 
-  const handleEditarClick = () => {
-    // Redireccionar a la página de edición de curso
-    router.push(`/adminPages/cursoEditar/${cursoId}`);
-  };
-
-  // Función para manejar el clic en el botón de borrar curso
-  const handleBorrarClick = (id) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción eliminará el curso de forma permanente.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, borrar",
-      cancelButtonText: "No, cancelar",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteCurso(id);
-          Swal.fire({
-            title: "Curso eliminado exitosamente",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(() => {
-            // Redireccionar a la página anterior al hacer clic en "OK"
-            router.back();
-          });
-        } catch (error) {
-          Swal.fire("Error", "Hubo un problema al eliminar el curso.", "error");
-          console.error("Error al borrar el curso:", error);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire("Cancelado", "El curso no ha sido eliminado.", "info");
-      }
-    });
-  };
 
   return (
     <Box display="flex" minHeight="100vh">
@@ -136,7 +99,7 @@ const CursoDetalle = () => {
                 <UnorderedList ml={4}>
                   {curso.clases.map((clase) => (
                     <ListItem key={clase._id}>
-                      {clase.nombre} - Fecha:{" "}
+                      Nombre: {clase.nombre} - Fecha:{" "}
                       {new Date(clase.fecha).toLocaleDateString()}
                     </ListItem>
                   ))}
@@ -200,21 +163,6 @@ const CursoDetalle = () => {
           </VStack>
         </Box>
         <HStack mt={4} justifyContent="flex-end">
-          <Button
-            colorScheme="blue"
-            size="sm"
-            onClick={handleEditarClick} // Agrega el manejador de clic para editar
-          >
-            Editar
-          </Button>
-          <Button
-            colorScheme="red"
-            size="sm"
-            // Llama a la función handleBorrarClick con el id del curso
-            onClick={() => handleBorrarClick(curso._id)}
-          >
-            Borrar
-          </Button>
           <Button colorScheme="gray" size="sm" onClick={handleVolverClick}>
             Volver
           </Button>
@@ -224,4 +172,4 @@ const CursoDetalle = () => {
   );
 };
 
-export default CursoDetalle;
+export default AlumnoCursoVer;

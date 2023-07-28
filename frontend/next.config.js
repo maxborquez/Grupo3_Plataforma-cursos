@@ -33,6 +33,10 @@ const nextConfig = {
         source: '/adminPages/estadisticaDetalle/:estadisticaId',
         destination: '/adminPages/estadisticaDetalle', // Ruta del componente estadisticaDetalle.js
       },
+      {
+        source: '/alumnoPages/alumnoCursoVer/:cursoId', // Ruta con parámetro cursoId
+        destination: '/alumnoPages/alumnoCursoVer', // Ruta del componente alumnoCursoVer.js
+      },
     ];
   },
 };

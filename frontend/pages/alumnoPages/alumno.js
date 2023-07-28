@@ -1,26 +1,69 @@
-import { Box, Heading, Button } from '@chakra-ui/react';
-import Cookies from 'js-cookie';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Box, Heading, Button } from '@chakra-ui/react';
+import { getCursos } from '../../data/cursosData'; // Asegúrate de proporcionar la ruta correcta a tu archivo cursosData.js
+import SidebarAlumno from '../../components/sideBarAlumno'; // Importa el componente Sidebar
 
 const AlumnoPage = () => {
-  const router = useRouter();
+  const router = useRouter(); // Importa useRouter
+  const [cursos, setCursos] = useState([]);
 
-  // Función para realizar el logout y redirigir a la página de inicio de sesión
-  const handleLogout = () => {
-    // Elimina la cookie que contiene el token JWT
-    Cookies.remove('jwtToken');
-    // Redirige al usuario a la página de inicio de sesión después de cerrar sesión
-    router.push('/login');
+  // Llamar a la función loadCursos al cargar la página para obtener la lista de cursos
+  useEffect(() => {
+    loadCursos();
+  }, []);
+
+  const loadCursos = async () => {
+    try {
+      const cursosData = await getCursos();
+      setCursos(cursosData.data);
+    } catch (error) {
+      // Manejo de errores aquí si es necesario
+      console.error('Error al cargar los cursos:', error);
+    }
+  };
+
+  // Función para redireccionar a la página alumnoCursoVer con el ID del curso
+  const handleVerCurso = (cursoId) => {
+    router.push(`/alumnoPages/alumnoCursoVer/${cursoId}`);
   };
 
   return (
-    <Box p={4}>
-      <Heading as="h1" size="xl">
-        Hola Mundo - Página de Alumno
-      </Heading>
-      <Button mt={4} colorScheme="teal" onClick={handleLogout}>
-        Logout
-      </Button>
+    <Box display="flex" minHeight="100vh">
+      {/* Barra lateral */}
+      <SidebarAlumno />
+
+      {/* Contenido principal */}
+      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
+        <Heading as="h1" size="xl" textAlign="center" mb={4}>
+          Lista de Cursos
+        </Heading>
+        <Box
+          p={4}
+          borderRadius="10px"
+          bg="gray.300"
+          textAlign="center"
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+        >
+          <ul>
+            {cursos.map((curso) => (
+              <li key={curso._id}>
+                {curso.nombre}{' '}
+                <Button
+                  colorScheme="teal"
+                  size="sm"
+                  ml="2"
+                  onClick={() => handleVerCurso(curso._id)} // Llama a handleVerCurso con el ID del curso
+                >
+                  Ver
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </Box>
+      </Box>
     </Box>
   );
 };
