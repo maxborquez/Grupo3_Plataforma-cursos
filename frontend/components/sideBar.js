@@ -1,5 +1,6 @@
+// Sidebar.js
 import React from 'react';
-import { Box, Button, Stack } from '@chakra-ui/react';
+import { Box, Button, Stack, Image } from '@chakra-ui/react';
 import { logout } from '../data/auth';
 import { useRouter } from 'next/router';
 
@@ -32,6 +33,7 @@ const Sidebar = () => {
     >
       {/* Contenido de la barra lateral */}
       <Stack spacing={4}>
+        <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} /> {/* Ruta de la imagen actualizada */}
         <Button onClick={() => router.push('/adminPages/admin')} variant="ghost" color="white" colorScheme="whiteAlpha">
           Página principal
         </Button>
