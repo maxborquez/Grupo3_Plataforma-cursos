@@ -20,7 +20,7 @@ router.delete("/:id", authoMiddleware.isAdmin, cursoController.deleteCurso);
 // Rutas adicionales para funcionalidades específicas del controlador de cursos
 router.put("/:id/estado", authoMiddleware.isAdmin, cursoController.changeEstadoCurso);
 router.put("/:id/profesor", authoMiddleware.isAdmin, cursoController.changeProfesor);
-router.get("/profesor/:profesorId", cursoController.getCursosByProfesor);
+router.get("/profesor/:profesorId",authoMiddleware.isProfesor, cursoController.getCursosByProfesor);
 router.post("/:cursoId/alumno/:alumnoId", cursoController.inscribirAlumnoEnCurso);
 router.put("/:cursoId/alumno/:alumnoId/estado", authoMiddleware.isAdminOrProfesor, cursoController.cambiarEstadoAlumno,);
 router.delete("/:cursoId/alumno/:alumnoId", authoMiddleware.isAdminOrProfesor, cursoController.eliminarAlumno,);
