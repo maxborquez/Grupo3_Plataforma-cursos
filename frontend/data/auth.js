@@ -41,4 +41,19 @@ const getUserRole = () => {
   return []; // Si no hay token, devolver un array vacío
 };
 
-export { login, logout, getUserRole };
+const getUserId = () => {
+  const token = Cookies.get('jwtToken');
+
+  if (token) {
+    try {
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.id;
+      return userId;
+    } catch (error) {
+      console.error('Error decoding JWT:', error.message);
+    }
+  }
+
+  return null; // Si no hay token o hay un error en la decodificación, devolver null
+};
+export { login, logout, getUserRole, getUserId };

@@ -12,6 +12,10 @@ const nextConfig = {
         destination: '/profesorPages/cursosProfeVer', // Ruta del componente cursosProfeVer.js
       },
       {
+        source: '/profesorPages/cursosProfe/:profesorId',
+        destination: '/profesorPages/cursosProfe', // Ruta del componente CursosProfe.js
+      },
+      {
         source: '/adminPages/cursoEditar/:cursoId', // Ruta con parámetro cursoId
         destination: '/adminPages/cursoEditar', // Ruta del componente cursoEditar.js
       },
