@@ -13,9 +13,9 @@ import {
   UnorderedList,
   Badge,
 } from "@chakra-ui/react";
-import { getCursoById, deleteCurso } from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
+import { getCursoById, deleteCurso } from "../../data/cursosData";
 import Sidebar from "../../components/Sidebar";
-import Swal from "sweetalert2"; // Importa SweetAlert 2
+import Swal from "sweetalert2";
 
 const CursoDetalle = () => {
   const router = useRouter();
@@ -50,11 +50,9 @@ const CursoDetalle = () => {
   };
 
   const handleEditarClick = () => {
-    // Redireccionar a la página de edición de curso
     router.push(`/adminPages/cursoEditar/${cursoId}`);
   };
 
-  // Función para manejar el clic en el botón de borrar curso
   const handleBorrarClick = (id) => {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -73,7 +71,6 @@ const CursoDetalle = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            // Redireccionar a la página anterior al hacer clic en "OK"
             router.back();
           });
         } catch (error) {
@@ -153,7 +150,7 @@ const CursoDetalle = () => {
               {curso.avisos.length > 0 ? (
                 <UnorderedList ml={4}>
                   {curso.avisos.map((aviso) => (
-                    <ListItem key={aviso._id}>{aviso.titulo}</ListItem>
+                    <ListItem key={aviso._id}>{aviso.contenido}</ListItem>
                   ))}
                 </UnorderedList>
               ) : (
@@ -183,7 +180,7 @@ const CursoDetalle = () => {
               {curso.alumnos.length > 0 ? (
                 <UnorderedList ml={4}>
                   {curso.alumnos
-                    .filter((alumno) => alumno.alumno) // Filtrar para eliminar elementos nulos o sin alumno
+                    .filter((alumno) => alumno.alumno)
                     .map((alumno) => (
                       <ListItem key={alumno._id}>
                         {alumno.alumno.nombre} {alumno.alumno.apellido} -
@@ -203,14 +200,13 @@ const CursoDetalle = () => {
           <Button
             colorScheme="blue"
             size="sm"
-            onClick={handleEditarClick} // Agrega el manejador de clic para editar
+            onClick={handleEditarClick}
           >
             Editar
           </Button>
           <Button
             colorScheme="red"
             size="sm"
-            // Llama a la función handleBorrarClick con el id del curso
             onClick={() => handleBorrarClick(curso._id)}
           >
             Borrar

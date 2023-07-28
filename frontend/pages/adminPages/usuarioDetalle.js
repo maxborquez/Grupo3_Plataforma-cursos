@@ -2,21 +2,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
-import { getUserById, deleteUser } from "../../data/usersData"; // Importar la función getUserById y deleteUser
+import { getUserById, deleteUser } from "../../data/usersData";
 import Sidebar from "../../components/Sidebar";
-import Swal from "sweetalert2"; // Importa SweetAlert 2
+import Swal from "sweetalert2";
 
 const UsuarioDetalle = () => {
   const router = useRouter();
-  const { userId } = router.query; // Obtener el parámetro "userId" de la URL
-
+  const { userId } = router.query;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userResponse = await getUserById(userId); // Obtener el usuario por su ID
-        setUser(userResponse.data); // Establecer el usuario en el estado
+        const userResponse = await getUserById(userId);
+        setUser(userResponse.data);
       } catch (error) {
         console.error("Error al obtener el usuario:", error);
       }
@@ -27,13 +26,11 @@ const UsuarioDetalle = () => {
     }
   }, [userId]);
 
-  // Si el usuario aún no se ha cargado, mostrar un mensaje de carga
   if (!user) {
     return <div>Cargando...</div>;
   }
 
   const handleEditarClick = () => {
-    // Redireccionar a la página de edición de usuario
     router.push(`/adminPages/usuarioEditar/${userId}`);
   };
 
@@ -52,13 +49,12 @@ const UsuarioDetalle = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteUser(userId); // Eliminar el usuario utilizando la función deleteUser
+          await deleteUser(userId);
           Swal.fire({
             title: "Usuario eliminado exitosamente",
             icon: "success",
             confirmButtonText: "OK",
-          }).then(() => {
-            // Redireccionar a la página anterior al hacer clic en "OK"
+          }).then(() => { 
             router.back();
           });
         } catch (error) {
@@ -84,7 +80,7 @@ const UsuarioDetalle = () => {
         mr={4}
         ml={18}
         flexGrow={1}
-        position="relative" // Para permitir posicionar los botones dentro de este contenedor
+        position="relative"
       >
         <Heading as="h1" size="xl">
           Detalle del Usuario
@@ -104,7 +100,6 @@ const UsuarioDetalle = () => {
           </Text>
         </Box>
         <Box mt={4} display="flex" justifyContent="flex-end">
-          {/* Agregar los botones de Editar y Borrar aquí */}
           <Button colorScheme="blue" ml={4} size="sm" onClick={handleEditarClick}>
             Editar
           </Button>

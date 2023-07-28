@@ -1,13 +1,11 @@
 import { Box, Heading, Button, HStack } from '@chakra-ui/react';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
-import { useRouter } from 'next/router'; // Importar useRouter
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/router';
 
 const UserItem = ({ user, onDeleteClick }) => {
-  const router = useRouter(); // Obtener el router
+  const router = useRouter();
 
-  // Función para manejar el clic en el botón de borrar
   const handleDeleteClick = () => {
-    // Mostrar SweetAlert2 para confirmar la acción de borrar
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción eliminará al usuario de forma permanente.',
@@ -17,14 +15,13 @@ const UserItem = ({ user, onDeleteClick }) => {
       cancelButtonText: 'No, cancelar',
       reverseButtons: true,
     }).then((result) => {
-      // Si el usuario hace clic en "Sí, borrar", ejecutamos la función onDeleteClick
+
       if (result.isConfirmed) {
         onDeleteClick(user._id);
       }
     });
   };
 
-  // Función para manejar el clic en el botón de detalle
   const handleDetalleClick = () => {
     router.push(`/adminPages/usuarioDetalle/${user._id}`);
   };

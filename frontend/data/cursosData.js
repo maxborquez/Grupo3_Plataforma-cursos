@@ -13,7 +13,7 @@ const getCursos = async () => {
     const token = getToken();
     const response = await axios.get(`${apiUrl}/cursos`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -28,7 +28,7 @@ const getCursoById = async (id) => {
     const token = getToken();
     const response = await axios.get(`${apiUrl}/cursos/${id}`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -43,7 +43,7 @@ const createCurso = async (cursoData) => {
     const token = getToken();
     const response = await axios.post(`${apiUrl}/cursos`, cursoData, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -58,7 +58,7 @@ const updateCurso = async (id, cursoData) => {
     const token = getToken();
     const response = await axios.put(`${apiUrl}/cursos/${id}`, cursoData, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -73,7 +73,7 @@ const deleteCurso = async (id) => {
     const token = getToken();
     const response = await axios.delete(`${apiUrl}/cursos/${id}`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;

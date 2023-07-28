@@ -1,4 +1,3 @@
-// pages/signup.js
 import { useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, VStack, Checkbox, CheckboxGroup } from '@chakra-ui/react';
 
@@ -28,15 +27,6 @@ const SignupPage = () => {
   };
 
   const handleSubmit = () => {
-    // Aquí puedes realizar una llamada al backend para enviar los datos de registro (formData) al servidor.
-    // Por ejemplo:
-    // fetch('/api/signup', {
-    //   method: 'POST',
-    //   body: JSON.stringify(formData),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
   };
 
   return (

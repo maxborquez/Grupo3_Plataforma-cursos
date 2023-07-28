@@ -3,19 +3,17 @@ import Cookies from 'js-cookie';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-// Función para obtener el token
 const getToken = () => {
   const token = Cookies.get('jwtToken');
   return token;
 };
 
-// Función para crear una nueva estadística
 export async function createEstadistica() {
   try {
-    const token = getToken(); // Obtener el token usando la función getToken
+    const token = getToken();
     const response = await axios.post(`${apiUrl}/estadisticas`, {}, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -25,13 +23,12 @@ export async function createEstadistica() {
   }
 }
 
-// Función para obtener todas las estadísticas
 export async function getEstadisticas() {
   try {
-    const token = getToken(); // Obtener el token usando la función getToken
+    const token = getToken(); 
     const response = await axios.get(`${apiUrl}/estadisticas`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -41,13 +38,12 @@ export async function getEstadisticas() {
   }
 }
 
-// Función para eliminar una estadística por su ID
 export async function deleteEstadistica(estadisticaId) {
   try {
-    const token = getToken(); // Obtener el token usando la función getToken
+    const token = getToken();
     const response = await axios.delete(`${apiUrl}/estadisticas/${estadisticaId}`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -57,13 +53,13 @@ export async function deleteEstadistica(estadisticaId) {
   }
 }
 
-// Función para eliminar todas las estadísticas
+
 export async function deleteAllEstadisticas() {
   try {
-    const token = getToken(); // Obtener el token usando la función getToken
+    const token = getToken();
     const response = await axios.delete(`${apiUrl}/estadisticas`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;
@@ -73,13 +69,12 @@ export async function deleteAllEstadisticas() {
   }
 }
 
-// Función para obtener una estadística por su ID
 export async function getEstadisticaById(estadisticaId) {
   try {
-    const token = getToken(); // Obtener el token usando la función getToken
+    const token = getToken();
     const response = await axios.get(`${apiUrl}/estadisticas/${estadisticaId}`, {
       headers: {
-        token: token, // Utiliza el nombre correcto del header para enviar el token
+        token: token,
       },
     });
     return response.data;

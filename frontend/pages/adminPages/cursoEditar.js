@@ -16,7 +16,7 @@ import {
 import { getCursoById, updateCurso } from "../../data/cursosData";
 import { getProfesores } from "../../data/usersData";
 import Sidebar from "../../components/Sidebar";
-import Swal from "sweetalert2"; // Importar Sweetalert2
+import Swal from "sweetalert2"
 
 const CursoEditar = () => {
   const router = useRouter();
@@ -25,22 +25,20 @@ const CursoEditar = () => {
     nombre: "",
     descripcion: "",
     estado: "Disponible",
-    fecha_inicio: "", // Mantenemos la fecha en blanco por defecto
-    fecha_fin: "", // Mantenemos la fecha en blanco por defecto
+    fecha_inicio: "",
+    fecha_fin: "",
     profesor: null,
   });
   const [profesores, setProfesores] = useState([]);
 
-  // Función para convertir una fecha en formato ISO a un objeto Date
   const convertToDate = (dateString) => {
-    return dateString ? new Date(dateString) : ""; // Retornar fecha válida o cadena vacía si no hay fecha
+    return dateString ? new Date(dateString) : "";
   };
 
-  // Función para convertir un objeto Date a un string en formato ISO (yyyy-MM-dd)
   const convertToISODate = (dateObject) => {
     return dateObject instanceof Date
       ? dateObject.toISOString().split("T")[0]
-      : ""; // Retornar cadena vacía si no es una fecha válida
+      : "";
   };
 
   useEffect(() => {
@@ -88,7 +86,6 @@ const CursoEditar = () => {
   };
 
   const handleUpdateCurso = () => {
-    // Mostrar la alerta de Sweetalert2
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Se guardarán los cambios en el curso.",
@@ -101,13 +98,11 @@ const CursoEditar = () => {
       if (result.isConfirmed) {
         try {
           await updateCurso(cursoId, curso);
-          // Si el usuario confirma guardar los cambios, redireccionamos a la página anterior
           router.back();
         } catch (error) {
           console.error("Error al actualizar el curso:", error);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Si el usuario cancela, no se realiza ninguna acción
       }
     });
   };
@@ -183,7 +178,7 @@ const CursoEditar = () => {
           <FormControl>
             <FormLabel>Profesor</FormLabel>
             <Select
-              value={curso.profesor ? curso.profesor._id : ""} // Verificamos si existe un profesor seleccionado antes de obtener el ID
+              value={curso.profesor ? curso.profesor._id : ""}
               onChange={(e) => {
                 const selectedProfesor = profesores.find(
                   (profesor) => profesor._id === e.target.value
@@ -191,7 +186,7 @@ const CursoEditar = () => {
                 setCurso({ ...curso, profesor: selectedProfesor });
               }}
             >
-              <option value="">Seleccionar profesor...</option> {/* Opción por defecto */}
+              <option value="">Seleccionar profesor...</option>
               {profesores.map((profesor) => (
                 <option key={profesor._id} value={profesor._id}>
                   {profesor.nombre} {profesor.apellido}

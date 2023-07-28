@@ -1,4 +1,3 @@
-// pages/index.js
 import Link from 'next/link';
 import { Box, Button, Heading, VStack, Text } from '@chakra-ui/react';
 

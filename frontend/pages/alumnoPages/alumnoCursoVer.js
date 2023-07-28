@@ -125,7 +125,7 @@ const AlumnoCursoVer = () => {
               {curso.avisos.length > 0 ? (
                 <UnorderedList ml={4}>
                   {curso.avisos.map((aviso) => (
-                    <ListItem key={aviso._id}>{aviso.titulo}</ListItem>
+                    <ListItem key={aviso._id}>{aviso.contenido}</ListItem>
                   ))}
                 </UnorderedList>
               ) : (
