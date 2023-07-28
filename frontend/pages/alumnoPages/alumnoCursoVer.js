@@ -1,20 +1,9 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import {
-  Box,
-  Heading,
-  Text,
-  Button,
-  HStack,
-  VStack,
-  Divider,
-  List,
-  ListItem,
-  UnorderedList,
-  Badge,
-} from "@chakra-ui/react";
-import { getCursoById} from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
-import Sidebar from "../../components/sideBarAlumno";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Box, Heading, Button, HStack, Text, Badge, Divider, ListItem, UnorderedList, List, VStack } from '@chakra-ui/react';
+import { getCursoById, inscribirAlumnoEnCurso } from '../../data/cursosData'; // Importa la función inscribirAlumnoEnCurso de cursosData.js
+import SidebarAlumno from '../../components/sideBarAlumno'; // Importa el componente Sidebar
+import { getUserId } from '../../data/auth'; // Importa la función getUserId del archivo auth.js
 
 const AlumnoCursoVer = () => {
   const router = useRouter();
@@ -25,13 +14,13 @@ const AlumnoCursoVer = () => {
     const loadCursoDetalle = async () => {
       try {
         const response = await getCursoById(cursoId);
-        if (response.state === "Success") {
+        if (response.state === 'Success') {
           setCurso(response.data);
         } else {
-          console.error("Error al obtener los detalles del curso:", response);
+          console.error('Error al obtener los detalles del curso:', response);
         }
       } catch (error) {
-        console.error("Error al cargar los detalles del curso:", error);
+        console.error('Error al cargar los detalles del curso:', error);
       }
     };
 
@@ -48,10 +37,30 @@ const AlumnoCursoVer = () => {
     router.back();
   };
 
+  const handleInscribirClick = async () => {
+    try {
+      const alumnoId = getUserId(); // Obtener el ID del alumno desde el token
+      if (!alumnoId) {
+        console.error('Error al obtener el ID del alumno desde el token.');
+        return;
+      }
+
+      console.log('cursoId:', cursoId);
+      console.log('alumnoId:', alumnoId);
+
+      // Llamar a la función inscribirAlumnoEnCurso con los IDs del curso y el alumno
+      const response = await inscribirAlumnoEnCurso(cursoId, alumnoId);
+      console.log('Respuesta de inscripción:', response);
+      // Aquí puedes mostrar un mensaje de éxito o realizar otras acciones después de la inscripción
+    } catch (error) {
+      console.error('Error al inscribir alumno en el curso:', error);
+      // Aquí puedes mostrar un mensaje de error o realizar otras acciones en caso de error
+    }
+  };
 
   return (
     <Box display="flex" minHeight="100vh">
-      <Sidebar />
+      <SidebarAlumno />
       <Box
         p={4}
         bg="#E2E8F0"
@@ -99,7 +108,7 @@ const AlumnoCursoVer = () => {
                 <UnorderedList ml={4}>
                   {curso.clases.map((clase) => (
                     <ListItem key={clase._id}>
-                      Nombre: {clase.nombre} - Fecha:{" "}
+                      {clase.nombre} - Fecha:{" "}
                       {new Date(clase.fecha).toLocaleDateString()}
                     </ListItem>
                   ))}
@@ -166,9 +175,14 @@ const AlumnoCursoVer = () => {
           <Button colorScheme="gray" size="sm" onClick={handleVolverClick}>
             Volver
           </Button>
+          <Button colorScheme="teal" size="sm" onClick={handleInscribirClick}>
+            Inscribir
+          </Button>
         </HStack>
       </Box>
     </Box>
+
+
   );
 };
 
