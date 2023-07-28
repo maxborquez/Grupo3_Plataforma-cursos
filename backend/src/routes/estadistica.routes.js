@@ -13,6 +13,7 @@ const router = express.Router();
 // Define las rutas para la asistencia
 router.post("/", estadisticaController.createEstadistica);
 router.get("/", estadisticaController.getEstadisticas);
+router.get("/:id", estadisticaController.getEstadisticaById);
 router.delete("/:id", estadisticaController.deleteEstadistica);
 //router.delete("/todas", estadisticaController.deleteAllEstadisticas);
 

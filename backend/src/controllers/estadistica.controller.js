@@ -97,6 +97,23 @@ async function getEstadisticas(req, res) {
   }
 }
 
+// Obtener una estadística por su ID
+async function getEstadisticaById(req, res) {
+  try {
+    const estadisticaId = req.params.id; // Obtener el ID de la estadística desde los parámetros de la solicitud
+    const estadistica = await Estadistica.findById(estadisticaId); // Buscar la estadística por su ID
+
+    if (!estadistica) {
+      return res.status(404).json({ error: "Estadística no encontrada" });
+    }
+
+    res.status(200).json(estadistica);
+  } catch (error) {
+    console.error("Error al obtener la estadística:", error);
+    res.status(500).json({ error: "Error al obtener la estadística" });
+  }
+}
+
 // Eliminar una estadística por su ID
 async function deleteEstadistica(req, res) {
   try {
@@ -131,5 +148,6 @@ module.exports = {
   createEstadistica,
   getEstadisticas,
   deleteEstadistica,
-  deleteAllEstadisticas
+  deleteAllEstadisticas,
+  getEstadisticaById
 };
