@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 
 const avisoSchema = new mongoose.Schema({
-  titulo: {
-    type: String,
-    required: true,
-  },
+
   contenido: {
     type: String,
     required: true,

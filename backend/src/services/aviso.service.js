@@ -24,27 +24,7 @@ async function getAvisoById(id) {
 
 async function createAviso(aviso) {
   try {
-    const { error } = avisoBodySchema.validate(aviso);
-    if (error) return null;
-
-    const { titulo, contenido, curso: cursoId, profesor: profesorId } = aviso;
-
-    const cursoExistente = await Curso.findById(cursoId);
-    if (!cursoExistente) {
-      return null;
-    }
-
-    const profesorExistente = await User.findById(profesorId);
-    if (!profesorExistente) {
-      return null;
-    }
-
-    const nuevoAviso = new Aviso({
-      titulo,
-      contenido,
-      curso: cursoId,
-      profesor: profesorId,
-    });
+    const nuevoAviso = new Aviso(aviso);
     return await nuevoAviso.save();
   } catch (error) {
     handleError(error, "aviso.service -> createAviso");

@@ -15,17 +15,23 @@ const obtenerAvisosPorCurso = async (req, res) => {
 // Crear un nuevo aviso en un curso
 const crearAvisoEnCurso = async (req, res) => {
   try {
-    const { titulo, contenido, curso, profesor } = req.body;
-    const cursoEncontrado = await Curso.findById(curso);
+    const { contenido } = req.body;
+    const cursoId = req.params.cursoId;
+    const profesorId = req.params.profesorId;
+
+    const cursoEncontrado = await Curso.findById(cursoId);
     if (!cursoEncontrado) {
       return res.status(404).json({ error: "Curso no encontrado" });
     }
+
+    // Crear el aviso con los ids del curso y el profesor proporcionados en la ruta
     const nuevoAviso = new Aviso({
-      titulo,
+     
       contenido,
-      curso,
-      profesor,
+      curso: cursoId,
+      profesor: profesorId,
     });
+
     const avisoGuardado = await nuevoAviso.save();
     cursoEncontrado.avisos.push(avisoGuardado._id);
     await cursoEncontrado.save();
