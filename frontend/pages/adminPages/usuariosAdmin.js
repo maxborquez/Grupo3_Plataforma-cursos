@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Flex, Button, Link } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import Sidebar from '../../components/Sidebar';
 import withAuth from '../../data/withAuth';
 import UserItem from '../../components/userItem';
@@ -47,7 +46,6 @@ const UsuariosAdminPage = () => {
     ? allUsers.filter((user) => user.roles.some((role) => role.name === 'profesor'))
     : allUsers.filter((user) => user.roles.some((role) => role.name === 'alumno'));
 
-  const router = useRouter();
 
   return (
     <Box display="flex" minHeight="100vh">

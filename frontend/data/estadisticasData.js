@@ -72,3 +72,19 @@ export async function deleteAllEstadisticas() {
     throw new Error('No se pudieron eliminar todas las estadísticas');
   }
 }
+
+// Función para obtener una estadística por su ID
+export async function getEstadisticaById(estadisticaId) {
+  try {
+    const token = getToken(); // Obtener el token usando la función getToken
+    const response = await axios.get(`${apiUrl}/estadisticas/${estadisticaId}`, {
+      headers: {
+        token: token, // Utiliza el nombre correcto del header para enviar el token
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener la estadística por ID:', error);
+    throw new Error('No se pudo obtener la estadística por ID');
+  }
+}

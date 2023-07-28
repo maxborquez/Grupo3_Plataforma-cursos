@@ -29,6 +29,10 @@ const nextConfig = {
         source: '/adminPages/usuarioEditar/:userId',
         destination: '/adminPages/usuarioEditar', // Ruta del componente usuarioEditar.js
       },
+      {
+        source: '/adminPages/estadisticaDetalle/:estadisticaId',
+        destination: '/adminPages/estadisticaDetalle', // Ruta del componente estadisticaDetalle.js
+      },
     ];
   },
 };

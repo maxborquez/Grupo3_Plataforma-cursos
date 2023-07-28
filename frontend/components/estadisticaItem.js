@@ -1,4 +1,3 @@
-// estadisticaItem.js
 import { Box, Text, Button, HStack } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { deleteEstadistica } from '../data/estadisticasData';
@@ -9,6 +8,7 @@ const EstadisticaItem = ({ estadistica, fetchData }) => {
   const router = useRouter();
   const formattedFechaCreacion = format(new Date(estadistica.fecha_creacion), 'dd/MM/yyyy HH:mm:ss');
 
+  // Función para eliminar la estadística por su ID
   const handleEliminarClick = async (id) => {
     const result = await Swal.fire({
       title: '¿Estás seguro?',
@@ -24,13 +24,19 @@ const EstadisticaItem = ({ estadistica, fetchData }) => {
     if (result.isConfirmed) {
       try {
         await deleteEstadistica(id);
+        fetchData(); // Llamar a la función fetchData para actualizar la lista de estadísticas
         Swal.fire('Borrado', 'La estadística ha sido eliminada correctamente.', 'success');
-        fetchData();
       } catch (error) {
         console.error('Error al eliminar la estadística:', error);
         Swal.fire('Error', 'No se pudo eliminar la estadística.', 'error');
       }
     }
+  };
+
+  // Función para manejar el clic en el botón Detalle
+  const handleDetalleClick = (estadisticaId) => {
+    // Redirigir a la página de detalle de la estadística
+    router.push(`/adminPages/estadisticaDetalle/${estadisticaId}`);
   };
 
   return (
@@ -39,7 +45,7 @@ const EstadisticaItem = ({ estadistica, fetchData }) => {
         {formattedFechaCreacion}
       </Text>
       <HStack mt={2} justifyContent="flex-end">
-        <Button colorScheme="blue" size="sm" onClick={() => onDetalleClick(estadistica._id)}>
+        <Button colorScheme="blue" size="sm" onClick={() => handleDetalleClick(estadistica._id)}>
           Detalle
         </Button>
         <Button colorScheme="red" size="sm" onClick={() => handleEliminarClick(estadistica._id)}>
