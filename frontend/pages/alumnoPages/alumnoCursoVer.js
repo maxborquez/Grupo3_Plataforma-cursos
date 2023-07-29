@@ -63,7 +63,8 @@ const AlumnoCursoVer = () => {
       <SidebarAlumno />
       <Box
         p={4}
-        bg="#E2E8F0"
+        bg="negro-sec"
+        color="amarillo"
         border="1px solid #CBD5E0"
         borderRadius="8px"
         mt={4}
@@ -73,7 +74,7 @@ const AlumnoCursoVer = () => {
         <Heading as="h1" size="xl">
           {curso.nombre}
         </Heading>
-        <Text fontSize="lg" color="gray.600" mt={2}>
+        <Text fontSize="lg" mt={2}>
           {curso.descripcion}
         </Text>
         <Box mt={4}>
@@ -172,10 +173,10 @@ const AlumnoCursoVer = () => {
           </VStack>
         </Box>
         <HStack mt={4} justifyContent="flex-end">
-          <Button colorScheme="gray" size="sm" onClick={handleVolverClick}>
+          <Button bg="naranja" color="blanco" size="sm" onClick={handleVolverClick}>
             Volver
           </Button>
-          <Button colorScheme="teal" size="sm" onClick={handleInscribirClick}>
+          <Button bg="cafe"color="blanco" size="sm" onClick={handleInscribirClick}>
             Inscribir
           </Button>
         </HStack>
