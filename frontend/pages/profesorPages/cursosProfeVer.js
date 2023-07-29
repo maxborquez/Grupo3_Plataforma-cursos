@@ -83,18 +83,18 @@ const CursoProfeVer = () => {
   };
 
   return (
-    <Box display="flex" minHeight="100vh">
+    <Box display="flex" minHeight="100vh" bg="negro">
       <Sidebar />
 
-      <Box flexGrow={4} bg="black" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={2} mb={4} display="flex" flexDirection="column">
-        <Box p={4} bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={3} mb={1} flexGrow={1}>
-          <Box bg="white" p={4} borderRadius="8px" textAlign="center">
+      <Box flexGrow={4} bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={2} mb={4} display="flex" flexDirection="column">
+        <Box p={4} bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={3} mb={1} flexGrow={1}>
+          <Box bg="negro-sec" p={4} borderRadius="8px" textAlign="center">
             <Heading as="h1" size="xl">
               {curso.nombre}
             </Heading>
           </Box>
           <Divider />
-          <VStack mt={4} spacing={4} bg="white" color="black" p={4} borderRadius="8px">
+          <VStack mt={4} spacing={4} bg="amarillo" color="cafe" p={4} borderRadius="8px">
             <Box w="100%">
               <Heading as="h3" size="lg">
                 Información del curso
@@ -122,26 +122,26 @@ const CursoProfeVer = () => {
           </VStack>
         </Box>
 
-        <Box p={4} bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" mt={2} ml={3} mr={3} mb={4} flexGrow={1}>
-          <Box bg="white" p={4} borderRadius="8px" textAlign="center">
+        <Box p={4} bg="megro-sec" border="1px solid #CBD5E0" borderRadius="8px" mt={2} ml={3} mr={3} mb={4} flexGrow={1}>
+          <Box bg="negro-sec" p={4} borderRadius="8px" textAlign="center" display="1">
             <Heading as="h1" size="xl">
               Clases
-              <Button ml="auto" colorScheme="blue" size="sm" onClick={() => handleCrearClasesClick(cursoId)}>
+              <Button ml="4" bg ="verde" color="blanco" size="sm" onClick={() => handleCrearClasesClick(cursoId)}>
                 +
               </Button>
             </Heading>
           </Box>
-          <Box p={2} bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" mt={1} ml={1} mr={1} mb={1} flexGrow={1} maxHeight="200px" overflowY="auto">
-            <VStack mt={2} spacing={4} bg="white" color="black" p={4} borderRadius="8px">
+          <Box p={2} bg="amarillo" border="1px solid #CBD5E0" borderRadius="8px" mt={1} ml={1} mr={1} mb={1} flexGrow={1} maxHeight="200px" overflowY="auto">
+            <VStack mt={2} spacing={4} bg="amarillo" color="black" p={4} borderRadius="8px">
               {curso.clases.length > 0 ? (
                 <UnorderedList>
                   {curso.clases.map((clase) => (
                     <ListItem key={clase._id}>
                       Nombre: {clase.nombre} - Fecha: {new Date(clase.fecha).toLocaleDateString()}
-                      <Button ml="auto" size="sm" colorScheme="red" onClick={() => handleBorrarClaseClick(clase._id)}>
+                      <Button ml="4" size="xs" bg="naranja" color="white" onClick={() => handleBorrarClaseClick(clase._id)}>
                         Eliminar
                       </Button>
-                      <Button ml="auto" size="sm" colorScheme="green" onClick={() => handleEditarClaseClick(clase._id)}>
+                      <Button ml="4" size="xs" bg="verde" color="white" onClick={() => handleEditarClaseClick(clase._id)}>
                         Editar
                       </Button>
                     </ListItem>
@@ -155,27 +155,28 @@ const CursoProfeVer = () => {
         </Box>
       </Box>
 
-      <Box p={2} bg="black" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={1} mr={4} mb={4} flexGrow={1}>
-        <Box mt={2} ml={1} mr={1} flexGrow={1}>
-          <Box w="100%" p={4} bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px">
-            <Heading as="h3" size="lg" textAlign="center">
+      <Box p={2} bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={1} mr={4} mb={4} flexGrow={1}>
+        <Box mt={2} ml={1} mr={1} flexGrow={1} >
+        <Heading as="h3" size="lg" textAlign="center">
               Avisos
-              <Button ml="auto" colorScheme="blue" size="sm" onClick={() => handleCrearAvisoClick(cursoId)}>
+              <Button ml="4" bg ="verde" color="blanco" size="sm" onClick={() => handleCrearAvisoClick(cursoId)}>
                 +
               </Button>
             </Heading>
+          <Box w="100%" mt={4} p={4} bg="amarillo" color="cafe" border="1px solid #CBD5E0" borderRadius="8px">
+           
             <Divider />
             {curso.avisos.length > 0 ? (
               <UnorderedList>
                 {curso.avisos.map((aviso) => (
                   <ListItem key={aviso._id}>
                     {aviso.contenido}
-                    <Button ml="auto" size="sm" colorScheme="red" onClick={() => handleBorrarAvisoClick(aviso._id)}>
-                      Borrar
-                    </Button>
-                    <Button ml="auto" size="sm" colorScheme="green" onClick={() => handleEditarAvisoClick(aviso._id)}>
-                      Editar
-                    </Button>
+                    <Button ml="4" size="xs" bg="naranja" color="white" onClick={() => handleBorrarAvisoClick(aviso._id)}>
+                        Eliminar
+                      </Button>
+                      <Button ml="4" size="xs" bg="verde" color="white" onClick={() => handleEditarAvisoClick(aviso._id)}>
+                        Editar
+                      </Button>
                   </ListItem>
                 ))}
               </UnorderedList>
@@ -184,6 +185,13 @@ const CursoProfeVer = () => {
             )}
           </Box>
         </Box>
+      </Box>
+
+      {/* Agregar el botón Volver en la esquina inferior derecha */}
+      <Box position="fixed" bottom="10px" right="10px">
+        <Button bg="cafe" color="white" onClick={handleVolverClick}>
+          Volver
+        </Button>
       </Box>
     </Box>
   );

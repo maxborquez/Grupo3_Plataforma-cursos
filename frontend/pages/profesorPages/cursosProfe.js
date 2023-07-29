@@ -45,12 +45,12 @@ const CursosProfe = () => {
     <Box display="flex" minHeight="100vh">
       <SidebarProfe />
       {/* Resto del código de la página... */}
-      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
-        <Box flex="1" p={4} borderRadius="20px" bg="gray.200" textAlign="center" display="flex" alignItems="center" flexDirection="column">
-          <Heading as="h1" size="xl" mb={4}>
+      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex" width="100%">
+      <Box bg="negro-sec" border="1px solid amarillo" borderRadius="8px" p={4} mb={4} flexGrow={1} >
+          <Heading as="h1" size="xl" mb={4} color="blanco">
             Cursos
           </Heading>
-          <List mt={4} width="100%">
+          <List overflowY="auto" mt={4} width="100%">
             {Array.isArray(cursos) && cursos.length > 0 ? (
               cursos.map((curso) => (
                 <Box
@@ -64,7 +64,8 @@ const CursosProfe = () => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
-                  bg="white"
+                  bg="amarillo"
+                  color="cafe"
                 >
                   <Box>
                     <Heading as="h2" size="lg">
@@ -74,7 +75,7 @@ const CursosProfe = () => {
                       <strong>Descripción:</strong> {curso.descripcion}
                     </Box>
                   </Box>
-                  <Button colorScheme="blue" onClick={() => handleVerCurso(curso._id)}>
+                  <Button bg="cafe" color="blanco" size="sm" onClick={() => handleVerCurso(curso._id)}>
                     Ver
                   </Button>
                 </Box>

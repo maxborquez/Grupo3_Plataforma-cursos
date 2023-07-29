@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   VStack,
+  HStack, // Agregamos el componente HStack
 } from '@chakra-ui/react';
 import { obtenerClasePorId, actualizarClase } from '../../data/clasesData';
 
@@ -15,17 +16,14 @@ const EditarClase = () => {
   const router = useRouter();
   const { claseId } = router.query;
 
-  // Estado para almacenar los detalles de la clase
-  const [clase, setClase] = useState({}); // Inicializa como un objeto vacío {}
+  const [clase, setClase] = useState({});
 
-  // Carga los detalles de la clase al cargar la página
   useEffect(() => {
     if (claseId) {
       obtenerClase();
     }
   }, [claseId]);
 
-  // Función para obtener los detalles de la clase por su ID
   const obtenerClase = async () => {
     try {
       const claseObtenida = await obtenerClasePorId(claseId);
@@ -35,7 +33,6 @@ const EditarClase = () => {
     }
   };
 
-  // Función para manejar el cambio en los campos del formulario
   const handleChange = (e) => {
     setClase({
       ...clase,
@@ -43,51 +40,71 @@ const EditarClase = () => {
     });
   };
 
-  // Función para manejar el envío del formulario de edición
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Envía la solicitud para actualizar la clase
       await actualizarClase(claseId, clase);
-      // Redirige a la página anterior después de la edición exitosa
       router.back();
     } catch (error) {
       console.error('Error al editar la clase:', error);
     }
   };
 
+  const handleVolverClick = () => {
+    router.back();
+  };
+
   return (
-    <Box mt={4} p={4} borderWidth="1px" borderRadius="md">
-      <Heading as="h1" size="lg" mb={4}>
-        Editar Clase
-      </Heading>
-      <form onSubmit={handleSubmit}>
-        <VStack align="start" spacing={4}>
-          <FormControl>
-            <FormLabel>Nombre de la Clase:</FormLabel>
-            <Input
-              name="nombre"
-              value={clase.nombre || ''}
-              onChange={handleChange}
-              required
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Fecha de la Clase:</FormLabel>
-            <Input
-              type="date"
-              name="fecha"
-              value={clase.fecha || ''}
-              onChange={handleChange}
-              required
-            />
-          </FormControl>
-          {/* Puedes agregar más campos de la clase aquí según tu modelo */}
-          <Button colorScheme="blue" type="submit">
-            Guardar Cambios
-          </Button>
-        </VStack>
-      </form>
+    <Box p={2} maxWidth="600px" bg="amarillo" margin="0 auto" borderWidth="1px" borderRadius="md" mt={4}>
+      <Box p={4} bg="negro-sec" borderRadius="8px">
+        <Heading as="h1" size="lg" mb={4}>
+          Editar Clase
+        </Heading>
+        <form onSubmit={handleSubmit}>
+          <VStack align="start" spacing={4}>
+            <FormControl>
+              <FormLabel>Nombre de la Clase:</FormLabel>
+              <Input
+                name="nombre"
+                value={clase.nombre || ''}
+                onChange={handleChange}
+                required
+                bg="white"
+                border="1px solid gray"
+                borderRadius="md"
+                p={2}
+                width="100%"
+                color="black"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Fecha de la Clase:</FormLabel>
+              <Input
+                type="date"
+                name="fecha"
+                value={clase.fecha || ''}
+                onChange={handleChange}
+                required
+                bg="white"
+                border="1px solid gray"
+                borderRadius="md"
+                p={2}
+                width="100%"
+                color="black"
+              />
+            </FormControl>
+            {/* Puedes agregar más campos de la clase aquí según tu modelo */}
+            <HStack>
+              <Button type="submit" bg="verde" color="white">
+                Guardar Cambios
+              </Button>
+              <Button bg="naranja" color="white" onClick={handleVolverClick}>
+                Cancelar
+              </Button>
+            </HStack>
+          </VStack>
+        </form>
+      </Box>
     </Box>
   );
 };
