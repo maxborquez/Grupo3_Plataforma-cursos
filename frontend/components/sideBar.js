@@ -33,15 +33,6 @@ const Sidebar = () => {
       <Stack spacing={4}>
         <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} />
         <Button
-          onClick={() => router.push('/adminPages/admin')}
-          variant="solid"
-          colorScheme="amarillo"
-          color="blanco"
-          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
-        >
-          Página principal
-        </Button>
-        <Button
           onClick={() => router.push('/adminPages/cursosAdmin')}
           variant="solid"
           colorScheme="amarillo"

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { crearAviso } from '../../data/avisosData';
 import { getUserId } from '../../data/auth';
-import { Box, Heading, Text, Button, VStack, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
+import { Box, Heading, Button, VStack, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 
 const CrearAvisoPage = () => {
   const router = useRouter();

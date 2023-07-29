@@ -98,11 +98,20 @@ const CursoEditar = () => {
       if (result.isConfirmed) {
         try {
           await updateCurso(cursoId, curso);
-          router.back();
+          Swal.fire({
+            title: "Perfil actualizado",
+            text: "Los cambios han sido guardados exitosamente.",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            router.push(`/adminPages/cursoDetalle/${userId}`);
+          });
         } catch (error) {
           console.error("Error al actualizar el curso:", error);
+          Swal.fire("Error", "Hubo un problema al guardar los cambios.", "error");
         }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      } else {
+        Swal.fire("Cancelado", "Los cambios no han sido guardados.", "info");
       }
     });
   };
