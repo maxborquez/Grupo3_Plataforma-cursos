@@ -13,7 +13,6 @@ const UserItem = ({ user, onDeleteClick }) => {
       showCancelButton: true,
       confirmButtonText: 'Sí, borrar',
       cancelButtonText: 'No, cancelar',
-      reverseButtons: true,
     }).then((result) => {
 
       if (result.isConfirmed) {

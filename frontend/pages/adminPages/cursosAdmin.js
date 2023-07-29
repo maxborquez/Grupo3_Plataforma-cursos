@@ -66,7 +66,6 @@ const CursosAdminPage = () => {
                     showCancelButton: true,
                     confirmButtonText: 'Sí, borrar',
                     cancelButtonText: 'No, cancelar',
-                    reverseButtons: true,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       try {

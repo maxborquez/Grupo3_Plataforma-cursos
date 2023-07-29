@@ -12,8 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { getCursoById } from "../../data/cursosData";
 import Sidebar from "../../components/sideBar";
-import { borrarAviso } from "../../data/avisosData";
-import { eliminarClase } from "../../data/clasesData";
 import ClaseItem from "../../components/clasesItem";
 import AvisoItem from "../../components/avisosItem";
 
@@ -49,42 +47,8 @@ const CursoDetalle = () => {
     router.back();
   };
 
-  const handleCrearClasesClick = (cursoId) => {
-    router.push(`/profesorPages/crearClase/${cursoId}`);
-  };
-
-  const handleEditarClaseClick = (claseId) => {
-    router.push(`/profesorPages/editarClase/${claseId}`);
-  };
-
-  const handleCrearAvisoClick = (cursoId) => {
-    router.push(`/profesorPages/crearAviso/${cursoId}`);
-  };
-
-  const handleEditarAvisoClick = (avisoId) => {
-    router.push(`/profesorPages/editarAviso/${avisoId}`);
-  };
-
   const handleEditarCursoClick = async (cursoId) => {
     router.push(`/adminPages/cursoEditar/${cursoId}`);
-  };
-
-  const handleBorrarAvisoClick = async (avisoId) => {
-    try {
-      await borrarAviso(avisoId);
-      loadCurso(); // Recargamos los detalles del curso para reflejar los cambios
-    } catch (error) {
-      console.error("Error al borrar el aviso:", error);
-    }
-  };
-
-  const handleBorrarClaseClick = async (claseId) => {
-    try {
-      await eliminarClase(claseId, cursoId);
-      loadCurso(); // Recargamos los detalles del curso para reflejar los cambios
-    } catch (error) {
-      console.error("Error al eliminar la clase:", error);
-    }
   };
 
   return (
@@ -98,6 +62,9 @@ const CursoDetalle = () => {
               {curso.nombre}
               <Button ml="10" bg="cafe" color="blanco" size="sm" onClick={() => handleEditarCursoClick(cursoId)}>
                 Editar curso
+              </Button>
+              <Button ml="3" bg="naranja" color="blanco" size="sm" onClick={() => handleVolverClick()}>
+                Volver
               </Button>
             </Heading>
           </Box>
@@ -130,23 +97,19 @@ const CursoDetalle = () => {
           <Box bg="transparent" p={4} borderRadius="8px" textAlign="center">
             <Heading as="h1" size="xl">
               Clases
-              <Button ml="10" bg="verde" color="blanco" size="sm" onClick={() => handleCrearClasesClick(cursoId)}>
-                +
-              </Button>
             </Heading>
           </Box>
-          <Box p={2} bg="amarillo" border="1px solid #CBD5E0" borderRadius="8px" mt={1} ml={1} mr={1} mb={1} flexGrow={1} maxHeight="200px" overflowY="auto">
-            <VStack mt={2} bg="amarillo" color="cafe" p={4} borderRadius="8px">
+          <Box p={2} bg="amarillo" color="cafe" border="1px solid #CBD5E0" borderRadius="8px" mt={1} ml={1} mr={1} mb={1} flexGrow={1} maxHeight="200px" overflowY="auto">
               {curso.clases.length > 0 ? (
                 <UnorderedList>
                   {curso.clases.map((clase) => (
-                    <ClaseItem key={clase._id} clase={clase} onEditarClick={handleEditarClaseClick} onBorrarClick={handleBorrarClaseClick} />
+                      <ClaseItem key={clase._id} clase={clase} />
+
                   ))}
                 </UnorderedList>
               ) : (
                 <Text fontStyle="italic">Aún no hay clases disponibles.</Text>
               )}
-            </VStack>
           </Box>
         </Box>
       </Box>
@@ -157,9 +120,6 @@ const CursoDetalle = () => {
             <Box>
               <Heading as="h3" size="lg" textAlign="center">
                 Avisos
-                <Button ml="10" bg="verde" color="blanco" size="sm" onClick={() => handleCrearAvisoClick(cursoId)}>
-                  +
-                </Button>
               </Heading>
             </Box>
             <br/>
@@ -168,7 +128,7 @@ const CursoDetalle = () => {
               {curso.avisos.length > 0 ? (
                 <UnorderedList>
                   {curso.avisos.map((aviso) => (
-                    <AvisoItem key={aviso._id} aviso={aviso} onEditarClick={handleEditarAvisoClick} onBorrarClick={handleBorrarAvisoClick} />
+                    <AvisoItem key={aviso._id} aviso={aviso} />
                   ))}
                 </UnorderedList>
               ) : (
