@@ -77,15 +77,20 @@ const User = require("../models/user.model");
     return cursos;
   }
 
-  // Inscribir un alumno en un curso
-  async function inscribirAlumnoEnCurso(id, alumnoId) {
+// Inscribir un alumno en un curso
+async function inscribirAlumnoEnCurso(cursoId, alumnoId) {
+  try {
     const curso = await Curso.findByIdAndUpdate(
-      id,
-      { $push: { alumnos: alumnoId } },
+      cursoId,
+      { $push: { alumnos: { alumno: alumnoId } } }, // Agregar al alumno al array de alumnos
       { new: true }
-    ).populate("profesor", "nombre");
+    );
+
     return curso;
+  } catch (error) {
+    throw new Error("Error al inscribir el alumno en el curso: " + error.message);
   }
+}
 
   // Eliminar un alumno de un curso
   async function eliminarAlumno(id, alumnoId) {

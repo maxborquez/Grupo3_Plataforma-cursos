@@ -106,13 +106,15 @@ async function inscribirAlumnoEnCurso(req, res) {
   try {
     const { cursoId, alumnoId } = req.params; // Obtiene los IDs desde los parámetros de ruta
     const curso = await CursoService.inscribirAlumnoEnCurso(cursoId, alumnoId);
-    curso === null
-      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
-      : respondSuccess(req, res, 200, curso);
+    if (curso === null) {
+      return respondError(req, res, 404, "No se encontró el curso", "Not Found");
+    }
+    return respondSuccess(req, res, 200, curso);
   } catch (error) {
-    respondError(req, res, 500, "Ocurrió un error al inscribir al alumno en el curso");
+    return respondError(req, res, 500, "Ocurrió un error al inscribir al alumno en el curso");
   }
 }
+
 
 // Eliminar un alumno de un curso
 async function eliminarAlumno(req, res) {
