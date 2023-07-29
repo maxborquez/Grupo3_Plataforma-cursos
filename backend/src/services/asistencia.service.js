@@ -77,9 +77,54 @@ async function obtenerEstadisticasAsistencia(cursoId, alumnoId) {
     handleError(error, "asistencia.service -> obtenerEstadisticasAsistencia");
   }
 }
+const obtenerAsistenciasAlumnoCurso = async (cursoId, alumnoId) => {
+  try {
+    const asistencias = await Asistencia.find({ curso: cursoId, alumno: alumnoId });
+    return asistencias;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerEstadisticasAsistenciaCurso = async (cursoId) => {
+  try {
+    const curso = await Curso.findById(cursoId);
+    if (!curso) {
+      throw new Error("El curso no existe");
+    }
+
+    const totalClases = curso.clases.length;
+    const totalAlumnos = curso.alumnos.length;
+
+    const estadisticasClases = [];
+
+    for (const claseId of curso.clases) {
+      const asistencias = await Asistencia.find({ curso: cursoId, clase: claseId, presente: true });
+      const asistenciasClase = asistencias.length;
+      const porcentajeAsistenciasClase = (asistenciasClase / totalAlumnos) * 100;
+
+      estadisticasClases.push({
+        claseId,
+        asistenciasClase,
+        totalAlumnos,
+        porcentajeAsistenciasClase,
+      });
+    }
+
+    return {
+      totalClases,
+      estadisticasClases,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = {
   marcarAsistencia,
   corregirAsistencia,
   obtenerEstadisticasAsistencia,
+  obtenerAsistenciasAlumnoCurso,
+  obtenerEstadisticasAsistenciaCurso
+
 };
