@@ -16,7 +16,7 @@ const LoginPage = () => {
       const userRoles = getUserRole(token);
 
       if (userRoles.includes('admin')) {
-        router.push('/adminPages/admin');
+        router.push('/adminPages/cursosAdmin');
       } else if (userRoles.includes('profesor')) {
         router.push('/profesorPages/profesor');
       } else if (userRoles.includes('alumno')) {
