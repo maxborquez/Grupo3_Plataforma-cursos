@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Heading, Button, HStack, Text, Badge, Divider, ListItem, UnorderedList, List, VStack } from '@chakra-ui/react';
-import { getCursoById, inscribirAlumnoEnCurso } from '../../data/cursosData'; // Importa la función inscribirAlumnoEnCurso de cursosData.js
-import SidebarAlumno from '../../components/sideBarAlumno'; // Importa el componente Sidebar
-import { getUserId } from '../../data/auth'; // Importa la función getUserId del archivo auth.js
+import { inscribirAlumnoEnCurso, obtenerAsistenciasAlumnoCurso, getCursoById } from '../../data/cursosData'; // Importa la función obtenerAsistenciasAlumnoCurso
+import SidebarAlumno from '../../components/sideBarAlumno';
+import { getUserId } from '../../data/auth';
 
 const AlumnoCursoVer = () => {
   const router = useRouter();
   const { cursoId } = router.query;
   const [curso, setCurso] = useState(null);
+  const [asistencias, setAsistencias] = useState([]); // Estado para almacenar las asistencias del alumno
 
   useEffect(() => {
     const loadCursoDetalle = async () => {
@@ -24,8 +25,24 @@ const AlumnoCursoVer = () => {
       }
     };
 
+    const loadAsistenciasAlumno = async () => {
+      try {
+        const alumnoId = getUserId(); // Obtener el ID del alumno desde el token
+        if (!alumnoId) {
+          console.error('Error al obtener el ID del alumno desde el token.');
+          return;
+        }
+
+        const response = await obtenerAsistenciasAlumnoCurso(cursoId, alumnoId);
+        setAsistencias(response.data);
+      } catch (error) {
+        console.error('Error al obtener las asistencias del alumno:', error);
+      }
+    };
+
     if (cursoId) {
       loadCursoDetalle();
+      loadAsistenciasAlumno();
     }
   }, [cursoId]);
 
@@ -172,6 +189,26 @@ const AlumnoCursoVer = () => {
             </Text>
           </VStack>
         </Box>
+        <Box mt={4}>
+          <Heading as="h3" size="lg">
+            Asistencia del alumno
+          </Heading>
+          <VStack align="flex-start" mt={2} spacing={4}>
+            {asistencias.length > 0 ? (
+              <UnorderedList ml={4}>
+                {asistencias.map((asistencia) => (
+                  <ListItem key={asistencia._id}>
+                    Fecha: {new Date(asistencia.fecha).toLocaleDateString()} - Estado: {asistencia.estado}
+                  </ListItem>
+                ))}
+              </UnorderedList>
+            ) : (
+              <Text ml={4} fontStyle="italic">
+                Aún no hay asistencias registradas.
+              </Text>
+            )}
+          </VStack>
+        </Box>
         <HStack mt={4} justifyContent="flex-end">
           <Button bg="naranja" color="blanco" size="sm" onClick={handleVolverClick}>
             Volver
@@ -182,8 +219,6 @@ const AlumnoCursoVer = () => {
         </HStack>
       </Box>
     </Box>
-
-
   );
 };
 

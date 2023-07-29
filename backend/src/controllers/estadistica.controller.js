@@ -101,11 +101,24 @@ async function getEstadisticas(req, res) {
 async function getEstadisticaById(req, res) {
   try {
     const estadisticaId = req.params.id; // Obtener el ID de la estadística desde los parámetros de la solicitud
-    const estadistica = await Estadistica.findById(estadisticaId); // Buscar la estadística por su ID
+    const estadistica = await Estadistica.findById(estadisticaId)
+      .populate("usuarios_por_rol.rol", "name") // Agregar populate para obtener solo el campo 'name' del role en usuarios_por_rol
+      .populate("alumnos_por_curso.curso", "nombre")
+      .populate("cursos_por_estado.cursos", "nombre")
+      .populate("porcentaje_aprobacion.curso", "nombre"); // Agregar populate para obtener solo el campo 'nombre' del curso en alumnos_por_curso
 
     if (!estadistica) {
       return res.status(404).json({ error: "Estadística no encontrada" });
     }
+
+    // Asignar los nombres de los roles y los nombres de los cursos a los campos correspondientes
+    estadistica.usuarios_por_rol.forEach((usuarioPorRol) => {
+      usuarioPorRol.nombre_rol = usuarioPorRol.rol.name;
+    });
+
+    estadistica.alumnos_por_curso.forEach((alumnoPorCurso) => {
+      alumnoPorCurso.nombre_curso = alumnoPorCurso.curso.nombre;
+    });
 
     res.status(200).json(estadistica);
   } catch (error) {

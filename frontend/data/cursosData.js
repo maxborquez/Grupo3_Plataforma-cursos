@@ -128,6 +128,21 @@ const getCursoByProfesor = async (profesorId) => {
   }
 };
 
+const obtenerAsistenciasAlumnoCurso = async (cursoId,alumnoId) => {
+  try {
+    const token = getToken();
+    const response = await axios.get(`${apiUrl}/asistencias/${cursoId}/alumno/${alumnoId}`, null, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error la asistencia del alumno en el cursp', error);
+    throw error;
+  }
+};
+
 const inscribirAlumnoEnCurso = async (cursoId, alumnoId) => {
   try {
     const token = getToken();
@@ -169,4 +184,5 @@ export {
   getCursoByProfesor,
   inscribirAlumnoEnCurso,
   eliminarAlumno,
+  obtenerAsistenciasAlumnoCurso
 };
