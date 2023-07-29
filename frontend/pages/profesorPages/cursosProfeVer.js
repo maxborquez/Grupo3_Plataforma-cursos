@@ -96,7 +96,7 @@ const loadClases = async () => {
   
   const handleBorrarClaseClick = async ( claseId , cursoId) => {
     try {
-      await eliminarClase(claseId);
+      await eliminarClase(claseId, cursoId);
       // Luego de eliminar la clase, volvemos a cargar los detalles del curso
       loadClases();
     } catch (error) {
@@ -228,7 +228,7 @@ const loadClases = async () => {
                     ml="auto"
                     size="sm"
                     colorScheme="red"
-                    onClick={() => handleBorrarClaseClick(curso._id, clase._id)}
+                    onClick={() => handleBorrarClaseClick(clase._id, curso._id)}
                   >
                     Eliminar
                   </Button>
