@@ -57,8 +57,44 @@ const crearAviso = async (cursoId, profesorId,contenido) => {
     }
   };
   
+  const getAvisoPorId = async (avisoId) => {
+    try {
+      const token = getToken();
+      const response = await axios.get(`${apiUrl}/avisos/${avisoId}`, {
+        headers: {
+          token: token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener el aviso por su ID:', error);
+      throw error;
+    }
+  };
+  const actualizarAviso = async (avisoId, avisoData) => {
+    try {
+      const token = getToken();
+      const response = await axios.put(
+        `${apiUrl}/avisos/${avisoId}`,
+        avisoData,
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error al actualizar el aviso:', error);
+      throw error;
+    }
+  };
+  
+  
   export {
     crearAviso,
     verAvisosPorCurso,
     borrarAviso,
+    getAvisoPorId, 
+    actualizarAviso
   };

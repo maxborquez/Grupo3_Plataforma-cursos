@@ -17,13 +17,14 @@ const obtenerClasePorId = async (req, res) => {
 
   try {
     const clase = await Clase.findById(id);
-    
+
     if (!clase) {
       return res.status(404).json({ error: "Clase no encontrada" });
     }
 
     res.status(200).json(clase);
   } catch (error) {
+    console.error("Error al obtener la clase:", error);
     res.status(500).json({ error: "Ocurrió un error al obtener la clase" });
   }
 };
