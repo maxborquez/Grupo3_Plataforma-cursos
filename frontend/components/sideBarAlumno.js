@@ -35,6 +35,9 @@ const SidebarAlumno = () => {
         <Button onClick={() => router.push('/alumnoPages/alumno')} variant="ghost" color="white" colorScheme="whiteAlpha">
           Cursos
         </Button>
+        <Button onClick={() => router.push('/alumnoPages/inscribirse')} variant="ghost" color="white" colorScheme="whiteAlpha">
+          Inscribirse en curso
+        </Button>
       </Stack>
 
       {/* Espacio de 18px para separar los botones del botón de logout */}

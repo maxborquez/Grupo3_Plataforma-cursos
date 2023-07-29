@@ -34,14 +34,14 @@ const AlumnoPage = () => {
       <SidebarAlumno />
 
       {/* Contenido principal */}
-      <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
-        <Heading as="h1" size="xl" textAlign="center" mb={4}>
+      <Box bg="negro-sec" color="cafe" p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
+        <Heading color="blanco" as="h1" size="xl" textAlign="center" mb={4}>
           Lista de Cursos
         </Heading>
         <Box
           p={4}
           borderRadius="10px"
-          bg="gray.300"
+          bg="amarillo"
           textAlign="center"
           display="flex"
           flexDirection="column"
@@ -52,9 +52,10 @@ const AlumnoPage = () => {
               <li key={curso._id}>
                 {curso.nombre}{' '}
                 <Button
-                  colorScheme="teal"
+                  bg="cafe"
+                  color="blanco"
                   size="sm"
-                  ml="2"
+                  ml="100"
                   onClick={() => handleVerCurso(curso._id)} // Llama a handleVerCurso con el ID del curso
                 >
                   Ver
