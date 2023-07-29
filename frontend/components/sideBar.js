@@ -18,8 +18,8 @@ const Sidebar = () => {
 
   return (
     <Box
-      bg="black"
-      color="white"
+      bg="NegroSec"
+      color="Cafe"
       w="180px"
       flexShrink={0}
       p={4}
@@ -33,23 +33,53 @@ const Sidebar = () => {
     >
       <Stack spacing={4}>
         <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} />
-        <Button onClick={() => router.push('/adminPages/admin')} variant="ghost" color="white" colorScheme="whiteAlpha">
+        <Button
+          onClick={() => router.push('/adminPages/admin')}
+          variant="solid"
+          colorScheme="Amarillo"
+          color="Blanco"
+          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+        >
           Página principal
         </Button>
-        <Button onClick={() => router.push('/adminPages/cursosAdmin')} variant="ghost" color="white" colorScheme="whiteAlpha">
+        <Button
+          onClick={() => router.push('/adminPages/cursosAdmin')}
+          variant="solid"
+          colorScheme="Amarillo"
+          color="Blanco"
+          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+        >
           Cursos
         </Button>
-        <Button onClick={() => router.push('/adminPages/usuariosAdmin')} variant="ghost" color="white" colorScheme="whiteAlpha">
+        <Button
+          onClick={() => router.push('/adminPages/usuariosAdmin')}
+          variant="solid"
+          colorScheme="Amarillo"
+          color="Blanco"
+          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+        >
           Usuarios
         </Button>
-        <Button onClick={() => router.push('/adminPages/estadisticasAdmin')} variant="ghost" color="white" colorScheme="whiteAlpha">
+        <Button
+          onClick={() => router.push('/adminPages/estadisticasAdmin')}
+          variant="solid"
+          colorScheme="Amarillo"
+          color="Blanco"
+          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+        >
           Estadísticas
         </Button>
       </Stack>
 
       <Box mt="auto" />
 
-      <Button onClick={handleLogout} variant="ghost" color="white" colorScheme="whiteAlpha">
+      <Button
+        onClick={handleLogout}
+        variant="ghost"
+        colorScheme="Amarillo"
+        color="Blanco"
+        _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+      >
         Logout
       </Button>
     </Box>

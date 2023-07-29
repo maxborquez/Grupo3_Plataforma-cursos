@@ -1,15 +1,14 @@
 const Curso = require("../models/curso.model");
 const User = require("../models/user.model");
 
-class CursoService {
-  // Obtener todos los cursos
-  static async getCursos() {
+
+  async function getCursos() {
     const cursos = await Curso.find().populate("profesor", "nombre apellido");
     return cursos;
   }
 
   // Obtener un curso por su ID
-static async getCursoById(id) {
+  async function getCursoById(id) {
   try {
     const curso = await Curso.findById(id)
       .populate("profesor")
@@ -28,7 +27,7 @@ static async getCursoById(id) {
   }
 }
   // Crear un nuevo curso
-  static async createCurso(profesorId, cursoData) {
+  async function createCurso(profesorId, cursoData) {
     const profesor = await User.findById(profesorId);
     const curso = new Curso({ profesor, ...cursoData });
     await curso.save();
@@ -36,7 +35,7 @@ static async getCursoById(id) {
   }
 
   // Actualizar un curso por su ID
-  static async updateCurso(id, profesorId, cursoData) {
+  async function updateCurso(id, profesorId, cursoData) {
     const curso = await Curso.findByIdAndUpdate(
       id,
       { profesor: profesorId, ...cursoData },
@@ -46,13 +45,13 @@ static async getCursoById(id) {
   }
 
   // Eliminar un curso por su ID
-  static async deleteCurso(id) {
+  async function deleteCurso(id) {
     const curso = await Curso.findByIdAndDelete(id).populate("profesor", "nombre");
     return curso;
   }
 
   // Cambiar el estado de un curso
-  static async changeEstadoCurso(id, estado) {
+  async function changeEstadoCurso(id, estado) {
     const curso = await Curso.findByIdAndUpdate(
       id,
       { estado },
@@ -62,7 +61,7 @@ static async getCursoById(id) {
   }
 
   // Cambiar el profesor de un curso
-  static async changeProfesor(id, profesorId) {
+  async function changeProfesor(id, profesorId) {
     const profesor = await User.findById(profesorId);
     const curso = await Curso.findByIdAndUpdate(
       id,
@@ -73,13 +72,13 @@ static async getCursoById(id) {
   }
 
   // Obtener cursos de un profesor
-  static async getCursosByProfesor(profesorId) {
+  async function getCursosByProfesor(profesorId) {
     const cursos = await Curso.find({ profesor: profesorId }).populate("profesor", "nombre");
     return cursos;
   }
 
   // Inscribir un alumno en un curso
-  static async inscribirAlumnoEnCurso(id, alumnoId) {
+  async function inscribirAlumnoEnCurso(id, alumnoId) {
     const curso = await Curso.findByIdAndUpdate(
       id,
       { $push: { alumnos: alumnoId } },
@@ -89,7 +88,7 @@ static async getCursoById(id) {
   }
 
   // Eliminar un alumno de un curso
-  static async eliminarAlumno(id, alumnoId) {
+  async function eliminarAlumno(id, alumnoId) {
     const curso = await Curso.findByIdAndUpdate(
       id,
       { $pull: { alumnos: alumnoId } },
@@ -99,7 +98,7 @@ static async getCursoById(id) {
   }
 
   // Cambiar el estado de un alumno en un curso
-  static async cambiarEstadoAlumno(id, alumnoId, estado) {
+  async function cambiarEstadoAlumno(id, alumnoId, estado) {
     const curso = await Curso.findOneAndUpdate(
       { _id: id, alumnos: alumnoId },
       { $set: { "alumnos.$.estado": estado } },
@@ -107,6 +106,19 @@ static async getCursoById(id) {
     ).populate("profesor", "nombre");
     return curso;
   }
-}
 
-module.exports = CursoService;
+
+
+module.exports = {
+  getCursos,
+  getCursoById,
+  createCurso,
+  updateCurso,
+  deleteCurso,
+  changeEstadoCurso,
+  changeProfesor,
+  getCursosByProfesor,
+  inscribirAlumnoEnCurso,
+  eliminarAlumno,
+  cambiarEstadoAlumno,
+};
