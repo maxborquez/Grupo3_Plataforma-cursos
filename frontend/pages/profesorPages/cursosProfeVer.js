@@ -5,10 +5,8 @@ import {
   Heading,
   Text,
   Button,
-  HStack,
   VStack,
   Divider,
-  List,
   ListItem,
   UnorderedList,
   Badge,
@@ -16,11 +14,15 @@ import {
 import { getCursoById } from "../../data/cursosData"; // Importa la función deleteCurso de cursosData.js
 import Sidebar from "../../components/sideBarProfe";
 import { borrarAviso } from "../../data/avisosData";
+import { eliminarClase, obtenerClasesPorCurso } from "../../data/clasesData";
+
 
 const CursoProfeVer = () => {
   const router = useRouter();
   const { cursoId } = router.query;
   const [curso, setCurso] = useState(null);
+  const [clases, setClases] = useState([]);
+  const [avisoId, setAvisoId] = useState(null);
 
   const loadCursoDetalle = async () => {
     try {
@@ -35,9 +37,26 @@ const CursoProfeVer = () => {
     }
   };
 
+// Función para cargar la lista de clases
+const loadClases = async () => {
+  try {
+    console.log("Valor de curso:", curso); // Agrega este console.log para verificar el valor de curso
+    if (curso && curso._id) {
+      const response = await obtenerClasesPorCurso(curso._id);
+      setClases(response);
+    } else {
+      console.log("El curso aún no ha sido cargado.");
+    }
+  } catch (error) {
+    console.error('Error al cargar las clases:', error);
+    // Lógica para manejar errores
+  }
+};
+
   useEffect(() => {
     if (cursoId) {
       loadCursoDetalle();
+      loadClases();
     }
   }, [cursoId]);
 
@@ -49,15 +68,20 @@ const CursoProfeVer = () => {
     router.back();
   };
   const handleCrearClasesClick = () => {
-    router.push( `/profesorPages/crearClases/${cursoId}`);
+    router.push( `/profesorPages/crearClase/${cursoId}`);
   };
 
+  const handleEditarClaseClick = (claseId) => {
+    router.push(`/profesorPages/editarClase/${claseId}`);
+  };
 
   const handleCrearAvisoClick = () => {
     router.push( `/profesorPages/crearAviso/${cursoId}`);
-   
   };
-
+  const handleEditarAvisoClick = (avisoId) => {
+    setAvisoId(avisoId); // Actualiza el estado con el ID del aviso a editar
+    router.push(`/profesorPages/editarAviso/${avisoId}`); // Redirige a la página de edición del aviso
+  };
   const handleBorrarAvisoClick = async (avisoId) => {
     try {
       await borrarAviso(avisoId);
@@ -68,6 +92,21 @@ const CursoProfeVer = () => {
       // Lógica para manejar errores
     }
   };
+
+  
+  const handleBorrarClaseClick = async ( claseId , cursoId) => {
+    try {
+      await eliminarClase(claseId);
+      // Luego de eliminar la clase, volvemos a cargar los detalles del curso
+      loadClases();
+    } catch (error) {
+      console.error('Error al eliminar la clase:', error);
+      // Lógica para manejar errores
+    }
+  };
+  
+
+
 
   return (
     <Box display="flex" minHeight="100vh">
@@ -185,6 +224,22 @@ const CursoProfeVer = () => {
                   {curso.clases.map((clase) => (
                     <ListItem key={clase._id}>
                       Nombre: {clase.nombre} - Fecha: {new Date(clase.fecha).toLocaleDateString()}
+                      <Button
+                    ml="auto"
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => handleBorrarClaseClick(curso._id, clase._id)}
+                  >
+                    Eliminar
+                  </Button>
+                  <Button
+                    ml="auto"
+                    size="sm"
+                    colorScheme="green"
+                    onClick={() => handleEditarClaseClick( clase._id)}
+                  >
+                    Editar
+                  </Button>
                     </ListItem>
                   ))}
                 </UnorderedList>
@@ -237,7 +292,16 @@ const CursoProfeVer = () => {
                     onClick={() => handleBorrarAvisoClick(aviso._id)}
                   >
                     Borrar
-                  </Button></ListItem>
+                  </Button>
+                  <Button
+                    ml="auto"
+                    size="sm"
+                    colorScheme="green"
+                    onClick={() => handleEditarAvisoClick(aviso._id)}
+                  >
+                    Editar
+                  </Button>
+                  </ListItem>
                 ))}
               </UnorderedList>
             ) : (

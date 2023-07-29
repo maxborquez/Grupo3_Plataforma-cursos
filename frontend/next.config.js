@@ -20,6 +20,18 @@ const nextConfig = {
         destination: '/profesorPages/crearAviso',
       },
       {
+        source: '/profesorPages/editarAviso/:avisoId',
+        destination: '/profesorPages/editarAviso',
+      },
+      {
+        source: '/profesorPages/crearClase/:cursoId',
+        destination: '/profesorPages/crearClase',
+      },
+      {
+        source: '/profesorPages/editarClase/:claseId',
+        destination: '/profesorPages/editarClase',
+      },
+      {
         source: '/adminPages/cursoEditar/:cursoId',
         destination: '/adminPages/cursoEditar',
       },
