@@ -59,7 +59,7 @@ const EstadisticaDetalle = () => {
           <ul>
             {estadistica.usuarios_por_rol.map((usuarioRol) => (
               <li key={usuarioRol._id}>
-                Rol: {usuarioRol.rol} - Cantidad: {usuarioRol.cantidad}
+                Rol: {usuarioRol.rol.name} - Cantidad: {usuarioRol.cantidad}
               </li>
             ))}
           </ul>
@@ -72,7 +72,8 @@ const EstadisticaDetalle = () => {
           <ul>
             {estadistica.alumnos_por_curso.map((cursoAlumnos) => (
               <li key={cursoAlumnos._id}>
-                Curso: {cursoAlumnos.curso} - Cantidad: {cursoAlumnos.cantidad}
+                Curso: {cursoAlumnos.curso.nombre} - Cantidad:{" "}
+                {cursoAlumnos.cantidad}
               </li>
             ))}
           </ul>
@@ -83,7 +84,7 @@ const EstadisticaDetalle = () => {
             {estadistica.cursos_por_estado.map((cursoEstado) => (
               <li key={cursoEstado._id}>
                 Estado: {cursoEstado.estado} - Cursos:{" "}
-                {cursoEstado.cursos.join(", ")}
+                {cursoEstado.cursos.map((curso) => curso.nombre).join(", ")}
               </li>
             ))}
           </ul>
@@ -93,14 +94,20 @@ const EstadisticaDetalle = () => {
           <ul>
             {estadistica.porcentaje_aprobacion.map((porcentajeCurso) => (
               <li key={porcentajeCurso._id}>
-                Curso: {porcentajeCurso.curso} - Porcentaje:{" "}
+                Curso: {porcentajeCurso.curso.nombre} - Porcentaje:{" "}
                 {porcentajeCurso.porcentaje}%
               </li>
             ))}
           </ul>
         </Box>
         <br />
-        <Button bg="naranja" color="blanco" ml={4} size="sm" onClick={handleVolverClick}>
+        <Button
+          bg="naranja"
+          color="blanco"
+          ml={4}
+          size="sm"
+          onClick={handleVolverClick}
+        >
           Volver
         </Button>
       </Box>
