@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Heading, Input, Select, Button } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sideBar';
 import { createUser } from '../../data/usersData';
 import { useRouter } from 'next/router';
 
@@ -52,6 +52,8 @@ const UsuarioCreate = () => {
             placeholder="Nombre"
             value={formData.nombre}
             onChange={handleInputChange}
+            bg="amarillo"
+            color="cafe"
           />
           <Input
             type="text"
@@ -60,6 +62,8 @@ const UsuarioCreate = () => {
             value={formData.apellido}
             onChange={handleInputChange}
             mt={2}
+            bg="amarillo"
+            color="cafe"
           />
           <Input
             type="email"
@@ -68,6 +72,8 @@ const UsuarioCreate = () => {
             value={formData.email}
             onChange={handleInputChange}
             mt={2}
+            bg="amarillo"
+            color="cafe"
           />
           <Input
             type="text"
@@ -76,6 +82,8 @@ const UsuarioCreate = () => {
             value={formData.rut}
             onChange={handleInputChange}
             mt={2}
+            bg="amarillo"
+            color="cafe"
           />
           <Input
             type="tel"
@@ -84,16 +92,18 @@ const UsuarioCreate = () => {
             value={formData.telefono}
             onChange={handleInputChange}
             mt={2}
+            bg="amarillo"
+            color="cafe"
           />
-          <Select name="roles" value={formData.roles[0]} onChange={handleInputChange} mt={2}>
+          <Select name="roles" value={formData.roles[0]} onChange={handleInputChange} mt={2} bg="amarillo" color="cafe">
             <option value="alumno">Alumno</option>
             <option value="profesor">Profesor</option>
             <option value="admin">Administrador</option>
           </Select>
-          <Button colorScheme="blue" mt={4} onClick={handleGuardarUsuario}>
+          <Button mr={4} bg="cafe" color="blanco" mt={4} onClick={handleGuardarUsuario}>
             Guardar Usuario
           </Button>
-          <Button colorScheme="gray" mt={4} onClick={handleVolverClick}>
+          <Button bg="naranja" color="blanco" mt={4} onClick={handleVolverClick}>
             Volver
           </Button>
         </Box>

@@ -14,9 +14,9 @@ const router = express.Router();
 router.get("/", claseController.obtenerClases);
 router.get("/:id", claseController.obtenerClasePorId);
 router.get("/curso/:cursoId", claseController.getClasesPorCurso);
-router.post("/curso/:cursoId", authMiddleware.isProfesor, claseController.crearClase);
-router.put("/:id", authMiddleware.isProfesor, claseController.actualizarClase);
-router.delete("/:claseId/curso/:cursoId", authMiddleware.isProfesor, claseController.eliminarClase);
+router.post("/curso/:cursoId", authMiddleware.isAdminOrProfesor, claseController.crearClase);
+router.put("/:id", authMiddleware.isAdminOrProfesor, claseController.actualizarClase);
+router.delete("/:claseId/curso/:cursoId", authMiddleware.isAdminOrProfesor, claseController.eliminarClase);
 
 // Exporta el enrutador
 module.exports = router;

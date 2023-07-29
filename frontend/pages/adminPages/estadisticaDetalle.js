@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEstadisticaById } from "../../data/estadisticasData";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../components/sideBar";
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -35,7 +35,7 @@ const EstadisticaDetalle = () => {
       <Sidebar />
       <Box
         p={4}
-        bg="#E2E8F0"
+        bg="negro-sec"
         border="1px solid #CBD5E0"
         borderRadius="8px"
         mt={4}
@@ -48,7 +48,7 @@ const EstadisticaDetalle = () => {
         <Heading as="h1" size="xl">
           Detalle de la Estadística
         </Heading>
-        <Box mt={4}>
+        <Box bg="amarillo" color="cafe" borderRadius="8px" mt={4}>
           <Text>
             <strong>Fecha de creación:</strong> {estadistica.fecha_creacion}
           </Text>
@@ -99,7 +99,7 @@ const EstadisticaDetalle = () => {
           </ul>
         </Box>
         <br />
-        <Button colorScheme="gray" ml={4} size="sm" onClick={handleVolverClick}>
+        <Button bg="naranja" color="blanco" ml={4} size="sm" onClick={handleVolverClick}>
           Volver
         </Button>
       </Box>

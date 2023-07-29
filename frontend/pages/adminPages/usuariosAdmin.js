@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Flex, Button, Link } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, Flex, Button } from '@chakra-ui/react';
+import Sidebar from '../../components/sideBar';
 import withAuth from '../../data/withAuth';
 import UserItem from '../../components/userItem';
 import { getUsers, deleteUser } from '../../data/usersData';
+import { useRouter } from 'next/router';
 
 const UsuariosAdminPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [allUsers, setAllUsers] = useState([]);
+    const router = useRouter();
 
   const handleTabChange = (index) => {
     setTabIndex(index);
@@ -36,6 +38,10 @@ const UsuariosAdminPage = () => {
     }
   };
 
+  const handleUserCreate = () => {
+    router.push("/adminPages/usuarioCreate");
+  };
+
   const tabs = ['Todos', 'Administradores', 'Profesores', 'Alumnos'];
 
   const filteredUsers = tabIndex === 0
@@ -51,8 +57,8 @@ const UsuariosAdminPage = () => {
     <Box display="flex" minHeight="100vh">
       <Sidebar />
 
-      <Box p={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
-        <Box flex="1" p={4} borderRadius="10px" bg="gray.300" textAlign="center" display="flex">
+      <Box  p={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif" display="flex">
+        <Box bg="negro-sec" flex="1" p={4} borderRadius="10px" textAlign="center" display="flex">
           <Box w="100%" height="100vh" overflowY="auto">
             <Tabs index={tabIndex} onChange={handleTabChange}>
               <TabList>
@@ -85,11 +91,9 @@ const UsuariosAdminPage = () => {
             </Tabs>
           </Box>
           <Flex justify="flex-end" p={2}>
-            <Link href="/adminPages/usuarioCreate">
-              <Button colorScheme="green" size="lg">
-                +
-              </Button>
-            </Link>
+            <Button bg="verde" color="blanco" onClick={handleUserCreate}>
+              +
+            </Button>
           </Flex>
         </Box>
       </Box>

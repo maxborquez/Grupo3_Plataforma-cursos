@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
 import { getUserById, deleteUser } from "../../data/usersData";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../components/sideBar";
 import Swal from "sweetalert2";
 
 const UsuarioDetalle = () => {
@@ -44,8 +44,8 @@ const UsuarioDetalle = () => {
       text: "Esta acción eliminará al usuario de forma permanente.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Sí, borrar",
       cancelButtonText: "No, cancelar",
+      confirmButtonText: "Sí, borrar",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -54,7 +54,7 @@ const UsuarioDetalle = () => {
             title: "Usuario eliminado exitosamente",
             icon: "success",
             confirmButtonText: "OK",
-          }).then(() => { 
+          }).then(() => {
             router.back();
           });
         } catch (error) {
@@ -72,20 +72,20 @@ const UsuarioDetalle = () => {
       <Sidebar />
       <Box
         p={4}
-        bg="#E2E8F0"
+        bg="negro-sec"
         border="1px solid #CBD5E0"
         borderRadius="8px"
         mt={4}
         mb={4}
         mr={4}
         ml={18}
-        flexGrow={1}
+        flexGrow={0.5}
         position="relative"
       >
         <Heading as="h1" size="xl">
-          Detalle del Usuario
+          Datos del Usuario
         </Heading>
-        <Box mt={4}>
+        <Box bg="amarillo" color="cafe" borderRadius="8px" mt={4} >
           <Text>
             <strong>Nombre:</strong> {user.nombre} {user.apellido}
           </Text>
@@ -100,13 +100,13 @@ const UsuarioDetalle = () => {
           </Text>
         </Box>
         <Box mt={4} display="flex" justifyContent="flex-end">
-          <Button colorScheme="blue" ml={4} size="sm" onClick={handleEditarClick}>
+          <Button bg="cafe" color="blanco" ml={4} size="sm" onClick={handleEditarClick}>
             Editar
           </Button>
           <Button colorScheme="red" ml={4} size="sm" onClick={handleBorrarClick}>
             Borrar
           </Button>
-          <Button colorScheme="gray" ml={4} size="sm" onClick={handleVolverClick}>
+          <Button bg="naranja" color="blanco" ml={4} size="sm" onClick={handleVolverClick}>
               Volver
           </Button>
         </Box>

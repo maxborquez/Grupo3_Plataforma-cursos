@@ -1,10 +1,10 @@
 import { Box, Heading, Button, Flex } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sideBar';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { getCursos, deleteCurso } from '../../data/cursosData';
 import withAuth from '../../data/withAuth';
-import CursoItem from '../../components/CursoItem';
+import CursoItem from '../../components/cursoItem';
 import { useRouter } from 'next/router';
 
 const CursosAdminPage = () => {
