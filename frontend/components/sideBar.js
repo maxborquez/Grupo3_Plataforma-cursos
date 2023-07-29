@@ -60,6 +60,15 @@ const Sidebar = () => {
         >
           Estadísticas
         </Button>
+        <Button
+          onClick={() => router.push('/adminPages/inscribirAlumno')}
+          variant="solid"
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
+        >
+          Inscribir alumno
+        </Button>
       </Stack>
 
       <Box mt="auto" />

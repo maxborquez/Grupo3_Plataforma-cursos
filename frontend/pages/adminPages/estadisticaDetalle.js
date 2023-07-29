@@ -11,7 +11,8 @@ const EstadisticaDetalle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const estadisticaId = "64c3492d150bbc0ccdc84da3";
+        // Obtener la estadisticaId desde la URL usando router.query
+        const { estadisticaId } = router.query;
         const estadisticaResponse = await getEstadisticaById(estadisticaId);
         setEstadistica(estadisticaResponse);
       } catch (error) {
@@ -20,7 +21,7 @@ const EstadisticaDetalle = () => {
     };
 
     fetchData();
-  }, []);
+  }, [router.query]);
 
   if (!estadistica) {
     return <div>Cargando...</div>;

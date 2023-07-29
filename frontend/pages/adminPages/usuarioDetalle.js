@@ -1,7 +1,7 @@
 // pages/usuarioDetalle.js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Heading, Text, Button, Divider } from "@chakra-ui/react";
 import { getUserById, deleteUser } from "../../data/usersData";
 import Sidebar from "../../components/sideBar";
 import Swal from "sweetalert2";
@@ -85,20 +85,30 @@ const UsuarioDetalle = () => {
         <Heading as="h1" size="xl">
           Datos del Usuario
         </Heading>
+        <br/>
+        <Divider/>
+        
         <Box bg="amarillo" color="cafe" borderRadius="8px" mt={4} >
+          <br/>
           <Text>
             <strong>Nombre:</strong> {user.nombre} {user.apellido}
           </Text>
+          <br/>
           <Text>
             <strong>Email:</strong> {user.email}
           </Text>
+          <br/>
           <Text>
             <strong>RUT:</strong> {user.rut}
           </Text>
+          <br/>
           <Text>
             <strong>Teléfono:</strong> {user.telefono}
           </Text>
+          <br/>
         </Box>
+        <br/>
+        <br/>
         <Box mt={4} display="flex" justifyContent="flex-end">
           <Button bg="cafe" color="blanco" ml={4} size="sm" onClick={handleEditarClick}>
             Editar
