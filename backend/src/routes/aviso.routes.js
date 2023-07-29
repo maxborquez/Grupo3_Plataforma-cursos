@@ -11,7 +11,8 @@ const authMiddleware = require("../middlewares/autho.middleware.js");
 const router = express.Router();
 
 // Define las rutas para los avisos
-router.get("/:cursoId", avisoController.obtenerAvisosPorCurso);
+router.get("/curso/:cursoId", avisoController.obtenerAvisosPorCurso);
+router.get("/:avisoId", avisoController.getAvisoById);
 router.post("/curso/:cursoId/profesor/:profesorId", authMiddleware.isAdminOrProfesor, avisoController.crearAvisoEnCurso);
 router.put("/:avisoId", authMiddleware.isAdminOrProfesor, avisoController.actualizarAviso);
 router.delete("/:avisoId", authMiddleware.isAdminOrProfesor, avisoController.eliminarAviso);

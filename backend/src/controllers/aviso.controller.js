@@ -12,6 +12,20 @@ const obtenerAvisosPorCurso = async (req, res) => {
   }
 };
 
+// Obtener un aviso por su ID
+const getAvisoById = async (req, res) => {
+  try {
+    const { avisoId } = req.params;
+    const aviso = await Aviso.findById(avisoId);
+    if (!aviso) {
+      return res.status(404).json({ error: "Aviso no encontrado" });
+    }
+    res.status(200).json(aviso);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener el aviso" });
+  }
+};
+
 // Crear un nuevo aviso en un curso
 const crearAvisoEnCurso = async (req, res) => {
   try {
@@ -26,7 +40,7 @@ const crearAvisoEnCurso = async (req, res) => {
 
     // Crear el aviso con los ids del curso y el profesor proporcionados en la ruta
     const nuevoAviso = new Aviso({
-     
+
       contenido,
       curso: cursoId,
       profesor: profesorId,
@@ -84,4 +98,5 @@ module.exports = {
   crearAvisoEnCurso,
   actualizarAviso,
   eliminarAviso,
+  getAvisoById
 };
