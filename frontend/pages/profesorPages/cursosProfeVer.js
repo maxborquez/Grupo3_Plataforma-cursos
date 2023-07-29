@@ -40,7 +40,6 @@ const CursoProfeVer = () => {
 // Función para cargar la lista de clases
 const loadClases = async () => {
   try {
-    console.log("Valor de curso:", curso); // Agrega este console.log para verificar el valor de curso
     if (curso && curso._id) {
       const response = await obtenerClasesPorCurso(curso._id);
       setClases(response);
@@ -58,7 +57,7 @@ const loadClases = async () => {
       loadCursoDetalle();
       loadClases();
     }
-  }, [cursoId]);
+  }, [curso,cursoId]);
 
   if (!curso) {
     return <div>Cargando...</div>;
