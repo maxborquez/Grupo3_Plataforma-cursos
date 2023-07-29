@@ -58,13 +58,13 @@ const CursoCreate = () => {
       <Sidebar />
 
       <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
-        <Box bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4} mb={4}>
+        <Box bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" p={4} mb={4}>
           <Heading as="h1" size="xl">
             Crear un nuevo curso
           </Heading>
         </Box>
 
-        <Box flex="2" bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4}>
+        <Box flex="2" bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" p={4}>
           <Flex flexDirection="column">
             <Input
               name="nombre"
