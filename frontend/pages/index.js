@@ -15,13 +15,8 @@ const IndexPage = () => {
           Aprende y crece con nosotros.
         </Text>
         <Link href="/login">
-          <Button bg="cafe" color="blanco" size="lg"> {/* Usamos el color naranjo de la paleta */}
+          <Button bg="amarillo" color="cafe" size="lg"> {/* Usamos el color naranjo de la paleta */}
             Iniciar Sesión
-          </Button>
-        </Link>
-        <Link href="/signup">
-          <Button bg="naranja" color="blanco" size="lg"> {/* Usamos el color café de la paleta */}
-            Registrarse
           </Button>
         </Link>
       </VStack>
