@@ -1,23 +1,20 @@
-// Importa los módulos necesarios
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getAvisoPorId, actualizarAviso } from '../../data/avisosData';
+import { Box, Heading, Textarea, Button } from '@chakra-ui/react';
 
 const EditarAviso = () => {
   const router = useRouter();
   const { avisoId } = router.query;
 
-  // Estado para almacenar los detalles del aviso
-  const [aviso, setAviso] = useState({}); // Inicializa como un objeto vacío {}
+  const [aviso, setAviso] = useState({});
 
-  // Carga los detalles del aviso al cargar la página
   useEffect(() => {
     if (avisoId) {
       obtenerAviso();
     }
   }, [avisoId]);
 
-  // Función para obtener los detalles del aviso por su ID
   const obtenerAviso = async () => {
     try {
       const avisoObtenido = await getAvisoPorId(avisoId);
@@ -27,7 +24,6 @@ const EditarAviso = () => {
     }
   };
 
-  // Función para manejar el cambio en los campos del formulario
   const handleChange = (e) => {
     setAviso({
       ...aviso,
@@ -35,31 +31,45 @@ const EditarAviso = () => {
     });
   };
 
-  // Función para manejar el envío del formulario de edición
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Envía la solicitud para actualizar el aviso
       await actualizarAviso(avisoId, aviso);
-      // Redirige a la página anterior después de la edición exitosa
       router.back();
     } catch (error) {
       console.error('Error al editar el aviso:', error);
     }
   };
 
+  const handleVolverClick = () => {
+    router.back();
+  };
+
   return (
-    <div>
-      <h1>Editar Aviso</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Contenido del Aviso:</label>
-          <textarea name="contenido" value={aviso.contenido || ''} onChange={handleChange} />
-        </div>
-        {/* Puedes agregar más campos del aviso aquí según tu modelo */}
-        <button type="submit">Guardar Cambios</button>
-      </form>
-    </div>
+    <Box p={2} maxWidth="600px" margin="0 auto" bg="amarillo" border="1px solid gray" borderRadius="md" marginTop="20px">
+      <Box p={4} bg="negro-sec" borderRadius="8px">
+        <Heading as="h1" size="xl" mb={4}>
+          Editar Aviso
+        </Heading>
+        <form onSubmit={handleSubmit}>
+          <Box mb={4}>
+            <label htmlFor="contenido">Contenido del Aviso:</label>
+            <Textarea
+              name="contenido"
+              id="contenido"
+              value={aviso.contenido || ''}
+              onChange={handleChange}
+              size="md"
+              resize="vertical"
+            />
+          </Box>
+          <Button type="submit" bg="verde" color="white" mr={2}>
+            Guardar Cambios
+          </Button>
+          <Button bg="naranja" color="white" onClick={handleVolverClick}>Cancelar</Button>
+        </form>
+      </Box>
+    </Box>
   );
 };
 

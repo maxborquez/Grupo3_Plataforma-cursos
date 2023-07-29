@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Box,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-} from "@chakra-ui/react";
+import { Box, Heading, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import { crearClase } from "../../data/clasesData";
 
 const CrearClase = () => {
@@ -15,6 +8,7 @@ const CrearClase = () => {
   const { cursoId } = router.query;
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
+  const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const handleNombreChange = (e) => {
     setNombre(e.target.value);
@@ -25,12 +19,13 @@ const CrearClase = () => {
   };
 
   const handleCrearClaseClick = async () => {
-    try {
-      // Validar que se haya ingresado el nombre y la fecha
-      if (!nombre || !fecha) {
-        return;
-      }
+    if (!nombre || !fecha) {
+      // Si alguno de los campos está vacío, mostrar el aviso
+      setMostrarAviso(true);
+      return;
+    }
 
+    try {
       const nuevaClase = {
         nombre: nombre,
         fecha: fecha,
@@ -47,37 +42,34 @@ const CrearClase = () => {
   };
 
   return (
-    <Box display="flex" minHeight="100vh">
-
-      <Box flexGrow={4} bg="black" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={2} mb={4} display="flex" flexDirection="column">
-        <Box
-          p={4}
-          bg="#E2E8F0"
-          border="1px solid #CBD5E0"
-          borderRadius="8px"
-          mt={4}
-          ml={3}
-          mr={3}
-          mb={1}
-          flexGrow={1}
-        >
-          <Box bg="white" p={4} borderRadius="8px" textAlign="center">
-            <Heading as="h1" size="xl">
-              Crear Clase
-            </Heading>
-          </Box>
-          <FormControl mt={4} p={4}>
-            <FormLabel>Nombre de la clase</FormLabel>
+    <Box p={2} maxWidth="600px" margin="0 auto" bg="amarillo" border="1px solid gray" borderRadius="md" marginTop="20px">
+      <Box p={4} bg="negro-sec" borderRadius="8px">
+        <Heading as="h1" size="xl" textAlign="center" mb={4} color="blanco">
+          Crear Clase
+        </Heading>
+        <form>
+          <FormControl>
+            <FormLabel color="blanco">Nombre de la clase:</FormLabel>
             <Input type="text" value={nombre} onChange={handleNombreChange} />
           </FormControl>
-          <FormControl mt={4} p={4}>
-            <FormLabel>Fecha de la clase</FormLabel>
+          <FormControl mt={4}>
+            <FormLabel color="blanco">Fecha de la clase:</FormLabel>
             <Input type="date" value={fecha} onChange={handleFechaChange} />
           </FormControl>
-          <Button colorScheme="blue" mt={4} onClick={handleCrearClaseClick}>
-            Crear Clase
-          </Button>
-        </Box>
+          {mostrarAviso && (
+            <Box color="red" fontSize="sm" mt={2} textAlign="center">
+              Por favor, rellena todos los campos.
+            </Box>
+          )}
+          <Box display="flex" justifyContent="center">
+            <Button bg="verde" color="blanco" mt={4} onClick={handleCrearClaseClick}>
+              Crear Clase
+            </Button>
+            <Button bg="naranja" color="blanco"mt={4} ml={2} onClick={() => router.back()}>
+              Volver
+            </Button>
+          </Box>
+        </form>
       </Box>
     </Box>
   );

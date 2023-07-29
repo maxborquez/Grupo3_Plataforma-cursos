@@ -1,9 +1,10 @@
+// Sidebar.js
 import React from 'react';
-import { Box, Button, Stack } from '@chakra-ui/react';
+import { Box, Button, Stack, Image } from '@chakra-ui/react';
 import { logout } from '../data/auth';
 import { useRouter } from 'next/router';
 
-const SidebarProfe = () => {
+const Sidebar = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -17,12 +18,12 @@ const SidebarProfe = () => {
 
   return (
     <Box
-      bg="black"
-      color="white"
+      bg="negro-sec"
+      color="cafe"
       w="180px"
       flexShrink={0}
+      borderRadius="8px"
       p={4}
-      borderRadius="10px"
       fontFamily="Baloo Bhai, sans-serif"
       mt={4}
       mb={4}
@@ -30,25 +31,32 @@ const SidebarProfe = () => {
       display="flex"
       flexDirection="column"
     >
-      {/* Contenido de la barra lateral */}
       <Stack spacing={4}>
-        <Button onClick={() => router.push('/profesorPages/profesor')} variant="ghost" color="white" colorScheme="whiteAlpha">
-          Página principal
-        </Button>
-        <Button onClick={() => router.push('/profesorPages/cursosProfe')} variant="ghost" color="white" colorScheme="whiteAlpha">
+        <Image src="/logo.png" width={150} alignContent='center' alt="Logo" mb={4} />
+        <Button
+          onClick={() => router.push('/profesorPages/cursosProfe')}
+          variant="solid"
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
+        >
           Cursos
         </Button>
       </Stack>
 
-      {/* Espacio de 18px para separar los botones del botón de logout */}
       <Box mt="auto" />
 
-      {/* Botón de Logout en la parte inferior */}
-      <Button onClick={handleLogout} variant="ghost" color="white" colorScheme="whiteAlpha">
+      <Button
+        onClick={handleLogout}
+        variant="ghost"
+        colorScheme="amarillo"
+        color="blanco"
+        _hover={{ color: 'negro-sec', bg: 'amarillo' }}
+      >
         Logout
       </Button>
     </Box>
   );
 };
 
-export default SidebarProfe;
+export default Sidebar;
