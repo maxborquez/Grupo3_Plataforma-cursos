@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Box,
+  Flex,
   Heading,
   Text,
   Button,
@@ -172,7 +173,7 @@ const CursoProfeVer = () => {
 
         <Box
           p={4}
-          bg="megro-sec"
+          bg="negro-sec"
           border="1px solid #CBD5E0"
           borderRadius="8px"
           mt={2}
@@ -257,35 +258,8 @@ const CursoProfeVer = () => {
         </Box>
       </Box>
 
-      <Box    
-      
-      display="flex"
-      flexDirection="column"
-      flexGrow={1}
-      ml={1}
-      mr={1}
-      mb={1}   >
-      <Box p={4}
-            mt="8"
-            bg="megro-sec"
-            border="1px solid #CBD5E0"
-            borderRadius="8px"
-            ml={3}
-            mr={3}
-            mb={4}
-            flexGrow={1}
-          > 
-        <Box
-          p={2}
-          bg="negro-sec"
-          border="1px solid #CBD5E0"
-          borderRadius="8px"
-          mt={4}
-          ml={1}
-          mr={4}
-          mb={4}
-          flexGrow={1}
-        >
+      <Box p={3} mt="8" bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" ml={3} mr={3} mb={4} flexGrow={1} display="flex" flexDirection="column">
+        <Box p={2} bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={1} mr={4} mb={4} flexGrow={1}>
           <Box mt={2} ml={1} mr={1} flexGrow={1}>
             <Heading as="h3" size="lg" textAlign="center">
               Avisos
@@ -299,15 +273,7 @@ const CursoProfeVer = () => {
                 +
               </Button>
             </Heading>
-            <Box
-              w="100%"
-              mt={4}
-              p={4}
-              bg="amarillo"
-              color="cafe"
-              border="1px solid #CBD5E0"
-              borderRadius="8px"
-            >
+            <Box w="100%" mt={4} p={4} bg="amarillo" color="cafe" border="1px solid #CBD5E0" borderRadius="8px" overflowY="auto">
               {curso.avisos.length > 0 ? (
                 <UnorderedList>
                   {curso.avisos.map((aviso) => (
@@ -339,48 +305,25 @@ const CursoProfeVer = () => {
               )}
             </Box>
           </Box>
-          </Box>
+        </Box>
 
-          <Box
-            p={4}
-            mt="8"
-            bg="megro-sec"
-            border="1px solid #CBD5E0"
-            borderRadius="8px"
-            ml={3}
-            mr={3}
-            mb={4}
-            flexGrow={1}
-          >
-           
-           <Heading as="h3" size="lg" textAlign="center">
-                Alumnos Inscritos
-              </Heading>
-            <VStack
-              mt={2}
-              spacing={4}
-              bg="amarillo"
-              color="black"
-              p={4}
-              borderRadius="8px"
-              overflowY="auto"
-            >
-              {alumnosInscritos.length > 0 ? (
-                <UnorderedList>
-                  {alumnosInscritos.map((alumno) => (
-                    <ListItem key={alumno._id}>
-                      {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
-                      {alumno.estado}
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-              ) : (
-                <Text fontStyle="italic">
-                  Aún no hay alumnos inscritos en el curso.
-                </Text>
-              )}
-            </VStack>
-          </Box>
+        <Box p={4} mt="8" bg="negro-sec" border="1px solid #CBD5E0" borderRadius="8px" ml={3} mr={3} mb={4} flexGrow={1} overflowY="auto">
+          <Heading as="h3" size="lg" textAlign="center">
+            Alumnos Inscritos
+          </Heading>
+          <VStack mt={2} spacing={4} bg="amarillo" color="negro-sec" p={4} borderRadius="8px" >
+            {alumnosInscritos.length > 0 ? (
+              <UnorderedList>
+                {alumnosInscritos.map((alumno) => (
+                  <ListItem key={alumno._id}>
+                    {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado: {alumno.estado}
+                  </ListItem>
+                ))}
+              </UnorderedList>
+            ) : (
+              <Text fontStyle="italic">Aún no hay alumnos inscritos en el curso.</Text>
+            )}
+          </VStack>
         </Box>
       </Box>
 
