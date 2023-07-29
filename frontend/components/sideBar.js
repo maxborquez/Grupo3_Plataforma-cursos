@@ -18,12 +18,11 @@ const Sidebar = () => {
 
   return (
     <Box
-      bg="NegroSec"
-      color="Cafe"
+      bg="negro-sec"
+      color="cafe"
       w="180px"
       flexShrink={0}
       p={4}
-      borderRadius="10px"
       fontFamily="Baloo Bhai, sans-serif"
       mt={4}
       mb={4}
@@ -36,36 +35,36 @@ const Sidebar = () => {
         <Button
           onClick={() => router.push('/adminPages/admin')}
           variant="solid"
-          colorScheme="Amarillo"
-          color="Blanco"
-          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
         >
           Página principal
         </Button>
         <Button
           onClick={() => router.push('/adminPages/cursosAdmin')}
           variant="solid"
-          colorScheme="Amarillo"
-          color="Blanco"
-          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
         >
           Cursos
         </Button>
         <Button
           onClick={() => router.push('/adminPages/usuariosAdmin')}
           variant="solid"
-          colorScheme="Amarillo"
-          color="Blanco"
-          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
         >
           Usuarios
         </Button>
         <Button
           onClick={() => router.push('/adminPages/estadisticasAdmin')}
           variant="solid"
-          colorScheme="Amarillo"
-          color="Blanco"
-          _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+          colorScheme="amarillo"
+          color="blanco"
+          _hover={{ color: 'negro-sec', bg: 'amarillo' }}
         >
           Estadísticas
         </Button>
@@ -76,9 +75,9 @@ const Sidebar = () => {
       <Button
         onClick={handleLogout}
         variant="ghost"
-        colorScheme="Amarillo"
-        color="Blanco"
-        _hover={{ color: 'NegroSec', bg: 'Amarillo' }}
+        colorScheme="amarillo"
+        color="blanco"
+        _hover={{ color: 'negro-sec', bg: 'amarillo' }}
       >
         Logout
       </Button>

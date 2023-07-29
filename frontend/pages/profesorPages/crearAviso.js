@@ -45,7 +45,7 @@ const CrearAvisoPage = () => {
               <FormLabel>Contenido:</FormLabel>
               <Textarea value={contenido} onChange={(e) => setContenido(e.target.value)} />
             </FormControl>
-            <Button colorScheme="blue" type="submit">
+            <Button colorScheme="blue" type="submit" onClick={handleVolverClick}>
               Crear Aviso
             </Button>
             <Button colorScheme="gray" onClick={handleVolverClick}>

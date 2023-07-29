@@ -37,18 +37,18 @@ const CursosAdminPage = () => {
       <Sidebar />
 
       <Box p={4} mt={4} ml={18} flexGrow={1} fontFamily="Baloo Bhai, sans-serif">
-        <Box bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4} mb={4}>
-          <Heading as="h1" size="xl">
+        <Box bg="negro-sec" border="1px solid amarillo" borderRadius="8px" p={4} mb={4}>
+          <Heading as="h1" size="xl" color="blanco">
             Visualización de todos los cursos
           </Heading>
         </Box>
 
-        <Box flex="2" bg="#E2E8F0" border="1px solid #CBD5E0" borderRadius="8px" p={4}>
+        <Box flex="2" bg="negro-sec" border="1px solid naranja" borderRadius="8px" p={4}>
           <Flex alignItems="center" justifyContent="space-between" mb={4}>
-            <Heading as="h1" size="xl">
+            <Heading as="h1" size="md" color="blanco">
               Lista de cursos en sistema
             </Heading>
-            <Button colorScheme="green" onClick={navigateToCursoCreate}>
+            <Button bg="verde" color="blanco" onClick={navigateToCursoCreate}>
               +
             </Button>
           </Flex>
