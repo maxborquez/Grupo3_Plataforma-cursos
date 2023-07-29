@@ -8,7 +8,6 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-import Sidebar from "../../components/sideBarProfe";
 import { crearClase } from "../../data/clasesData";
 
 const CrearClase = () => {
@@ -40,7 +39,7 @@ const CrearClase = () => {
       await crearClase(cursoId, nuevaClase);
 
       // Redirigir a la página de detalles del curso después de crear la clase
-      router.push(`/profesorPages/cursosProfeVer/${cursoId}`);
+      router.back();
     } catch (error) {
       console.error("Error al crear la clase:", error);
       // Lógica para manejar errores
@@ -49,7 +48,6 @@ const CrearClase = () => {
 
   return (
     <Box display="flex" minHeight="100vh">
-      <Sidebar />
 
       <Box flexGrow={4} bg="black" border="1px solid #CBD5E0" borderRadius="8px" mt={4} ml={3} mr={2} mb={4} display="flex" flexDirection="column">
         <Box

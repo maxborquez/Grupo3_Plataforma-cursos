@@ -1,7 +1,7 @@
 // estadisticasAdmin.js
 import { useState, useEffect } from 'react';
 import { Box, Heading, Button } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sideBar';
 import { getEstadisticas, createEstadistica } from '../../data/estadisticasData';
 import EstadisticaItem from '../../components/estadisticaItem';
 
@@ -66,7 +66,7 @@ const EstadisticasAdminPage = () => {
           flex="1"
           p={4}
           borderRadius="10px"
-          bg="gray.300"
+          bg="negro-sec"
           textAlign="left"
           display="flex"
           flexDirection="column"
@@ -76,8 +76,8 @@ const EstadisticasAdminPage = () => {
           </Heading>
           <Box textAlign="right" mb={4}>
             <Button
-              color="white"
-              backgroundColor="green.400"
+              color="blanco"
+              bg="verde"
               onClick={handleAgregarClick}
             >
               +

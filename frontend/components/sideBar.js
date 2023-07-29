@@ -22,6 +22,7 @@ const Sidebar = () => {
       color="cafe"
       w="180px"
       flexShrink={0}
+      borderRadius="8px"
       p={4}
       fontFamily="Baloo Bhai, sans-serif"
       mt={4}
@@ -31,7 +32,7 @@ const Sidebar = () => {
       flexDirection="column"
     >
       <Stack spacing={4}>
-        <Image src="/logo.jpg" alignContent='center' alt="Logo" w="80%" mb={4} />
+        <Image src="/logo.png" width={150} alignContent='center' alt="Logo" mb={4} />
         <Button
           onClick={() => router.push('/adminPages/cursosAdmin')}
           variant="solid"

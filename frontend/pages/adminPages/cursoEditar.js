@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { getCursoById, updateCurso } from "../../data/cursosData";
 import { getProfesores } from "../../data/usersData";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../components/sideBar";
 import Swal from "sweetalert2"
 
 const CursoEditar = () => {
@@ -91,8 +91,8 @@ const CursoEditar = () => {
       text: "Se guardarán los cambios en el curso.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Sí, guardar",
       cancelButtonText: "No, cancelar",
+      confirmButtonText: "Sí, guardar",
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -104,7 +104,7 @@ const CursoEditar = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            router.push(`/adminPages/cursoDetalle/${userId}`);
+            router.back();
           });
         } catch (error) {
           console.error("Error al actualizar el curso:", error);
@@ -125,12 +125,12 @@ const CursoEditar = () => {
       <Sidebar />
       <Box
         p={4}
-        bg="#E2E8F0"
         border="1px solid #CBD5E0"
         borderRadius="8px"
         mt={4}
         ml={18}
         flexGrow={1}
+        bg="negro-sec"
       >
         <Heading as="h1" size="xl">
           Editar Curso
@@ -140,6 +140,8 @@ const CursoEditar = () => {
             <FormLabel>Nombre del curso</FormLabel>
             <Input
               type="text"
+              bg="amarillo"
+              color="cafe"
               value={curso.nombre}
               onChange={(e) => setCurso({ ...curso, nombre: e.target.value })}
             />
@@ -148,6 +150,8 @@ const CursoEditar = () => {
             <FormLabel>Descripción del curso</FormLabel>
             <Textarea
               value={curso.descripcion}
+              bg="amarillo"
+              color="cafe"
               onChange={(e) =>
                 setCurso({ ...curso, descripcion: e.target.value })
               }
@@ -157,6 +161,8 @@ const CursoEditar = () => {
             <FormLabel>Estado del curso</FormLabel>
             <Select
               value={curso.estado}
+              bg="amarillo"
+              color="cafe"
               onChange={(e) => setCurso({ ...curso, estado: e.target.value })}
             >
               <option value="Disponible">Disponible</option>
@@ -168,6 +174,8 @@ const CursoEditar = () => {
             <FormLabel>Fecha de inicio</FormLabel>
             <Input
               type="date"
+              bg="amarillo"
+              color="cafe"
               value={convertToISODate(curso.fecha_inicio)}
               onChange={(e) =>
                 setCurso({ ...curso, fecha_inicio: new Date(e.target.value) })
@@ -178,6 +186,8 @@ const CursoEditar = () => {
             <FormLabel>Fecha de fin</FormLabel>
             <Input
               type="date"
+              bg="amarillo"
+              color="cafe"
               value={convertToISODate(curso.fecha_fin)}
               onChange={(e) =>
                 setCurso({ ...curso, fecha_fin: new Date(e.target.value) })
@@ -188,6 +198,8 @@ const CursoEditar = () => {
             <FormLabel>Profesor</FormLabel>
             <Select
               value={curso.profesor ? curso.profesor._id : ""}
+              bg="amarillo"
+              color="cafe"
               onChange={(e) => {
                 const selectedProfesor = profesores.find(
                   (profesor) => profesor._id === e.target.value
@@ -205,11 +217,11 @@ const CursoEditar = () => {
           </FormControl>
           <Divider />
           <HStack justifyContent="flex-end" spacing={4}>
-            <Button colorScheme="gray" onClick={handleVolverClick}>
-              Volver
-            </Button>
-            <Button colorScheme="blue" onClick={handleUpdateCurso}>
+            <Button bg="cafe" color="blanco" onClick={handleUpdateCurso}>
               Guardar Cambios
+            </Button>
+            <Button bg="naranja" color="blanco" onClick={handleVolverClick}>
+              Volver
             </Button>
           </HStack>
         </VStack>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Heading, Input, Button, Flex, Select } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/sideBar';
 import { createCurso } from '../../data/cursosData';
 import { getProfesores } from '../../data/usersData';
 import { useRouter } from 'next/router';
@@ -72,6 +72,8 @@ const CursoCreate = () => {
               value={cursoData.nombre}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             />
             <Input
               name="descripcion"
@@ -79,6 +81,8 @@ const CursoCreate = () => {
               value={cursoData.descripcion}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             />
             <Select
               name="estado"
@@ -86,6 +90,8 @@ const CursoCreate = () => {
               value={cursoData.estado}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             >
               <option value="Disponible">Disponible</option>
               <option value="Próximo">Próximo</option>
@@ -98,6 +104,8 @@ const CursoCreate = () => {
               value={cursoData.fecha_inicio}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             />
             <Input
               type="date"
@@ -106,6 +114,8 @@ const CursoCreate = () => {
               value={cursoData.fecha_fin}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             />
             <Select
               name="profesor"
@@ -113,6 +123,8 @@ const CursoCreate = () => {
               value={cursoData.profesor}
               onChange={handleChange}
               mb={4}
+              bg="amarillo"
+              color="cafe"
             >
               {profesores.map((profesor) => (
                 <option key={profesor._id} value={profesor._id}>
@@ -120,13 +132,13 @@ const CursoCreate = () => {
                 </option>
               ))}
             </Select>
-            <Button colorScheme="green" onClick={handleSubmit}>
+          </Flex>
+            <Button mr={4} size='md' bg="cafe" color="blanco" onClick={handleSubmit}>
               Crear Curso
             </Button>
-            <Button colorScheme="gray" onClick={handleVolverClick}>
+            <Button size='md' bg="naranja" color="blanco" onClick={handleVolverClick}>
               Volver
             </Button>
-          </Flex>
         </Box>
       </Box>
     </Box>

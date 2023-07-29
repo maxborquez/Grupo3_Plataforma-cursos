@@ -27,12 +27,12 @@ const UserItem = ({ user, onDeleteClick }) => {
   };
 
   return (
-    <Box p={4} bg="white" borderRadius="8px" mb={2}>
+    <Box p={4} bg="amarillo" color="cafe" borderRadius="8px" mb={2}>
       <Heading as="h3" size="md" textAlign="left">
         {user.nombre} {user.apellido}
       </Heading>
       <HStack mt={2} justifyContent="flex-end">
-        <Button colorScheme="blue" size="sm" onClick={handleDetalleClick}>
+        <Button bg="cafe" color="blanco" size="sm" onClick={handleDetalleClick}>
           Detalle
         </Button>
         <Button colorScheme="red" size="sm" onClick={handleDeleteClick}>

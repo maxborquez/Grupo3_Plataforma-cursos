@@ -37,12 +37,12 @@ const EstadisticaItem = ({ estadistica, fetchData }) => {
   };
 
   return (
-    <Box p={4} bg="white" borderRadius="8px" mb={2}>
-      <Text fontSize="sm" color="gray.600" mb={2}>
+    <Box p={4} bg="amarillo" borderRadius="8px" mb={2}>
+      <Text fontSize="sm" color="cafe" mb={2}>
         {formattedFechaCreacion}
       </Text>
       <HStack mt={2} justifyContent="flex-end">
-        <Button colorScheme="blue" size="sm" onClick={() => handleDetalleClick(estadistica._id)}>
+        <Button bg="cafe" color="blanco" size="sm" onClick={() => handleDetalleClick(estadistica._id)}>
           Detalle
         </Button>
         <Button colorScheme="red" size="sm" onClick={() => handleEliminarClick(estadistica._id)}>
