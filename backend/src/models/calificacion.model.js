@@ -18,6 +18,7 @@ const calificacionSchema = new mongoose.Schema({
   },
   calificacion: {
     type: String,
+    enum: ["Bien", "Medio", "Mal"],
     required: true,
   },
 });

@@ -24,6 +24,10 @@ const nextConfig = {
         destination: '/profesorPages/editarAviso',
       },
       {
+        source: '/profesorPages/calificacionesAlumnos/:cursoId',
+        destination: '/profesorPages/calificacionesAlumnos',
+      },
+      {
         source: '/profesorPages/crearClase/:cursoId',
         destination: '/profesorPages/crearClase',
       },
