@@ -1,6 +1,6 @@
 "use strict";
-const Calificacion = require("../models/calificacion");
-const Curso = require("../models/curso");
+const Calificacion = require("../models/calificacion.model");
+const Curso = require("../models/curso.model");
 const { handleError } = require("../utils/errorHandler");
 const { calificacionBodySchema } = require("../schema/calificacion.schema");
 

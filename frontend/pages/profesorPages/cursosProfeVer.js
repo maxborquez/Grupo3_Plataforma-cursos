@@ -79,6 +79,10 @@ const CursoProfeVer = () => {
     router.push(`/profesorPages/editarAviso/${avisoId}`);
   };
 
+  const handleCalificarClick = (alumnoId) => {
+    router.push(`/profesorPages/calificarAlumno/${cursoId}/${alumnoId}`);
+  };
+
   const handleBorrarAvisoClick = async (avisoId) => {
     try {
       await borrarAviso(avisoId);
@@ -97,8 +101,8 @@ const CursoProfeVer = () => {
     }
   };
 
-  const handleCalificacionesClick = () => {
-    router.push(`/profesorPages/calificacionesAlumnos/${cursoId}`);
+  const handleCalificacionesVerClick = () => {
+    router.push(`/profesorPages/calificacionesVer/${cursoId}`);
   };
 
   const handleMarcarAsistenciaClick = (claseId) => {
@@ -174,7 +178,7 @@ const CursoProfeVer = () => {
                   <strong>Profesor:</strong> {curso.profesor?.nombre}{" "}
                   {curso.profesor?.apellido}
                 </Text>
-                <Button bg="azul" color="blanco" onClick={handleCalificacionesClick}>
+                <Button bg="skyblue" color="blanco" onClick={handleCalificacionesVerClick}>
                   Calificaciones
                 </Button>
               </VStack>
@@ -338,6 +342,15 @@ const CursoProfeVer = () => {
                 {alumnosInscritos.map((alumno) => (
                   <ListItem key={alumno._id}>
                     {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado: {alumno.estado}
+                    <Button
+                        ml="4"
+                        size="xs"
+                        bg="cafe"
+                        color="white"
+                        onClick={() => handleCalificarClick(alumno.alumno._id)}
+                      >
+                        Calificar
+                      </Button>
                   </ListItem>
                 ))}
               </UnorderedList>

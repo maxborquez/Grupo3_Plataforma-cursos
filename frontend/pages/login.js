@@ -18,7 +18,7 @@ const LoginPage = () => {
       if (userRoles.includes("admin")) {
         router.push("/adminPages/cursosAdmin");
       } else if (userRoles.includes("profesor")) {
-        router.push("/profesorPages/profesor");
+        router.push("/profesorPages/cursosProfe");
       } else if (userRoles.includes("alumno")) {
         router.push("/alumnoPages/alumno");
       } else {
@@ -37,7 +37,7 @@ const LoginPage = () => {
       if (userRoles.includes("admin")) {
         router.push("/adminPages/cursosAdmin");
       } else if (userRoles.includes("profesor")) {
-        router.push("/profesorPages/profesor");
+        router.push("/profesorPages/cursosProfe");
       } else if (userRoles.includes("alumno")) {
         router.push("/alumnoPages/alumno");
       } else {

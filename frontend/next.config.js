@@ -60,6 +60,14 @@ const nextConfig = {
         source: '/profesorPages/marcarAsistencia/:cursoId/:claseId',
         destination: '/profesorPages/marcarAsistencia',
       },
+      {
+        source: '/profesorPages/calificarAlumno/:cursoId/:alumnoId',
+        destination: '/profesorPages/calificarAlumno',
+      },
+      {
+        source: '/profesorPages/calificacionesVer/:cursoId',
+        destination: '/profesorPages/calificacionesVer',
+      },
     ];
   },
 };
