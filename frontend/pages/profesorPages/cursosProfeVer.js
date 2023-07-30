@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Box,
-  Flex,
   Heading,
   Text,
   Button,
@@ -102,6 +101,11 @@ const CursoProfeVer = () => {
     router.push(`/profesorPages/calificacionesAlumnos/${cursoId}`);
   };
 
+  const handleMarcarAsistenciaClick = (claseId) => {
+    // Realizar la redirección a la página "MarcarAsistencia" con cursoId y claseId en la URL
+    router.push(`/profesorPages/marcarAsistencia/${cursoId}/${claseId}`);
+  };
+
   return (
     <Box display="flex" minHeight="100vh" bg="negro">
       <Sidebar />
@@ -171,8 +175,8 @@ const CursoProfeVer = () => {
                   {curso.profesor?.apellido}
                 </Text>
                 <Button bg="azul" color="blanco" onClick={handleCalificacionesClick}>
-          Calificaciones
-        </Button>
+                  Calificaciones
+                </Button>
               </VStack>
             </Box>
           </VStack>
@@ -203,7 +207,7 @@ const CursoProfeVer = () => {
                 bg="verde"
                 color="blanco"
                 size="sm"
-                onClick={() => handleCrearClasesClick(cursoId)}
+                onClick={() => handleCrearClasesClick()}
               >
                 +
               </Button>
@@ -254,6 +258,16 @@ const CursoProfeVer = () => {
                       >
                         Editar
                       </Button>
+                      {/* Botón para marcar asistencia */}
+                      <Button
+                        ml="4"
+                        size="xs"
+                        bg="verde"
+                        color="blanco"
+                        onClick={() => handleMarcarAsistenciaClick(clase._id)}
+                      >
+                        Marcar Asistencia
+                      </Button>
                     </ListItem>
                   ))}
                 </UnorderedList>
@@ -275,7 +289,7 @@ const CursoProfeVer = () => {
                 bg="verde"
                 color="blanco"
                 size="sm"
-                onClick={() => handleCrearAvisoClick(cursoId)}
+                onClick={() => handleCrearAvisoClick()}
               >
                 +
               </Button>

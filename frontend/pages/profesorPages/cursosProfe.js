@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Heading, Button, List, ListItem } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
 import { getCursoByProfesor } from '../../data/cursosData'; // Importa la función para obtener los cursos del profesor
 import { getUserId, getUserRole } from '../../data/auth'; // Importa la función para obtener el ID del usuario y el rol desde el token
 import SidebarProfe from '../../components/sideBarProfe'; // Importa el componente Sidebar

@@ -4,10 +4,20 @@ const Clase = require("../models/Clase");
 const { handleError } = require("../utils/errorHandler");
 const { asistenciaBodySchema } = require("../schema/asistencia.schema");
 
-async function marcarAsistencia(alumnoId, cursoId, claseId, presente) {
+// Modifica la función marcarAsistencia para recibir las IDs desde la ruta
+async function marcarAsistencia(req, res) {
   try {
+    // Extraer los parámetros de la URL de la solicitud
+    const { cursoId, claseId, alumnoId } = req.params;
+
+    // Extraer el valor "presente" del cuerpo de la solicitud (si es necesario)
+    const { presente } = req.body;
+
+    // Realizar la lógica para marcar la asistencia
     const { error } = asistenciaBodySchema.validate({ presente });
-    if (error) return null;
+    if (error) {
+      return res.status(400).json({ error: 'El campo "presente" es requerido y debe ser un valor booleano.' });
+    }
 
     let asistencia = await Asistencia.findOne({
       alumno: alumnoId,
@@ -28,9 +38,10 @@ async function marcarAsistencia(alumnoId, cursoId, claseId, presente) {
 
     await asistencia.save();
 
-    return asistencia;
+    return res.json({ state: 'Success', data: asistencia });
   } catch (error) {
-    handleError(error, "asistencia.service -> marcarAsistencia");
+    console.error('Error al marcar asistencia:', error);
+    return res.status(500).json({ error: 'Error al marcar la asistencia.' });
   }
 }
 

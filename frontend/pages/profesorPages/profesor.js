@@ -1,16 +1,7 @@
-import { Box, Heading, Button, Stack } from '@chakra-ui/react';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
+import { Box, Heading } from '@chakra-ui/react';
 import SidebarProfe from '../../components/sideBarProfe'; // Importa el componente Sidebar
 
 const ProfesorPage = () => {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    Cookies.remove('jwtToken');
-    router.push('/login');
-  };
-
   return (
     <Box display="flex" minHeight="100vh">
        {/* Barra lateral */}

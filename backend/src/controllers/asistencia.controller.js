@@ -1,36 +1,23 @@
 const Asistencia = require("../models/asistencia.model");
 const Curso = require("../models/curso.model");
 
-// Marcar la asistencia de un alumno en una clase
 const marcarAsistencia = async (req, res) => {
   const { alumnoId, cursoId, claseId } = req.params;
   const { presente } = req.body;
 
   try {
-    let asistencia = await Asistencia.findOne({
-      alumno: alumnoId,
-      curso: cursoId,
-      clase: claseId,
-    });
+    const asistencia = await AsistenciaService.marcarAsistencia(alumnoId, cursoId, claseId, presente);
 
     if (!asistencia) {
-      asistencia = new Asistencia({
-        alumno: alumnoId,
-        curso: cursoId,
-        clase: claseId,
-        presente,
-      });
-    } else {
-      return res.status(400).json({ error: "La asistencia ya ha sido marcada" });
+      return res.status(400).json({ error: 'Error al marcar la asistencia' });
     }
-
-    await asistencia.save();
 
     res.status(200).json(asistencia);
   } catch (error) {
-    res.status(500).json({ error: "Ocurrió un error al marcar la asistencia" });
+    res.status(500).json({ error: 'Ocurrió un error al marcar la asistencia' });
   }
 };
+
 
 
 // Corregir la asistencia de un alumno en una clase
@@ -154,6 +141,21 @@ async function obtenerEstadisticasAsistenciaCurso(req, res) {
   }
 }
 
+// Obtener las asistencias de los alumnos a una clase de un curso
+const getAsistenciasByCursoYClase = async (req, res) => {
+  const { cursoId, claseId } = req.params;
+
+  try {
+    // Buscamos todas las asistencias de los alumnos en la clase y curso específicos
+    const asistencias = await Asistencia.find({ curso: cursoId, clase: claseId });
+
+    res.status(200).json({ state: 'Success', data: asistencias });
+  } catch (error) {
+    console.error('Error al obtener las asistencias:', error);
+    res.status(500).json({ state: 'Error', message: 'Ocurrió un error al obtener las asistencias' });
+  }
+};
+
 
 
 module.exports = {
@@ -162,4 +164,5 @@ module.exports = {
   obtenerEstadisticasAsistencia,
   obtenerAsistenciasAlumnoCurso,
   obtenerEstadisticasAsistenciaCurso,
+  getAsistenciasByCursoYClase
 };

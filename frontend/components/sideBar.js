@@ -67,7 +67,7 @@ const Sidebar = () => {
           color="blanco"
           _hover={{ color: 'negro-sec', bg: 'amarillo' }}
         >
-          Inscribir alumno
+          Inscripciones
         </Button>
       </Stack>
 

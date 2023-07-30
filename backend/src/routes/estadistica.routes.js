@@ -15,7 +15,6 @@ router.post("/", estadisticaController.createEstadistica);
 router.get("/", estadisticaController.getEstadisticas);
 router.get("/:id", estadisticaController.getEstadisticaById);
 router.delete("/:id", estadisticaController.deleteEstadistica);
-//router.delete("/todas", estadisticaController.deleteAllEstadisticas);
 
 // Exporta el enrutador
 module.exports = router;
