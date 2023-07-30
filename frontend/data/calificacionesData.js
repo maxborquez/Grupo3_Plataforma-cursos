@@ -12,7 +12,7 @@ const crearCalificacion = async (cursoId, alumnoId, profesorId, calificacion) =>
     try {
       const token = getToken();
       const response = await axios.post(
-        `${apiUrl}/calificaciones/curso/${cursoId}/alumno/${alumnoId}/profesor/${profesorId}`,
+        `${apiUrl}/calificaciones/${cursoId}/alumno/${alumnoId}/profesor/${profesorId}`,
         { calificacion },
         {
           headers: {

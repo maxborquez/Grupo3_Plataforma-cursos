@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import {
   Box,
   Heading,
-  Text,
   FormControl,
   FormLabel,
   Select,
   Button,
 } from "@chakra-ui/react";
 import { crearCalificacion } from "../../data/calificacionesData";
+import { getUserId } from "../../data/auth";
 
 const CrearCalificacion = () => {
   const router = useRouter();
@@ -18,7 +18,14 @@ const CrearCalificacion = () => {
 
   const handleGuardarCalificacion = async () => {
     try {
-      await crearCalificacion(cursoId, alumnoId, calificacion);
+      const profesorId = getUserId();
+
+      if (!profesorId) {
+        console.error("Error: No se pudo obtener el profesorId");
+        return;
+      }
+
+      await crearCalificacion(cursoId, alumnoId, profesorId, calificacion);
       router.back(); // Regresar a la página anterior después de guardar la calificación
     } catch (error) {
       console.error("Error al crear la calificación:", error);
@@ -30,9 +37,6 @@ const CrearCalificacion = () => {
       <Heading as="h1" size="xl" mb={4}>
         Crear Calificación
       </Heading>
-      <Text mb={4}>
-        <strong>Alumno:</strong> Nombre del alumno (obtén el nombre del alumno del API si lo deseas)
-      </Text>
       <FormControl mb={4}>
         <FormLabel>Calificación:</FormLabel>
         <Select
@@ -40,9 +44,9 @@ const CrearCalificacion = () => {
           onChange={(e) => setCalificacion(e.target.value)}
         >
           <option value="">Seleccione una opción</option>
-          <option value="bien">Bien</option>
-          <option value="medio">Medio</option>
-          <option value="mal">Mal</option>
+          <option value="Bien">Bien</option>
+          <option value="Medio">Medio</option>
+          <option value="Mal">Mal</option>
         </Select>
       </FormControl>
       <Button

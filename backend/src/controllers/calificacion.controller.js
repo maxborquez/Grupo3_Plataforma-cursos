@@ -1,5 +1,6 @@
 const Calificacion = require("../models/calificacion.model");
 const Curso = require("../models/curso.model");
+const calificacionService = require("../services/calificacion.service");
 
 // Obtener todas las calificaciones
 const getCalificaciones = async (req, res) => {
@@ -22,6 +23,20 @@ const getCalificacionById = async (req, res) => {
     res.status(200).json(calificacion);
   } catch (error) {
     res.status(500).json({ error: "Ocurrió un error al obtener la calificación" });
+  }
+};
+
+
+const getCalificacionesByCursoId = async (cursoId) => {
+  try {
+    const curso = await Curso.findById(cursoId).populate("calificaciones");
+    if (!curso) {
+      return null; // El curso no se encontró
+    }
+    return curso.calificaciones;
+  } catch (error) {
+    console.error("Error al obtener las calificaciones:", error);
+    throw error;
   }
 };
 
@@ -86,11 +101,11 @@ const deleteCalificacion = async (req, res) => {
   }
 };
 
-// Obtener calificaciones por curso
 const obtenerCalificacionesPorCurso = async (req, res) => {
   const { cursoId } = req.params;
   try {
-    const calificaciones = await Calificacion.find({ curso: cursoId }).populate("alumno");
+    const calificaciones = await Calificacion.find({ curso: cursoId })
+      .populate('alumno', 'nombre apellido');
     res.status(200).json(calificaciones);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener las calificaciones del curso" });
@@ -104,5 +119,6 @@ module.exports = {
   createCalificacion,
   updateCalificacion,
   deleteCalificacion,
-  obtenerCalificacionesPorCurso
+  obtenerCalificacionesPorCurso,
+  getCalificacionesByCursoId
 };
