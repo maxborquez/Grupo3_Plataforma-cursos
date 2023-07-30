@@ -1,26 +1,14 @@
-// profesorPages/marcarAsistencia.js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Button,
-  VStack,
-  Divider,
-  ListItem,
-  UnorderedList,
-  Badge,
-} from "@chakra-ui/react";
+import { Switch } from "@chakra-ui/react";
 import { getCursoById } from "../../data/cursosData";
-import { marcarAsistencia } from "../../data/asistenciaData";
+import { getAsistenciasByCursoYClase } from "../../data/asistenciaData";
 
 const MarcarAsistencia = () => {
   const router = useRouter();
   const { cursoId, claseId } = router.query;
   const [curso, setCurso] = useState(null);
-  const [alumnosInscritos, setAlumnosInscritos] = useState([]);
+  const [asistencias, setAsistencias] = useState([]);
 
   const loadCursoDetalle = async () => {
     try {
@@ -35,18 +23,49 @@ const MarcarAsistencia = () => {
     }
   };
 
-  useEffect(() => {
-    if (cursoId) {
-      loadCursoDetalle();
-    }
-  }, [cursoId]);
-
-  const handleMarcarAsistenciaClick = async (alumnoId, presente) => {
+  const loadAsistencias = async () => {
     try {
-      await marcarAsistencia(alumnoId, cursoId, claseId, presente);
-      loadCursoDetalle(); // Recargamos los datos del curso para reflejar los cambios en la asistencia
+      const response = await getAsistenciasByCursoYClase(cursoId, claseId);
+      if (response.state === "Success") {
+        setAsistencias(response.data);
+      } else {
+        console.error("Error al obtener las asistencias:", response);
+      }
     } catch (error) {
-      console.error("Error al marcar la asistencia:", error);
+      console.error("Error al cargar las asistencias:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (cursoId && claseId) {
+      loadCursoDetalle();
+      loadAsistencias();
+    }
+  }, [cursoId, claseId]);
+
+  const handleAsistenciaChange = async (alumnoId, nuevaAsistencia) => {
+    try {
+      // Llamada a la función marcarAsistencia para actualizar la asistencia
+      await marcarAsistencia(alumnoId, cursoId, claseId, nuevaAsistencia);
+
+      // Después de actualizar la asistencia en el backend, actualiza el estado local
+      setAsistencias(asistencias.map((asistencia) => {
+        if (asistencia.alumno._id === alumnoId) {
+          return { ...asistencia, asistencia: nuevaAsistencia };
+        }
+        return asistencia;
+      }));
+
+      // Si no hay asistencias, establecer la asistencia como false para todos los alumnos
+      if (asistencias.length === 0) {
+        const updatedAsistencias = curso.alumnos.map((alumno) => ({
+          alumno: { ...alumno },
+          asistencia: false,
+        }));
+        setAsistencias(updatedAsistencias);
+      }
+    } catch (error) {
+      console.error("Error al actualizar la asistencia:", error);
     }
   };
 
@@ -54,43 +73,27 @@ const MarcarAsistencia = () => {
     return <div>Cargando...</div>;
   }
 
+  const alumnosConAsistencia = asistencias.length === 0 ? curso.alumnos.map(alumno => ({ ...alumno, asistencia: false })) : asistencias;
+
   return (
-    <Box display="flex" minHeight="100vh" bg="negro">
-      <Box p={4} flexGrow={1} bg="negro-sec">
-        <Heading as="h1" size="xl" textAlign="center" mb={4}>
-          Lista de Alumnos Inscritos
-        </Heading>
-        {curso.alumnos.length > 0 ? (
-          <VStack spacing={4} align="flex-start">
-            {curso.alumnos.map((alumno) => (
-              <Box key={alumno._id} p={2} borderRadius="8px" bg="amarillo" w="100%">
-                <Text>
-                  <strong>Nombre:</strong> {alumno.nombre} {alumno.apellido}
-                </Text>
-                <Text>
-                  <strong>Estado:</strong>{" "}
-                  {alumno.asistencias && alumno.asistencias[claseId]
-                    ? alumno.asistencias[claseId].presente
-                      ? "Presente"
-                      : "Ausente"
-                    : "Sin marcar"}
-                </Text>
-                <Button
-                  bg="azul"
-                  color="white"
-                  size="sm"
-                  onClick={() => handleMarcarAsistenciaClick(alumno._id, !alumno.asistencias[claseId]?.presente)}
-                >
-                  Marcar Asistencia
-                </Button>
-              </Box>
-            ))}
-          </VStack>
-        ) : (
-          <Text fontStyle="italic">Aún no hay alumnos inscritos en este curso.</Text>
-        )}
-      </Box>
-    </Box>
+    <div>
+      <h1>Lista de Alumnos</h1>
+      {alumnosConAsistencia.map((alumno) => (
+        <div key={alumno._id}>
+          {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
+          {alumno.asistencia ? "Asistió" : "No asistió"}
+          <Switch
+            ml={4}
+            isChecked={alumno.asistencia}
+            onChange={() =>
+              handleAsistenciaChange(alumno._id, !alumno.asistencia)
+            }
+            colorScheme="teal"
+            size="lg"
+          />
+        </div>
+      ))}
+    </div>
   );
 };
 

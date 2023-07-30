@@ -10,9 +10,9 @@ const getToken = () => {
 
 const marcarAsistencia = async (alumnoId, cursoId, claseId, presente) => {
   try {
-    const token = getToken();
+    const token = await getToken(); // Asegurarse de obtener el token de forma asíncrona si es necesario
     const response = await axios.post(
-      `${apiUrl}/curso/${cursoId}/clase/${claseId}/alumno/${alumnoId}`,
+      `${apiUrl}/asistencias/curso/${cursoId}/clase/${claseId}/alumno/${alumnoId}`,
       { presente },
       {
         headers: {
@@ -22,10 +22,11 @@ const marcarAsistencia = async (alumnoId, cursoId, claseId, presente) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Error al marcar asistencia:', error);
+    console.error("Error al marcar asistencia:", error);
     throw error;
   }
 };
+
 
 const corregirAsistencia = async (alumnoId, cursoId, claseId, presente) => {
   try {
@@ -49,7 +50,7 @@ const corregirAsistencia = async (alumnoId, cursoId, claseId, presente) => {
 const obtenerEstadisticasAsistencia = async (cursoId, alumnoId) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/${cursoId}/alumno/${alumnoId}/estadisticas`, {
+    const response = await axios.get(`${apiUrl}/asistencias/${cursoId}/alumno/${alumnoId}/estadisticas`, {
       headers: {
         token: token,
       },
@@ -64,7 +65,7 @@ const obtenerEstadisticasAsistencia = async (cursoId, alumnoId) => {
 const obtenerAsistenciasAlumnoCurso = async (cursoId, alumnoId) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/${cursoId}/alumno/${alumnoId}`, {
+    const response = await axios.get(`${apiUrl}/asistencias/${cursoId}/alumno/${alumnoId}`, {
       headers: {
         token: token,
       },
@@ -79,7 +80,7 @@ const obtenerAsistenciasAlumnoCurso = async (cursoId, alumnoId) => {
 const obtenerEstadisticasAsistenciaCurso = async (cursoId) => {
   try {
     const token = getToken();
-    const response = await axios.get(`${apiUrl}/${cursoId}/estadisticas`, {
+    const response = await axios.get(`${apiUrl}/asistencias/${cursoId}/estadisticas`, {
       headers: {
         token: token,
       },
@@ -91,10 +92,26 @@ const obtenerEstadisticasAsistenciaCurso = async (cursoId) => {
   }
 };
 
+const getAsistenciasByCursoYClase = async (cursoId, claseId) => {
+  try {
+    const token = getToken();
+    const response = await axios.get(`${apiUrl}/asistencias/curso/${cursoId}/clase/${claseId}`, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener las asistencias del curso:', error);
+    throw error;
+  }
+};
+
 export {
   marcarAsistencia,
   corregirAsistencia,
   obtenerEstadisticasAsistencia,
   obtenerAsistenciasAlumnoCurso,
   obtenerEstadisticasAsistenciaCurso,
+  getAsistenciasByCursoYClase
 };

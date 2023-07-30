@@ -1,7 +1,6 @@
 const CursoService = require("../services/curso.service");
 const { respondSuccess, respondError } = require("../utils/resHandler");
 
-// Obtener todos los cursos
 async function getCursos(req, res) {
   try {
     const cursos = await CursoService.getCursos();
@@ -11,7 +10,6 @@ async function getCursos(req, res) {
   }
 }
 
-// Obtener un curso por su ID
 async function getCursoById(req, res) {
   try {
     const { id } = req.params;
@@ -24,7 +22,6 @@ async function getCursoById(req, res) {
   }
 }
 
-// Crear un nuevo curso
 async function createCurso(req, res) {
   try {
     const { profesorId, ...rest } = req.body;
@@ -35,7 +32,7 @@ async function createCurso(req, res) {
   }
 }
 
-// Actualizar un curso por su ID
+
 async function updateCurso(req, res) {
   try {
     const { id } = req.params;
@@ -49,7 +46,6 @@ async function updateCurso(req, res) {
   }
 }
 
-// Eliminar un curso por su ID
 async function deleteCurso(req, res) {
   try {
     const { id } = req.params;
@@ -62,7 +58,6 @@ async function deleteCurso(req, res) {
   }
 }
 
-// Cambiar el estado de un curso
 async function changeEstadoCurso(req, res) {
   try {
     const { id } = req.params;
@@ -76,7 +71,6 @@ async function changeEstadoCurso(req, res) {
   }
 }
 
-// Cambiar el profesor de un curso
 async function changeProfesor(req, res) {
   try {
     const { id } = req.params;
@@ -90,7 +84,6 @@ async function changeProfesor(req, res) {
   }
 }
 
-// Obtener cursos de un profesor
 async function getCursosByProfesor(req, res) {
   try {
     const { profesorId } = req.params;
@@ -101,10 +94,9 @@ async function getCursosByProfesor(req, res) {
   }
 }
 
-// Inscribir un alumno en un curso
 async function inscribirAlumnoEnCurso(req, res) {
   try {
-    const { cursoId, alumnoId } = req.params; // Obtiene los IDs desde los parámetros de ruta
+    const { cursoId, alumnoId } = req.params;
     const curso = await CursoService.inscribirAlumnoEnCurso(cursoId, alumnoId);
     if (curso === null) {
       return respondError(req, res, 404, "No se encontró el curso", "Not Found");
@@ -115,22 +107,16 @@ async function inscribirAlumnoEnCurso(req, res) {
   }
 }
 
-
-// Eliminar un alumno de un curso
 async function eliminarAlumno(req, res) {
   try {
-    const { id } = req.params;
-    const { alumnoId } = req.body;
-    const curso = await CursoService.eliminarAlumno(id, alumnoId);
-    curso === null
-      ? respondError(req, res, 404, "No se encontró el curso", "Not Found")
-      : respondSuccess(req, res, 200, curso);
+    const { cursoId, alumnoId } = req.params;
+    const curso = await CursoService.eliminarAlumno(cursoId, alumnoId);
+    return respondSuccess(req, res, 200, curso);
   } catch (error) {
     respondError(req, res, 500, "Ocurrió un error al eliminar al alumno del curso");
   }
 }
 
-// Cambiar el estado de un alumno en un curso
 async function cambiarEstadoAlumno(req, res) {
   try {
     const { id } = req.params;

@@ -80,12 +80,11 @@ async function getProfesores() {
     const profesores = await User.find()
       .populate({
         path: "roles",
-        match: { name: "profesor" }, // Filtrar solo los roles con el nombre "profesor"
-        select: "name", // Seleccionar solo el campo "name" del modelo Role
+        match: { name: "profesor" },
+        select: "name",
       })
       .exec();
 
-    // Filtrar los usuarios que tienen el rol "profesor" en la propiedad "roles"
     const profesoresFiltrados = profesores.filter(
       (usuario) => usuario.roles.length > 0
     );

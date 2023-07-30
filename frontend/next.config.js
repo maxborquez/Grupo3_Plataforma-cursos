@@ -56,6 +56,10 @@ const nextConfig = {
         source: '/alumnoPages/alumnoCursoVer/:cursoId',
         destination: '/alumnoPages/alumnoCursoVer',
       },
+      {
+        source: '/profesorPages/marcarAsistencia/:cursoId/:claseId',
+        destination: '/profesorPages/marcarAsistencia',
+      },
     ];
   },
 };
