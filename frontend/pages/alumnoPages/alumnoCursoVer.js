@@ -122,7 +122,7 @@ const CursoAlumnoVer = () => {
           Profesor: {curso.profesor?.nombre} {curso.profesor?.apellido}
         </Text>
         <Button
-          bg="skyblue"
+          bg="cafe"
           color="blanco"
           onClick={handleCalificacionesVerClick}
         >
