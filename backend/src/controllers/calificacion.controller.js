@@ -31,22 +31,23 @@ async function createCalificacion(req, res) {
     const { cursoId, alumnoId, profesorId } = req.params;
     const { calificacion } = req.body;
 
-    const participaCurso = await Curso.exists({ _id: cursoId, profesor: profesorId });
-    if (!participaCurso) {
-      return res.status(403).json({ message: "No tienes permiso para asignar calificaciones en este curso." });
+    console.log("cursoId:", cursoId);
+    console.log("alumnoId:", alumnoId);
+    console.log("profesorId:", profesorId);
+    console.log("calificacion:", calificacion);
+
+    const calificacionGuardada = await calificacionService.createCalificacion(cursoId, alumnoId, profesorId, calificacion);
+
+    if (!calificacionGuardada) {
+      return res.status(500).json({ message: "Error al asignar la calificación." });
     }
 
-    const nuevaCalificacion = new Calificacion({
-      curso: cursoId,
-      alumno: alumnoId,
-      profesor: profesorId,
-      calificacion,
-    });
+    // Agregar el ID de la calificación al arreglo de calificaciones del curso
+    await Curso.findByIdAndUpdate(cursoId, { $push: { calificaciones: calificacionGuardada._id } });
 
-    await nuevaCalificacion.save();
-
-    res.status(201).json({ message: "La calificación fue asignada con exito" });
+    res.status(201).json({ message: "La calificación fue asignada con éxito" });
   } catch (error) {
+    console.error("Error en el controlador createCalificacion:", error);
     res.status(500).json({ message: "Error al asignar la calificación.", error });
   }
 }
@@ -85,10 +86,23 @@ const deleteCalificacion = async (req, res) => {
   }
 };
 
+// Obtener calificaciones por curso
+const obtenerCalificacionesPorCurso = async (req, res) => {
+  const { cursoId } = req.params;
+  try {
+    const calificaciones = await Calificacion.find({ curso: cursoId }).populate("alumno");
+    res.status(200).json(calificaciones);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener las calificaciones del curso" });
+  }
+};
+
+
 module.exports = {
   getCalificaciones,
   getCalificacionById,
   createCalificacion,
   updateCalificacion,
   deleteCalificacion,
+  obtenerCalificacionesPorCurso
 };

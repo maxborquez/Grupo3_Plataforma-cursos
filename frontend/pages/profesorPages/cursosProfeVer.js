@@ -98,6 +98,10 @@ const CursoProfeVer = () => {
     }
   };
 
+  const handleCalificacionesClick = () => {
+    router.push(`/profesorPages/calificacionesAlumnos/${cursoId}`);
+  };
+
   return (
     <Box display="flex" minHeight="100vh" bg="negro">
       <Sidebar />
@@ -166,6 +170,9 @@ const CursoProfeVer = () => {
                   <strong>Profesor:</strong> {curso.profesor?.nombre}{" "}
                   {curso.profesor?.apellido}
                 </Text>
+                <Button bg="azul" color="blanco" onClick={handleCalificacionesClick}>
+          Calificaciones
+        </Button>
               </VStack>
             </Box>
           </VStack>

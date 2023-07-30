@@ -28,25 +28,25 @@ async function getCalificacionById(id) {
 }
 
 
-async function createCalificacion(calificacion) {
+async function createCalificacion(cursoId, alumnoId, profesorId, calificacion) {
   try {
-    const { error } = calificacionBodySchema.validate(calificacion);
-    if (error) return null;
-
-    const { curso, alumno, profesor, calificacion: calificacionValue } = calificacion;
-
-    const participaCurso = await Curso.exists({ _id: curso, profesor });
+    const participaCurso = await Curso.exists({ _id: cursoId, profesor: profesorId });
     if (!participaCurso) {
       return null;
     }
 
-    const nuevaCalificacion = new Calificacion({ curso, alumno, profesor, calificacion: calificacionValue });
+    const nuevaCalificacion = new Calificacion({
+      curso: cursoId,
+      alumno: alumnoId,
+      profesor: profesorId,
+      calificacion,
+    });
+
     return await nuevaCalificacion.save();
   } catch (error) {
-    handleError(error, "calificacion.service -> createCalificacion");
+    throw error; // Agregar esta línea para arrojar el error
   }
 }
-
 
 async function updateCalificacion(id, nuevaCalificacion) {
   try {
@@ -73,10 +73,20 @@ async function deleteCalificacion(id) {
   }
 }
 
+
+async function obtenerCalificacionesPorCurso(cursoId) {
+  try {
+    return await Calificacion.find({ curso: cursoId }).populate("alumno");
+  } catch (error) {
+    handleError(error, "calificacion.service -> obtenerCalificacionesPorCurso");
+  }
+}
+
 module.exports = {
   getCalificaciones,
   getCalificacionById,
   createCalificacion,
   updateCalificacion,
   deleteCalificacion,
+  obtenerCalificacionesPorCurso
 };
