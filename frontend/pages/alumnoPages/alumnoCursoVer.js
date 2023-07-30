@@ -1,48 +1,55 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Box, Heading, Button, HStack, Text, Badge, Divider, ListItem, UnorderedList, List, VStack } from '@chakra-ui/react';
-import { inscribirAlumnoEnCurso, obtenerAsistenciasAlumnoCurso, getCursoById } from '../../data/cursosData'; // Importa la función obtenerAsistenciasAlumnoCurso
-import SidebarAlumno from '../../components/sideBarAlumno';
-import { getUserId } from '../../data/auth';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  VStack,
+  ListItem,
+  UnorderedList,
+  Badge,
+} from "@chakra-ui/react";
+import { inscribirAlumnoEnCurso, getCursoById } from "../../data/cursosData";
+import { getUserId } from "../../data/auth";
+import Sidebar from "../../components/sideBarAlumno";
 
-const AlumnoCursoVer = () => {
+const CursoAlumnoVer = () => {
   const router = useRouter();
   const { cursoId } = router.query;
   const [curso, setCurso] = useState(null);
-  const [asistencias, setAsistencias] = useState([]); // Estado para almacenar las asistencias del alumno
+  const [alumnosInscritos, setAlumnosInscritos] = useState([]);
+
+  const loadAlumnosInscritos = async () => {
+    try {
+      const response = await getCursoById(cursoId);
+      if (response.state === "Success") {
+        setAlumnosInscritos(response.data.alumnos);
+      } else {
+        console.error("Error al obtener los alumnos inscritos:", response);
+      }
+    } catch (error) {
+      console.error("Error al cargar los alumnos inscritos:", error);
+    }
+  };
+
+  const loadCursoDetalle = async () => {
+    try {
+      const response = await getCursoById(cursoId);
+      if (response.state === "Success") {
+        setCurso(response.data);
+      } else {
+        console.error("Error al obtener los detalles del curso:", response);
+      }
+    } catch (error) {
+      console.error("Error al cargar los detalles del curso:", error);
+    }
+  };
 
   useEffect(() => {
-    const loadCursoDetalle = async () => {
-      try {
-        const response = await getCursoById(cursoId);
-        if (response.state === 'Success') {
-          setCurso(response.data);
-        } else {
-          console.error('Error al obtener los detalles del curso:', response);
-        }
-      } catch (error) {
-        console.error('Error al cargar los detalles del curso:', error);
-      }
-    };
-
-    const loadAsistenciasAlumno = async () => {
-      try {
-        const alumnoId = getUserId(); // Obtener el ID del alumno desde el token
-        if (!alumnoId) {
-          console.error('Error al obtener el ID del alumno desde el token.');
-          return;
-        }
-
-        const response = await obtenerAsistenciasAlumnoCurso(cursoId, alumnoId);
-        setAsistencias(response.data);
-      } catch (error) {
-        console.error('Error al obtener las asistencias del alumno:', error);
-      }
-    };
-
     if (cursoId) {
       loadCursoDetalle();
-      loadAsistenciasAlumno();
+      loadAlumnosInscritos();
     }
   }, [cursoId]);
 
@@ -54,172 +61,167 @@ const AlumnoCursoVer = () => {
     router.back();
   };
 
+  const handleCalificacionesVerClick = () => {
+    router.push(`/profesorPages/calificacionesVer/${cursoId}`);
+  };
+
   const handleInscribirClick = async () => {
     try {
       const alumnoId = getUserId(); // Obtener el ID del alumno desde el token
       if (!alumnoId) {
-        console.error('Error al obtener el ID del alumno desde el token.');
+        console.error("Error al obtener el ID del alumno desde el token.");
         return;
       }
 
-      console.log('cursoId:', cursoId);
-      console.log('alumnoId:', alumnoId);
+      console.log("cursoId:", cursoId);
+      console.log("alumnoId:", alumnoId);
 
       // Llamar a la función inscribirAlumnoEnCurso con los IDs del curso y el alumno
       const response = await inscribirAlumnoEnCurso(cursoId, alumnoId);
-      console.log('Respuesta de inscripción:', response);
+      console.log("Respuesta de inscripción:", response);
       // Aquí puedes mostrar un mensaje de éxito o realizar otras acciones después de la inscripción
     } catch (error) {
-      console.error('Error al inscribir alumno en el curso:', error);
+      console.error("Error al inscribir alumno en el curso:", error);
       // Aquí puedes mostrar un mensaje de error o realizar otras acciones en caso de error
     }
   };
 
   return (
-    <Box display="flex" minHeight="100vh">
-      <SidebarAlumno />
-      <Box
-        p={4}
+    <Box color="naranja" display="flex" minHeight="100vh" bg="negro">
+      <Sidebar />
+
+      <VStack
+        flexGrow={1}
         bg="negro-sec"
-        color="amarillo"
         border="1px solid #CBD5E0"
         borderRadius="8px"
         mt={4}
-        ml={18}
-        flexGrow={1}
+        ml={3}
+        mr={2}
+        mb={4}
+        p={4}
+        align="stretch"
+        spacing={4}
       >
-        <Heading as="h1" size="xl">
+        <Heading as="h1" size="xl" textAlign="center">
           {curso.nombre}
         </Heading>
-        <Text fontSize="lg" mt={2}>
-          {curso.descripcion}
+        <Text textAlign="center" fontWeight="bold">
+          Estado:{" "}
+          <Badge colorScheme={curso.estado === "Disponible" ? "green" : "red"}>
+            {curso.estado}
+          </Badge>
         </Text>
-        <Box mt={4}>
-          <Heading as="h3" size="lg">
-            Información del curso
+        <Text textAlign="center" fontWeight="bold">
+          Fecha de inicio: {new Date(curso.fecha_inicio).toLocaleDateString()}
+        </Text>
+        <Text textAlign="center" fontWeight="bold">
+          Fecha de fin: {new Date(curso.fecha_fin).toLocaleDateString()}
+        </Text>
+        <Text textAlign="center" fontWeight="bold">
+          Profesor: {curso.profesor?.nombre} {curso.profesor?.apellido}
+        </Text>
+        <Button
+          bg="skyblue"
+          color="blanco"
+          onClick={handleCalificacionesVerClick}
+        >
+          Calificaciones
+        </Button>
+        <Box
+          bg="amarillo"
+          color="cafe"
+          borderRadius={8}
+          mt={2}
+          ml={1}
+          mr={4}
+          mb={4}
+        >
+          <Heading as="h3" size="lg" textAlign="center">
+            Clases
           </Heading>
-          <VStack align="flex-start" mt={2} spacing={4}>
-            <Text>
-              <strong>Estado:</strong>{" "}
-              <Badge
-                colorScheme={curso.estado === "Disponible" ? "green" : "red"}
-              >
-                {curso.estado}
-              </Badge>
-            </Text>
-            <Text>
-              <strong>Fecha de inicio:</strong>{" "}
-              {new Date(curso.fecha_inicio).toLocaleDateString()}
-            </Text>
-            <Text>
-              <strong>Fecha de fin:</strong>{" "}
-              {new Date(curso.fecha_fin).toLocaleDateString()}
-            </Text>
-            <Text>
-              <strong>Profesor:</strong> {curso.profesor?.nombre}{" "}
-              {curso.profesor?.apellido}
-            </Text>
-            <Divider />
-            <Text>
-              <strong>Clases:</strong>
-              {curso.clases.length > 0 ? (
-                <UnorderedList ml={4}>
-                  {curso.clases.map((clase) => (
-                    <ListItem key={clase._id}>
-                      {clase.nombre} - Fecha:{" "}
-                      {new Date(clase.fecha).toLocaleDateString()}
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-              ) : (
-                <Text ml={4} fontStyle="italic">
-                  Aún no hay clases disponibles.
-                </Text>
-              )}
-            </Text>
-            <Divider />
-            <Text>
-              <strong>Avisos:</strong>
-              {curso.avisos.length > 0 ? (
-                <UnorderedList ml={4}>
-                  {curso.avisos.map((aviso) => (
-                    <ListItem key={aviso._id}>{aviso.contenido}</ListItem>
-                  ))}
-                </UnorderedList>
-              ) : (
-                <Text ml={4} fontStyle="italic">
-                  Aún no hay avisos disponibles.
-                </Text>
-              )}
-            </Text>
-            <Divider />
-            <Text>
-              <strong>Calificaciones:</strong>
-              {curso.calificaciones.length > 0 ? (
-                <List ml={4}>
-                  {curso.calificaciones.map((calificacion) => (
-                    <ListItem key={calificacion}>{calificacion}</ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Text ml={4} fontStyle="italic">
-                  Aún no hay calificaciones disponibles.
-                </Text>
-              )}
-            </Text>
-            <Divider />
-            <Text>
-              <strong>Alumnos:</strong>
-              {curso.alumnos.length > 0 ? (
-                <UnorderedList ml={4}>
-                  {curso.alumnos
-                    .filter((alumno) => alumno.alumno) // Filtrar para eliminar elementos nulos o sin alumno
-                    .map((alumno) => (
-                      <ListItem key={alumno._id}>
-                        {alumno.alumno.nombre} {alumno.alumno.apellido} -
-                        Estado: {alumno.estado}
-                      </ListItem>
-                    ))}
-                </UnorderedList>
-              ) : (
-                <Text ml={4} fontStyle="italic">
-                  Aún no hay alumnos inscritos.
-                </Text>
-              )}
-            </Text>
-          </VStack>
-        </Box>
-        <Box mt={4}>
-          <Heading as="h3" size="lg">
-            Asistencia del alumno
-          </Heading>
-          <VStack align="flex-start" mt={2} spacing={4}>
-            {asistencias.length > 0 ? (
-              <UnorderedList ml={4}>
-                {asistencias.map((asistencia) => (
-                  <ListItem key={asistencia._id}>
-                    Fecha: {new Date(asistencia.fecha).toLocaleDateString()} - Estado: {asistencia.estado}
-                  </ListItem>
-                ))}
-              </UnorderedList>
+          <UnorderedList>
+            {curso.clases.length > 0 ? (
+              curso.clases.map((clase) => (
+                <ListItem key={clase._id}>
+                  Nombre: {clase.nombre} - Fecha:{" "}
+                  {new Date(clase.fecha).toLocaleDateString()}
+                </ListItem>
+              ))
             ) : (
-              <Text ml={4} fontStyle="italic">
-                Aún no hay asistencias registradas.
+              <Text fontStyle="italic">Aún no hay clases disponibles.</Text>
+            )}
+          </UnorderedList>
+        </Box>
+        <Box flexGrow={1} />
+
+        <Box
+          p={2}
+          bg="amarillo"
+          color="cafe"
+          border="1px solid #CBD5E0"
+          borderRadius="8px"
+          mt={2}
+          ml={1}
+          mr={4}
+          mb={4}
+          flexGrow={1}
+        >
+          <Heading as="h3" size="lg" textAlign="center">
+            Alumnos Inscritos
+          </Heading>
+          <UnorderedList mt={2}>
+            {alumnosInscritos.length > 0 ? (
+              alumnosInscritos.map((alumno) => (
+                <ListItem key={alumno._id}>
+                  {alumno.alumno.nombre} {alumno.alumno.apellido} - Estado:{" "}
+                  {alumno.estado}
+                </ListItem>
+              ))
+            ) : (
+              <Text fontStyle="italic">
+                Aún no hay alumnos inscritos en el curso.
               </Text>
             )}
-          </VStack>
+          </UnorderedList>
         </Box>
-        <HStack mt={4} justifyContent="flex-end">
-          <Button bg="naranja" color="blanco" size="sm" onClick={handleVolverClick}>
+
+        <Box
+          p={2}
+          bg="amarillo"
+          color="cafe"
+          border="1px solid #CBD5E0"
+          borderRadius="8px"
+          mt={2}
+          ml={1}
+          mr={4}
+          mb={4}
+          flexGrow={1}
+        >
+          <Heading as="h3" size="lg" textAlign="center">
+            Avisos
+          </Heading>
+          <UnorderedList mt={2}>
+            {curso.avisos.length > 0 ? (
+              curso.avisos.map((aviso) => (
+                <ListItem key={aviso._id}>{aviso.contenido}</ListItem>
+              ))
+            ) : (
+              <Text fontStyle="italic">Aún no hay avisos disponibles.</Text>
+            )}
+          </UnorderedList>
+        </Box>
+        <Box display="flex" justifyContent="flex-end">
+          <Button bg="cafe" color="white" onClick={handleVolverClick}>
             Volver
           </Button>
-          <Button bg="cafe"color="blanco" size="sm" onClick={handleInscribirClick}>
+          <Button bg="cafe" color="blanco" onClick={handleInscribirClick}>
             Inscribir
           </Button>
-        </HStack>
-      </Box>
+        </Box>
+      </VStack>
     </Box>
   );
 };
 
-export default AlumnoCursoVer;
+export default CursoAlumnoVer;
