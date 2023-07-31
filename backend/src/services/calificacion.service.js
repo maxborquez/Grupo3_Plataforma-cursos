@@ -49,7 +49,7 @@ async function createCalificacion(cursoId, alumnoId, profesorId, calificacion, n
   }
 }
 
-async function updateCalificacion(id, nuevaCalificacion) {
+async function updateCalificacion(id, nombreCalificacion, nuevaCalificacion) {
   try {
     const { error } = calificacionBodySchema.validate({ calificacion: nuevaCalificacion });
     if (error) return null;
@@ -59,12 +59,16 @@ async function updateCalificacion(id, nuevaCalificacion) {
       return null;
     }
 
+    calificacionExistente.nombreCalificacion = nombreCalificacion;
     calificacionExistente.calificacion = nuevaCalificacion;
     return await calificacionExistente.save();
   } catch (error) {
-    handleError(error, "calificacion.service -> updateCalificacion");
+    console.error("Error al actualizar la calificación:", error);
+    // Aquí puedes realizar cualquier otra acción que desees cuando ocurra un error en la actualización.
   }
 }
+
+
 
 async function deleteCalificacion(id) {
   try {

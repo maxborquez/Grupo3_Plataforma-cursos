@@ -68,24 +68,30 @@ async function createCalificacion(req, res) {
 }
 
 
+
 // Función para cambiar una calificación específica de un alumno
 async function updateCalificacion(req, res) {
   try {
     const { calificacionId } = req.params;
-    const { nuevaCalificacion } = req.body;
+    const { nombreCalificacion, nuevaCalificacion } = req.body;
 
     // Actualizar la calificación
-    const calificacionActualizada = await Calificacion.findByIdAndUpdate(calificacionId, { calificacion: nuevaCalificacion });
+    const calificacionActualizada = await Calificacion.findByIdAndUpdate(
+      calificacionId,
+      { nombreCalificacion, calificacion: nuevaCalificacion },
+      { new: true } // Para obtener la calificación actualizada después de la actualización
+    );
 
     if (!calificacionActualizada) {
       return res.status(404).json({ message: "La calificación no existe." });
     }
 
-    res.status(200).json({ message: "Calificación actualizada con éxito"});
+    res.status(200).json({ message: "Calificación actualizada con éxito", calificacion: calificacionActualizada });
   } catch (error) {
     res.status(500).json({ message: "Error al modificar la calificación.", error });
   }
 }
+
 
 // Eliminar una calificación
 const deleteCalificacion = async (req, res) => {
