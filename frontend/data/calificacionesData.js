@@ -8,12 +8,12 @@ const getToken = () => {
   return token;
 };
 
-const crearCalificacion = async (cursoId, alumnoId, profesorId, calificacion) => {
+const crearCalificacion = async (cursoId, alumnoId, profesorId, calificacion, nombre) => {
     try {
       const token = getToken();
       const response = await axios.post(
         `${apiUrl}/calificaciones/${cursoId}/alumno/${alumnoId}/profesor/${profesorId}`,
-        { calificacion },
+        { calificacion, nombre},
         {
           headers: {
             token: token,
@@ -90,7 +90,6 @@ const eliminarCalificacion = async (calificacionId) => {
     throw error;
   }
 };
-
 
 export {
   crearCalificacion,
