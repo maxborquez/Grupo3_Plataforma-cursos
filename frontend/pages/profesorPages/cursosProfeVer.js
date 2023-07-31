@@ -105,11 +105,7 @@ const CursoProfeVer = () => {
     router.push(`/profesorPages/calificacionesVer/${cursoId}`);
   };
 
-  const handleMarcarAsistenciaClick = (claseId) => {
-    // Realizar la redirección a la página "MarcarAsistencia" con cursoId y claseId en la URL
-    router.push(`/profesorPages/marcarAsistencia/${cursoId}/${claseId}`);
-  };
-
+ 
   return (
     <Box display="flex" minHeight="100vh" bg="negro">
       <Sidebar />
@@ -262,16 +258,7 @@ const CursoProfeVer = () => {
                       >
                         Editar
                       </Button>
-                      {/* Botón para marcar asistencia */}
-                      <Button
-                        ml="4"
-                        size="xs"
-                        bg="verde"
-                        color="blanco"
-                        onClick={() => handleMarcarAsistenciaClick(clase._id)}
-                      >
-                        Marcar Asistencia
-                      </Button>
+                      
                     </ListItem>
                   ))}
                 </UnorderedList>

@@ -10,7 +10,7 @@ router.get("/curso/:cursoId", calificacionController.obtenerCalificacionesPorCur
 
 router.get("/", calificacionController.getCalificaciones);
 router.get("/:id", calificacionController.getCalificacionById);
-router.get("/curso/:cursoId", calificacionController.obtenerCalificacionesPorCurso);
+router.get("/:cursoId", calificacionController.obtenerCalificacionesPorCurso);
 router.post("/:cursoId/alumno/:alumnoId/profesor/:profesorId", authMiddleware.isAdminOrProfesor, calificacionController.createCalificacion);
 router.put("/:calificacionId", authMiddleware.isAdminOrProfesor, calificacionController.updateCalificacion);
 router.delete("/:id", authMiddleware.isAdminOrProfesor, calificacionController.deleteCalificacion);

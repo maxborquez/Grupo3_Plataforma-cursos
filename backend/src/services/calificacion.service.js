@@ -28,7 +28,7 @@ async function getCalificacionById(id) {
 }
 
 
-async function createCalificacion(cursoId, alumnoId, profesorId, calificacion) {
+async function createCalificacion(cursoId, alumnoId, profesorId, calificacion, nombre) {
   try {
     const participaCurso = await Curso.exists({ _id: cursoId, profesor: profesorId });
     if (!participaCurso) {
@@ -40,6 +40,7 @@ async function createCalificacion(cursoId, alumnoId, profesorId, calificacion) {
       alumno: alumnoId,
       profesor: profesorId,
       calificacion,
+      nombre,
     });
 
     return await nuevaCalificacion.save();

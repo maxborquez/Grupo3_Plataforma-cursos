@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { obtenerCalificacionesPorCurso } from "../../data/calificacionesData";
+import { obtenerCalificacionesPorCurso, eliminarCalificacion } from "../../data/calificacionesData";
+import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button, VStack, SimpleGrid } from "@chakra-ui/react";
 
 const CalificacionesVer = () => {
   const router = useRouter();
@@ -16,40 +17,85 @@ const CalificacionesVer = () => {
   const obtenerCalificaciones = async () => {
     try {
       const calificacionesData = await obtenerCalificacionesPorCurso(cursoId);
-      // Agrupar las calificaciones por el nombre del alumno
       const calificacionesAgrupadas = {};
+
       calificacionesData.forEach((calificacion) => {
-        const { alumno, calificacion: calif } = calificacion;
+        const { alumno, calificacion: calif, nombre } = calificacion;
         const nombreAlumno = alumno.nombre;
         if (!calificacionesAgrupadas[nombreAlumno]) {
-          calificacionesAgrupadas[nombreAlumno] = [calif];
+          calificacionesAgrupadas[nombreAlumno] = [{ nombre, calificacion: calif }];
         } else {
-          calificacionesAgrupadas[nombreAlumno].push(calif);
+          calificacionesAgrupadas[nombreAlumno].push({ nombre, calificacion: calif });
         }
       });
-      // Convertir el objeto de calificaciones agrupadas en un array
+
       const calificacionesArray = Object.entries(calificacionesAgrupadas).map(([alumno, calificaciones]) => ({
         alumno,
-        calificaciones: calificaciones.join(", ")
+        calificaciones: calificaciones.map(({ nombre, calificacion }) => ({
+          nombreCalificacion: nombre,
+          calificacion
+        }))
       }));
+
       setCalificaciones(calificacionesArray);
     } catch (error) {
       console.error("Error al obtener las calificaciones:", error);
     }
   };
 
+  const handleEliminarCalificacion = async (calificacionId) => {
+    try {
+      if (!calificacionId) {
+        console.error("ID de calificación indefinido");
+        return;
+      }
+  
+      await eliminarCalificacion(calificacionId);
+      obtenerCalificaciones();
+    } catch (error) {
+      console.error("Error al eliminar la calificación:", error);
+      // Mostrar un mensaje de error en el frontend o cualquier otra acción que desees realizar.
+    }
+  }
+
   return (
-    <div>
-      <h1>Calificaciones</h1>
-      <ul>
-        {calificaciones.map(({ alumno, calificaciones }) => (
-          <li key={alumno}>
-            <p>Alumno: {alumno}</p>
-            <p>Calificaciones: {calificaciones}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Box p={4} textAlign="center">
+      <Heading as="h1" size="xl" mb={4}>
+        Calificaciones
+      </Heading>
+      <Table bg="amarillo" borderRadius="8">
+        <Thead>
+          <Tr>
+            <Th>Alumnos</Th>
+            <Th>Calificaciones</Th>
+          </Tr>
+        </Thead>
+        <Tbody bg="negro-sec">
+          {calificaciones.map(({ alumno, calificaciones }) => (
+            <Tr key={alumno}>
+              <Td>{alumno}</Td>
+              <Td>
+                {calificaciones.map(({ nombreCalificacion, calificacion, _id }) => (
+                  <SimpleGrid key={_id} columns={3} alignItems="center" justifyContent="center" gap={2}>
+                    <Box>{nombreCalificacion}</Box>
+                    <Box>{calificacion}</Box>
+                    <Button
+                    mt="1"
+                      key={_id}
+                      colorScheme="red"
+                      size="xs"
+                      onClick={() => handleEliminarCalificacion(_id)}
+                    >
+                      Eliminar
+                    </Button>
+                  </SimpleGrid>
+                ))}
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </Box>
   );
 };
 

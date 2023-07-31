@@ -44,14 +44,14 @@ const getCalificacionesByCursoId = async (cursoId) => {
 async function createCalificacion(req, res) {
   try {
     const { cursoId, alumnoId, profesorId } = req.params;
-    const { calificacion } = req.body;
+    const { calificacion , nombre} = req.body;
 
     console.log("cursoId:", cursoId);
     console.log("alumnoId:", alumnoId);
     console.log("profesorId:", profesorId);
     console.log("calificacion:", calificacion);
 
-    const calificacionGuardada = await calificacionService.createCalificacion(cursoId, alumnoId, profesorId, calificacion);
+    const calificacionGuardada = await calificacionService.createCalificacion(cursoId, alumnoId, profesorId, calificacion, nombre);
 
     if (!calificacionGuardada) {
       return res.status(500).json({ message: "Error al asignar la calificación." });
@@ -101,14 +101,14 @@ const deleteCalificacion = async (req, res) => {
   }
 };
 
+// Obtener calificaciones por curso
 const obtenerCalificacionesPorCurso = async (req, res) => {
   const { cursoId } = req.params;
   try {
-    const calificaciones = await Calificacion.find({ curso: cursoId })
-      .populate('alumno', 'nombre apellido');
+    const calificaciones = await Calificacion.find({ curso: cursoId }).populate("alumno", "nombre");
     res.status(200).json(calificaciones);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener las calificaciones del curso" });
+    res.status(500).json({ error: "Ocurrió un error al obtener las calificaciones del curso" });
   }
 };
 
