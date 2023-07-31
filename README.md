@@ -5,6 +5,5 @@
   - Maximiliano Borquez
   - Emerson García
   - Magdiel Araneda
-  - Iván Salas
 
 ## [Ver el backend](./backend/Backend.md)
