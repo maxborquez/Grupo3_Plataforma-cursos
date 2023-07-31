@@ -68,6 +68,10 @@ const nextConfig = {
         source: '/profesorPages/calificacionesVer/:cursoId',
         destination: '/profesorPages/calificacionesVer',
       },
+      {
+        source: '/profesorPages/calificacionesEditar/:calificacionId',
+        destination: '/profesorPages/calificacionesEditar',
+      }
     ];
   },
 };

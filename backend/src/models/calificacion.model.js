@@ -21,7 +21,6 @@ const calificacionSchema = new mongoose.Schema({
     enum: ["Bien", "Medio", "Mal"],
     required: true,
   },
-
   nombre:{
     type:String,
     required:true,

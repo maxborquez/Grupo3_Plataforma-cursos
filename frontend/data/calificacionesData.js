@@ -50,6 +50,7 @@ const obtenerCalificacionPorId = async (calificacionId) => {
         token: token,
       },
     });
+    console.log(response.data); // Agregar esta línea para imprimir la respuesta
     return response.data;
   } catch (error) {
     console.error('Error al obtener la calificación por su ID:', error);
@@ -57,24 +58,27 @@ const obtenerCalificacionPorId = async (calificacionId) => {
   }
 };
 
-const actualizarCalificacion = async (calificacionId, nuevaCalificacion) => {
+const updateCalificacion = async (id, nombreCalificacion, nuevaCalificacion) => {
   try {
     const token = getToken();
     const response = await axios.put(
-      `${apiUrl}/calificaciones/${calificacionId}`,
-      { calificacion: nuevaCalificacion },
+      `${apiUrl}/calificaciones/${id}`,
+      { nombreCalificacion, calificacion: nuevaCalificacion }, // Enviar ambos campos al servidor para actualizar
       {
         headers: {
           token: token,
         },
       }
     );
+
     return response.data;
   } catch (error) {
-    console.error('Error al actualizar la calificación:', error);
+    console.error(error, "calificacionData -> updateCalificacion");
     throw error;
   }
 };
+
+
 
 const eliminarCalificacion = async (calificacionId) => {
   try {
@@ -95,6 +99,6 @@ export {
   crearCalificacion,
   obtenerCalificacionesPorCurso,
   obtenerCalificacionPorId,
-  actualizarCalificacion,
+  updateCalificacion,
   eliminarCalificacion,
 };
