@@ -1,7 +1,6 @@
-// pages/usuarioDetalle.js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Heading, Text, Button, Divider } from "@chakra-ui/react";
+import { Box, Heading, Text, Button, Divider} from "@chakra-ui/react";
 import { getUserById, deleteUser } from "../../data/usersData";
 import Sidebar from "../../components/sideBar";
 import Swal from "sweetalert2";
@@ -58,7 +57,11 @@ const UsuarioDetalle = () => {
             router.back();
           });
         } catch (error) {
-          Swal.fire("Error", "Hubo un problema al eliminar el usuario.", "error");
+          Swal.fire(
+            "Error",
+            "Hubo un problema al eliminar el usuario.",
+            "error"
+          );
           console.error("Error al borrar el usuario:", error);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -69,60 +72,73 @@ const UsuarioDetalle = () => {
 
   return (
     <Box display="flex" minHeight="100vh">
-      <Sidebar />
-      <Box
-        p={4}
-        bg="negro-sec"
-        border="1px solid #CBD5E0"
-        borderRadius="8px"
-        mt={4}
-        mb={4}
-        mr={4}
-        ml={18}
-        flexGrow={0.5}
-        position="relative"
-      >
+    <Sidebar />
+    <Box
+      bg="transparent"
+      borderRadius="8px"
+      ml={10}
+      mt={5}
+      mb={5}
+      mr={10}
+      flexGrow={1}
+      maxWidth="800px" // Limitar el ancho máximo del contenido principal
+      mx="auto" // Centrar horizontalmente el contenido
+    >
+      <Box bg="negro-sec" borderRadius="8px" p={4}>
         <Heading as="h1" size="xl">
           Datos del Usuario
         </Heading>
-        <br/>
-        <Divider/>
-        
-        <Box bg="amarillo" color="cafe" borderRadius="8px" mt={4} >
-          <br/>
-          <Text>
-            <strong>Nombre:</strong> {user.nombre} {user.apellido}
-          </Text>
-          <br/>
-          <Text>
-            <strong>Email:</strong> {user.email}
-          </Text>
-          <br/>
-          <Text>
-            <strong>RUT:</strong> {user.rut}
-          </Text>
-          <br/>
-          <Text>
-            <strong>Teléfono:</strong> {user.telefono}
-          </Text>
-          <br/>
-        </Box>
-        <br/>
-        <br/>
+        <Divider />
+      </Box>
+      <Box bg="amarillo" color="cafe" border="40px solid #313236" borderRadius="8px" p={4} mt={4}> {/* Ajustar el padding y el margen superior */}
+        <Text>
+          <strong>Nombre:</strong> {user.nombre} {user.apellido}
+        </Text>
+        <br />
+        <Text>
+          <strong>Email:</strong> {user.email}
+        </Text>
+        <br />
+        <Text>
+          <strong>RUT:</strong> {user.rut}
+        </Text>
+        <br />
+        <Text>
+          <strong>Teléfono:</strong> {user.telefono}
+        </Text>
+        <br />
         <Box mt={4} display="flex" justifyContent="flex-end">
-          <Button bg="cafe" color="blanco" ml={4} size="sm" onClick={handleEditarClick}>
+          <Button
+            bg="cafe"
+            color="blanco"
+            ml={4}
+            size="sm"
+            onClick={handleEditarClick}
+          >
             Editar
           </Button>
-          <Button colorScheme="red" ml={4} size="sm" onClick={handleBorrarClick}>
+          <Button
+            colorScheme="red"
+            ml={4}
+            size="sm"
+            onClick={handleBorrarClick}
+          >
             Borrar
           </Button>
-          <Button bg="naranja" color="blanco" ml={4} size="sm" onClick={handleVolverClick}>
-              Volver
+          <Button
+            bg="naranja"
+            color="blanco"
+            ml={4}
+            size="sm"
+            onClick={handleVolverClick}
+          >
+            Volver
           </Button>
         </Box>
       </Box>
     </Box>
-  );
+  </Box>
+);
 };
 
 export default UsuarioDetalle;
